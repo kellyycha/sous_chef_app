@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class MySquare extends StatelessWidget{
   final String child;
   
-  MySquare({required this.child});
+  const MySquare({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
