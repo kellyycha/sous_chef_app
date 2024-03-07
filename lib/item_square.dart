@@ -9,19 +9,19 @@ class MySquare extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
       child: Container(
-        height: 100,
+        height: 120,
         decoration: BoxDecoration(
-          color: Colors.green[100],
-          borderRadius: BorderRadius.circular(20)
+          color: const Color.fromARGB(255, 243, 243, 237),
+          borderRadius: BorderRadius.circular(24)
         ),
         
         child: Center(
           child: Text(
             child,
             style: const TextStyle(
-              fontSize: 40),
+              fontSize: 20),
             )
           )
         )
