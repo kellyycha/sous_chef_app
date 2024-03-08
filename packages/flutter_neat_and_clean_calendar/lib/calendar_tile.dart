@@ -106,26 +106,12 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                 : Colors.red
                             : selectedColor
                         : Theme.of(context).primaryColor,
-                    image: events != null && events!.isNotEmpty
-                        ? icon != '' && icon != null
-                            ? DecorationImage(
-                                fit: BoxFit.cover,
-                                image: providerImage(icon!),
-                              )
-                            : null
-                        : null,
                   )
                 : events == null
                     ? BoxDecoration()
                     : events!.isNotEmpty
                         ? BoxDecoration(
                             shape: BoxShape.circle,
-                            image: icon != '' && icon != null
-                                ? DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: providerImage(icon!),
-                                  )
-                                : null,
                           )
                         : BoxDecoration(), // no decoration when not selected
             alignment: Alignment.center,
@@ -146,8 +132,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                                 ? defaultDayColor != null
                                     ? defaultDayColor
                                     : events != null &&
-                                            events!.isNotEmpty &&
-                                            icon != ''
+                                            events!.isNotEmpty
                                         ? Colors.white
                                         : Colors.black
                                 : (defaultOutOfMonthDayColor != null
@@ -202,17 +187,6 @@ class NeatCleanCalendarTile extends StatelessWidget {
       );
     }
   }
-
-  String? get icon => events!
-      .firstWhere(
-        (element) => Utils.isSameDay(this.date!, element.startTime),
-        orElse: () => NeatCleanCalendarEvent(
-          '',
-          startTime: this.date!,
-          endTime: this.date!,
-        ),
-      )
-      .icon;
 
   @override
   Widget build(BuildContext context) {

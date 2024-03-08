@@ -26,15 +26,12 @@ class CalendarPage extends StatelessWidget {
 // TODO: show picture, qty, remove timestamp, make title "Expiring + date"
 final List<NeatCleanCalendarEvent> _expiratioList = [
   NeatCleanCalendarEvent('Apple',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
+    expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
   ),
   NeatCleanCalendarEvent('Broccoli',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+    expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   ),
   NeatCleanCalendarEvent('Cabbage',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
+    expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
 ];
