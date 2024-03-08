@@ -497,9 +497,15 @@ class _CalendarState extends State<Calendar> {
       return GestureDetector(
         onTap: toggleExpanded,
         child: Container(
-          color: widget.bottomBarColor ?? Color.fromARGB(255, 250, 250, 245), 
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 250, 250, 245),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), 
+              topRight: Radius.circular(30),
+            ),
+          ),
           height: 60,
-          margin: EdgeInsets.only(top: 8.0),
+          margin: EdgeInsets.only(top: 8.0, left: 10, right: 10),
           padding: EdgeInsets.all(0),
           child: Column(
             children: [
@@ -558,16 +564,20 @@ class _CalendarState extends State<Calendar> {
         child: _selectedEvents != null && _selectedEvents!.isNotEmpty
             // Create a list of events that are occurring on the currently selected day, if there are
             // any. Otherwise, display an empty Container.
-            ? ListView.builder(
-                padding: EdgeInsets.all(0.0),
-                itemBuilder: (BuildContext context, int index) {
-                  final NeatCleanCalendarEvent event = _selectedEvents![index];
-                  return MySquare(
-                    child: event.summary,
-                  );
-                },
-                itemCount: _selectedEvents!.length,
-              )
+            ? Container(
+              color: Color.fromARGB(255, 250, 250, 245),
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: ListView.builder(
+                  padding: EdgeInsets.all(0.0),
+                  itemBuilder: (BuildContext context, int index) {
+                    final NeatCleanCalendarEvent event = _selectedEvents![index];
+                    return MySquare(
+                      child: event.summary,
+                    );
+                  },
+                  itemCount: _selectedEvents!.length,
+                ),
+            )
             : Container(),
       );
     } else {

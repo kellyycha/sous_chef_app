@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
@@ -51,12 +53,30 @@ class InventoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
+          const ColoredBox(color: Colors.white),
+          Positioned(
+            // alignment: Alignment.bottomCenter,
+            bottom: 0,
+            left: 10,
+            right: 10,
+            child: Container(
+              height: 630,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 250, 250, 245),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), 
+                  topRight: Radius.circular(30),
+                ),
+              ),
+            )
+
+          ),
           Column(
             children: [
               const SizedBox(
-                height:130,
+                height:135,
                 // title
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -77,22 +97,21 @@ class InventoryPage extends StatelessWidget {
               IntrinsicHeight(
                 child: Row(
                   children: [
-                    const SizedBox(width:10),
+                    const SizedBox(width:20),
                     // location dropdown
                     SizedBox(
-                      width: 260,
+                      width: 250,
                       height: 40,
                       child: MyDropdown(data: _location),
                       ),
                     const VerticalDivider(
-                      width: 20,
                       thickness: 1,
                       indent: 3,
                       endIndent: 3,
                     ),
                     // video button
                     SizedBox(
-                      width: 87,
+                      width: 85,
                       height: 40,
                       child: Container(
                         decoration: BoxDecoration(
@@ -113,22 +132,22 @@ class InventoryPage extends StatelessWidget {
                           ), 
                         )
                       ), 
-                    const Spacer(),
+                    const SizedBox(width:20),
                   ],
                 ),
               ),
               const Divider(
                 thickness: 1,
-                indent: 10,
-                endIndent: 10,
+                indent: 20,
+                endIndent: 20,
               ),
               const SizedBox(height:5),
               Row(
                 children: [
-                  const SizedBox(width:10),
+                  const SizedBox(width:20),
                   // search bar
                   const SizedBox(
-                    width: 315,
+                    width: 290,
                     height: 40,
                     child: MySearchBar(),
                     ),
@@ -152,10 +171,10 @@ class InventoryPage extends StatelessWidget {
                         ),
                       ), 
                     ), 
-                  const SizedBox(width:10),
+                  const SizedBox(width:20),
                 ],
               ),
-              const SizedBox(height:5),
+              const SizedBox(height:8),
               // sort by options
               Row(
                 children: [
@@ -229,26 +248,28 @@ class InventoryPage extends StatelessWidget {
                         ),
                       ), 
                     ),
-                    const SizedBox(width:10), 
+                    const SizedBox(width:20), 
                 ],
               ),
               const SizedBox(height:20), 
-            ]
+              //inventory list
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(0),
+                  itemCount: _inventory.length,
+                  itemBuilder: (context, index) {
+                    return MySquare(
+                      child: _inventory[index][0],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          //inventory list
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(0),
-              itemCount: _inventory.length,
-              itemBuilder: (context, index) {
-                return MySquare(
-                  child: _inventory[index][0],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+
+        ]
+      )
+      
     );
   }
 } 

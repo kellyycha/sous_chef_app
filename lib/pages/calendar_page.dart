@@ -34,4 +34,7 @@ final List<NeatCleanCalendarEvent> _expirationList = [
   NeatCleanCalendarEvent('Tomato',
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
+  NeatCleanCalendarEvent('Orange',
+    expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
+  ),
 ];
