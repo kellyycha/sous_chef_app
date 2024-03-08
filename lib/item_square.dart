@@ -14,7 +14,8 @@ class MySquare extends StatelessWidget{
         height: 120,
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 243, 243, 237),
-          borderRadius: BorderRadius.circular(24)
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: const Color.fromARGB(255, 230, 230, 230)),
         ),
         
         child: Center(

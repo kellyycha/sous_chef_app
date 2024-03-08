@@ -65,12 +65,83 @@ class InventoryPage extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                width: 260,
-                height: 52,
-                // height: 40,
-                child: const LocationDropdown(),
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    const SizedBox(width:10),
+                    // location dropdown
+                    const SizedBox(
+                      width: 260,
+                      height: 40,
+                      child: LocationDropdown(),
+                      ),
+                    const VerticalDivider(
+                      width: 20,
+                      thickness: 1,
+                      indent: 3,
+                      endIndent: 3,
+                    ),
+                    // video button
+                    SizedBox(
+                      width: 87,
+                      height: 40,
+                      child: IconButton.outlined(
+                        icon: Icon(Icons.videocam_outlined),
+                        iconSize: 40,
+                        color: Colors.black,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(1),
+                        // TODO: clicking this button shows video feed
+                        onPressed: () {},
+                        ), 
+                      ), 
+                    const Spacer(),
+                  ],
                 ),
+              ),
+              const Divider(
+                thickness: 1,
+                indent: 10,
+                endIndent: 10,
+              ),
+              Row(
+                children: [
+                  const SizedBox(width:10),
+                  // search bar
+                  SizedBox(
+                    width: 315,
+                    height: 40,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 230, 230, 230),
+                        borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(width:5),
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        ),
+                      child: IconButton(
+                        icon: const Icon(Icons.add),
+                        iconSize: 40,
+                        color: Colors.black,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(1),
+                        // TODO: clicking this adds custom item
+                        onPressed: () {},
+                        ),
+                    ), 
+                    ), 
+                  const Spacer(),
+                ],
+              ),
+
             ]
           ),
           //inventory list
@@ -161,3 +232,7 @@ class _LocationState extends State<LocationDropdown> {
     );
   }
 }
+
+void _nothing() {
+  return; 
+  }
