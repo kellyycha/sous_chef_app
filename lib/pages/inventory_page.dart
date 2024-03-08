@@ -29,11 +29,9 @@ class InventoryPage extends StatelessWidget {
     ["Jalapeno", 4, 9, "R"],
     ["Mushroom", 5, 10, "R"],
     ["Cauliflower", 1, 12, "R"],
-    ["Green Bean", 10, 12, "R"],
     ["Soy Sauce", -1, -1, "S"],
     ["Salt", -1, -1, "S"],
     ["Pepper", -1, -1, "S"],
-    ["Garlic Powder", -1, -1, "S"],
     ["Paprika", -1, -1, "S"],
     ["Cinnamon", -1, -1, "S"],
     ["Vinegar", -1, -1, "S"],
@@ -259,7 +257,9 @@ class InventoryPage extends StatelessWidget {
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      child: _inventory[index][0],
+                      title: _inventory[index][0],
+                      qty: _inventory[index][1],
+                      expiration: _inventory[index][2], 
                     );
                   },
                 ),
