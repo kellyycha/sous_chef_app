@@ -11,23 +11,11 @@ class CalendarPage extends StatelessWidget {
       body: SafeArea(
         child: Calendar(
           weekDays: const ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-          eventsList: _expirationList,
+          eventsList: _expiratioList,
           isExpandable: true,
-          eventDoneColor: const Color.fromARGB(155, 67, 107, 31),
-          selectedColor: const Color.fromARGB(155, 67, 107, 31),
-          selectedTodayColor: const Color.fromARGB(255, 67, 107, 31),
-          todayColor: const Color.fromARGB(255, 67, 107, 31),
           eventColor: null,
           isExpanded: true,
           datePickerType: DatePickerType.date,
-          dayOfWeekStyle: const TextStyle(
-            color: Color.fromARGB(155, 67, 107, 31),),
-          displayMonthTextStyle: const TextStyle(
-            color: Color.fromARGB(255, 67, 107, 31),
-            fontSize: 40.0,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Italiana',
-          ),
         ),
       ),
     );
@@ -36,21 +24,17 @@ class CalendarPage extends StatelessWidget {
 
 //sample data
 // TODO: show picture, qty, remove timestamp, make title "Expiring + date"
-// Maybe copy and paste code instead of using package to cutomize the listview
-final List<NeatCleanCalendarEvent> _expirationList = [
+final List<NeatCleanCalendarEvent> _expiratioList = [
   NeatCleanCalendarEvent('Apple',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 5),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 5),
-    color: const Color.fromARGB(155, 67, 107, 31),
+    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
+    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
   ),
   NeatCleanCalendarEvent('Broccoli',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 8),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 8),
-    color: const Color.fromARGB(155, 67, 107, 31),
+    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   ),
   NeatCleanCalendarEvent('Cabbage',
-    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 10),
-    color: const Color.fromARGB(155, 67, 107, 31),
+    startTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
+    endTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
 ];

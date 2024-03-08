@@ -89,10 +89,9 @@ packages:
   flutter_neat_and_clean_calendar:
     dependency: "direct main"
     description:
-      name: flutter_neat_and_clean_calendar
-      sha256: "04d89cb42b998e59e9255f0c4b15d6d2ba3800999adda24c45f96230ed63dbc4"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/flutter_neat_and_clean_calendar"
+      relative: true
+    source: path
     version: "0.3.18+40"
   flutter_platform_widgets:
     dependency: transitive
