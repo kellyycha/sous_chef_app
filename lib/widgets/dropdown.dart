@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class LocationDropdown extends StatefulWidget {
+class MyDropdown extends StatefulWidget {
   final List data; 
 
-  const LocationDropdown({super.key, required this.data});
+  const MyDropdown({super.key, required this.data});
 
   @override
-  State<LocationDropdown> createState() => _LocationState();
+  State<MyDropdown> createState() => _LocationState();
 }
 
-class _LocationState extends State<LocationDropdown> {
+class _LocationState extends State<MyDropdown> {
   late String dropdownValue = widget.data.first;
 
   @override
@@ -30,17 +30,16 @@ class _LocationState extends State<LocationDropdown> {
             contentPadding:const EdgeInsets.symmetric(horizontal: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white),
+              borderSide: const BorderSide(color: Colors.transparent),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white),
+              borderSide: const BorderSide(color: Colors.transparent),
             ),
           ),
           dropdownColor: const Color.fromARGB(255, 67, 107, 31),
           elevation: 0,
           onChanged: (String? value) {
-            // This is called when the user selects an item.
             setState(() {
               dropdownValue = value!;
             });

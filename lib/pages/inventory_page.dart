@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
@@ -58,7 +56,7 @@ class InventoryPage extends StatelessWidget {
           Column(
             children: [
               const SizedBox(
-                height:140,
+                height:130,
                 // title
                 child: Align(
                   alignment: Alignment.topLeft,
@@ -75,6 +73,7 @@ class InventoryPage extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height:5), 
               IntrinsicHeight(
                 child: Row(
                   children: [
@@ -83,7 +82,7 @@ class InventoryPage extends StatelessWidget {
                     SizedBox(
                       width: 260,
                       height: 40,
-                      child: LocationDropdown(data: _location),
+                      child: MyDropdown(data: _location),
                       ),
                     const VerticalDivider(
                       width: 20,
@@ -95,15 +94,24 @@ class InventoryPage extends StatelessWidget {
                     SizedBox(
                       width: 87,
                       height: 40,
-                      child: IconButton.outlined(
-                        icon: const Icon(Icons.videocam_outlined),
-                        iconSize: 40,
-                        color: Colors.black,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(1),
-                        // TODO: clicking this button shows video feed
-                        onPressed: () {},
-                        ), 
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.white,
+                          ),
+                          child: IconButton.outlined(
+                            icon: const Icon(Icons.videocam_outlined),
+                            iconSize: 40,
+                            color: Colors.black,
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(width: 1.0, color:Color.fromARGB(255, 194, 194, 194)),
+                            ),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(1),
+                            // TODO: clicking this button shows video feed
+                            onPressed: () {},
+                          ), 
+                        )
                       ), 
                     const Spacer(),
                   ],
@@ -114,6 +122,7 @@ class InventoryPage extends StatelessWidget {
                 indent: 10,
                 endIndent: 10,
               ),
+              const SizedBox(height:5),
               Row(
                 children: [
                   const SizedBox(width:10),
@@ -123,7 +132,7 @@ class InventoryPage extends StatelessWidget {
                     height: 40,
                     child: MySearchBar(),
                     ),
-                  const SizedBox(width:5),
+                  const Spacer(),
                   SizedBox(
                     width: 50,
                     height: 50,
@@ -134,19 +143,96 @@ class InventoryPage extends StatelessWidget {
                         ),
                       child: IconButton(
                         icon: const Icon(Icons.add),
-                        iconSize: 40,
+                        iconSize: 35,
                         color: Colors.black,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(1),
                         // TODO: clicking this adds custom item
                         onPressed: () {},
                         ),
+                      ), 
                     ), 
-                    ), 
-                  const Spacer(),
+                  const SizedBox(width:10),
                 ],
               ),
-
+              const SizedBox(height:5),
+              // sort by options
+              Row(
+                children: [
+                  const Spacer(),
+                  const SizedBox(
+                    height:40,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                        child:Padding(
+                        padding:EdgeInsets.all(0),
+                        child: Text(
+                          'Sort By',
+                          style: TextStyle(
+                            color:Colors.black,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ), 
+                  const SizedBox(width:5), 
+                  SizedBox(
+                    width: 105,
+                    height: 40,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: const Color.fromARGB(255, 230, 230, 230),
+                        ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            ),
+                          backgroundColor: const Color.fromARGB(255, 67, 107, 31),
+                          foregroundColor: Colors.white,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(1),
+                        ),
+                        // TODO: clicking this sorts by expiration and unselects A-Z (functions like a radio)
+                        onPressed: () {},
+                        child: const Text("Expiration"),
+                        ),
+                      ), 
+                    ),
+                    const SizedBox(width:5), 
+                    SizedBox(
+                    width: 55,
+                    height: 40,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: const Color.fromARGB(255, 194, 194, 194)),
+                        ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            ),
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(1),
+                        ),
+                        // TODO: clicking this sorts by A-Z and unselects expiration (changes colors too so green is selected)
+                        onPressed: () {},
+                        child: const Text("A-Z"),
+                        ),
+                      ), 
+                    ),
+                    const SizedBox(width:10), 
+                ],
+              ),
+              const SizedBox(height:20), 
             ]
           ),
           //inventory list
