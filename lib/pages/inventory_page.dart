@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sous_chef_app/item_square.dart';
+import 'package:sous_chef_app/widgets/dropdown.dart';
+import 'package:sous_chef_app/widgets/item_square.dart';
+import 'package:sous_chef_app/widgets/search_bar.dart';
 
 class InventoryPage extends StatelessWidget {
   InventoryPage({super.key});
@@ -40,6 +42,14 @@ class InventoryPage extends StatelessWidget {
     ["Parsley", -1, -1, "S"],
     ];
 
+  final List<String> _location = <String>[
+    'All', 
+    'Refrigerator', 
+    'Freezer', 
+    'Pantry',
+    'Spices/Sauces'
+    ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,10 +80,10 @@ class InventoryPage extends StatelessWidget {
                   children: [
                     const SizedBox(width:10),
                     // location dropdown
-                    const SizedBox(
+                    SizedBox(
                       width: 260,
                       height: 40,
-                      child: LocationDropdown(),
+                      child: LocationDropdown(data: _location),
                       ),
                     const VerticalDivider(
                       width: 20,
@@ -86,11 +96,11 @@ class InventoryPage extends StatelessWidget {
                       width: 87,
                       height: 40,
                       child: IconButton.outlined(
-                        icon: Icon(Icons.videocam_outlined),
+                        icon: const Icon(Icons.videocam_outlined),
                         iconSize: 40,
                         color: Colors.black,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(1),
+                        padding: const EdgeInsets.all(1),
                         // TODO: clicking this button shows video feed
                         onPressed: () {},
                         ), 
@@ -108,15 +118,10 @@ class InventoryPage extends StatelessWidget {
                 children: [
                   const SizedBox(width:10),
                   // search bar
-                  SizedBox(
+                  const SizedBox(
                     width: 315,
                     height: 40,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 230, 230, 230),
-                        borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
+                    child: MySearchBar(),
                     ),
                   const SizedBox(width:5),
                   SizedBox(
@@ -161,78 +166,3 @@ class InventoryPage extends StatelessWidget {
     );
   }
 } 
-
-
-
-// Dropdown menu of locations 
-
-const List<String> location = <String>[
-    'All', 
-    'Refrigerator', 
-    'Freezer', 
-    'Pantry',
-    'Spices/Sauces'];
-
-class LocationDropdown extends StatefulWidget {
-  const LocationDropdown({super.key});
-
-  @override
-  State<LocationDropdown> createState() => _LocationState();
-}
-
-class _LocationState extends State<LocationDropdown> {
-  String dropdownValue = location.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width:260,
-      child: ButtonTheme(
-        alignedDropdown: true,
-        child: DropdownButtonFormField<String>(
-          value: dropdownValue,
-          // alignment: Alignment.center,
-          icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-          iconSize: 30,
-          iconEnabledColor: Colors.white,
-          decoration: InputDecoration(
-            fillColor: const Color.fromARGB(255, 67, 107, 31),
-            filled: true,
-            contentPadding:const EdgeInsets.symmetric(horizontal: 10),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-          ),
-          dropdownColor: const Color.fromARGB(255, 67, 107, 31),
-          onChanged: (String? value) {
-            // This is called when the user selects an item.
-            setState(() {
-              dropdownValue = value!;
-            });
-          },
-          items: location.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(value,
-                  style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20),),
-              )
-            );
-          }).toList(),
-        ),
-      )
-    );
-  }
-}
-
-void _nothing() {
-  return; 
-  }
