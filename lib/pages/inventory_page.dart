@@ -171,7 +171,7 @@ class InventoryPage extends StatelessWidget {
                           style: TextStyle(
                             color:Colors.black,
                             fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
@@ -190,7 +190,7 @@ class InventoryPage extends StatelessWidget {
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             ),
                           backgroundColor: const Color.fromARGB(255, 67, 107, 31),
                           foregroundColor: Colors.white,
@@ -216,7 +216,7 @@ class InventoryPage extends StatelessWidget {
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             ),
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,

@@ -19,10 +19,13 @@ class MySquare extends StatelessWidget{
         ),
         
         child: Center(
+        //TODO: add pics and extra info per page
           child: Text(
             child,
             style: const TextStyle(
-              fontSize: 20),
+              fontSize: 20,
+              fontWeight: FontWeight.w700
+              ),
             )
           )
         )

@@ -10,12 +10,10 @@ class CalendarPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Calendar(
-          weekDays: const ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-          eventsList: _expiratioList,
+          eventsList: _expirationList,
           isExpandable: true,
-          eventColor: null,
           isExpanded: true,
-          datePickerType: DatePickerType.date,
+          // datePickerType: DatePickerType.date,
         ),
       ),
     );
@@ -23,8 +21,7 @@ class CalendarPage extends StatelessWidget {
 }
 
 //sample data
-// TODO: show picture, qty, remove timestamp, make title "Expiring + date"
-final List<NeatCleanCalendarEvent> _expiratioList = [
+final List<NeatCleanCalendarEvent> _expirationList = [
   NeatCleanCalendarEvent('Apple',
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
   ),
@@ -32,6 +29,9 @@ final List<NeatCleanCalendarEvent> _expiratioList = [
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   ),
   NeatCleanCalendarEvent('Cabbage',
+    expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
+  ),
+  NeatCleanCalendarEvent('Tomato',
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
 ];
