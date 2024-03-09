@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class MySquare extends StatelessWidget{
   final String title;
@@ -33,23 +34,27 @@ class MySquare extends StatelessWidget{
             // image
             Container(
               height: 120,
-              width: 160,
+              width: 150,
               // TODO: if image, show, else default image
               decoration: const BoxDecoration(
                 color: Colors.white, 
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),)
+              ),
+              child: const Icon(
+                Icons.add_photo_alternate_outlined,
+                size: 50,
+                color: Colors.grey,
               )
             ),
             Column(
               children: [
-                // TODO: fix text aligning
                 Padding(
                   padding: const EdgeInsets.only(top:20, left: 20),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
+                  child: SizedBox(
+                    width: 120,
+                      child: Text(
                         title,
-                        // textAlign: TextAlign.left,
+                        textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -57,16 +62,33 @@ class MySquare extends StatelessWidget{
                         ),
                   ),
                 ),
-
                 Container(
                   child: expiration != null && expiration != -1
                   ? Padding(
                     padding: const EdgeInsets.only(top:5, left: 20),
-                    child: Align(
-                      alignment: Alignment.topLeft,
+                    child: SizedBox(
+                      width: 120,
                       child: Text(
                           "$expiration days",
-                          // textAlign: TextAlign.left,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 66, 107, 31)
+                            ),
+                          ),
+                      ),
+                    ): 
+                  Container(),
+                ),
+                Container(
+                  child: recipeDate != null
+                  ? Padding(
+                    padding: const EdgeInsets.only(top:5, left: 20),
+                    child: SizedBox(
+                      width: 120,
+                      child: Text(
+                          "Saved ${DateFormat('M/d').format(recipeDate!)}",
+                          textAlign: TextAlign.left,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Color.fromARGB(255, 66, 107, 31)
