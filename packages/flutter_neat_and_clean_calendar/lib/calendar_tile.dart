@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_neat_and_clean_calendar/provider_image.dart';
 // import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
 import './neat_and_clean_calendar_event.dart';
+// ignore: depend_on_referenced_packages
 import "package:intl/intl.dart";
 
 /// [NeatCleanCalendarTile] is responsible for displaying one calendar event entry below
@@ -48,7 +48,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
   final Color? eventColor;
   final Color? eventDoneColor;
 
-  NeatCleanCalendarTile({
+  const NeatCleanCalendarTile({super.key, 
     this.onDateSelected,
     this.date,
     this.child,
@@ -76,8 +76,8 @@ class NeatCleanCalendarTile extends StatelessWidget {
     // We decide, if this calendar tile should display a day name in the header row. If this is the
     // case, we return a widget, that contains a text widget with style property [dayOfWeekStyle]
     if (isDayOfWeek) {
-      return new GestureDetector(
-        child: new Container(
+      return GestureDetector(
+        child: Container(
           alignment: Alignment.center,
           child: Text(
             dayOfWeek ?? '',
@@ -100,20 +100,18 @@ class NeatCleanCalendarTile extends StatelessWidget {
                 ? BoxDecoration(
                     shape: BoxShape.circle,
                     color: selectedColor != null
-                        ? Utils.isSameDay(this.date!, DateTime.now())
-                            ? selectedTodayColor != null
-                                ? selectedTodayColor
-                                : Colors.red
+                        ? Utils.isSameDay(date!, DateTime.now())
+                            ? selectedTodayColor ?? Colors.red
                             : selectedColor
                         : Theme.of(context).primaryColor,
                   )
                 : events == null
-                    ? BoxDecoration()
+                    ? const BoxDecoration()
                     : events!.isNotEmpty
-                        ? BoxDecoration(
+                        ? const BoxDecoration(
                             shape: BoxShape.circle,
                           )
-                        : BoxDecoration(), // no decoration when not selected
+                        : const BoxDecoration(), // no decoration when not selected
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -124,25 +122,21 @@ class NeatCleanCalendarTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
-                    color: isSelected && this.date != null
+                    color: isSelected && date != null
                         ? Colors.white
-                        : Utils.isSameDay(this.date!, DateTime.now())
+                        : Utils.isSameDay(date!, DateTime.now())
                             ? todayColor
                             : inMonth
-                                ? defaultDayColor != null
-                                    ? defaultDayColor
-                                    : events != null &&
+                                ? defaultDayColor ?? (events != null &&
                                             events!.isNotEmpty
                                         ? Colors.white
-                                        : Colors.black
-                                : (defaultOutOfMonthDayColor != null
-                                    ? defaultOutOfMonthDayColor
-                                    : Colors.grey),
+                                        : Colors.black)
+                                : (defaultOutOfMonthDayColor ?? Colors.grey),
                   ),
                   // Grey color for previous or next months dates
                 ),
                 // Dots for the events
-                events != null && events!.length > 0
+                events != null && events!.isNotEmpty
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: events!.map((event) {
@@ -150,7 +144,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                           // Show a maximum of 3 dots.
                           if (eventCount > 3) return Container();
                           return Container(
-                            margin: EdgeInsets.only(
+                            margin: const EdgeInsets.only(
                                 left: 2.0, right: 2.0, top: 1.0),
                             width: 5.0,
                             height: 5.0,
@@ -164,13 +158,6 @@ class NeatCleanCalendarTile extends StatelessWidget {
                               // the accent color of the theme get used.
                               color: (() {
                                 if (isSelected) return Colors.white;
-                                // If eventColor property was not set, the color defined for the event
-                                // gets used. If the eveent has its property isDone set to true, the
-                                // eventDoneColor gets used.
-                                if (event.isDone) {
-                                  return eventDoneColor ??
-                                      Theme.of(context).primaryColor;
-                                }
                                 return eventColor ??
                                     event.color ??
                                     Theme.of(context).colorScheme.secondary;
@@ -194,8 +181,8 @@ class NeatCleanCalendarTile extends StatelessWidget {
     // be rendered to display weekday or date
     if (child != null) {
       return GestureDetector(
-        child: child,
         onTap: onDateSelected,
+        child: child,
       );
     }
     return Container(

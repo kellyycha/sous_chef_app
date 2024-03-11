@@ -118,6 +118,7 @@ class MySquare extends StatelessWidget{
               ) 
               : Container(),
             ),
+            const SizedBox(width: 0),
           ],
         )
           )

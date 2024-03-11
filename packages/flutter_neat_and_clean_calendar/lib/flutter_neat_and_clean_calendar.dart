@@ -557,21 +557,23 @@ class _CalendarState extends State<Calendar> {
             // any. Otherwise, display an empty Container.
             ? Container(
               color: const Color.fromARGB(255, 250, 250, 245),
-              margin: const EdgeInsets.only(left: 10, right: 10),
               child: ListView.builder(
                   padding: const EdgeInsets.all(0.0),
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _selectedEvents![index];
                     //TODO: for some reason the square has too big margin on sides
                     return MySquare(
-                      title: event.summary,
-                      qty: 1,
+                      title: event.title,
+                      qty: event.qty,
                     );
                   },
                   itemCount: _selectedEvents!.length,
                 ),
             )
-            : Container(),
+            : Container(
+              color: const Color.fromARGB(255, 250, 250, 245),
+              margin: const EdgeInsets.only(left: 10, right: 10),
+            ),
       );
     } else {
       // eventListBuilder is not null
@@ -582,21 +584,6 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     _updateEventsMap();
-
-    // If _selectedEvents is not null, then we sort the events by isAllDay propeerty, so that
-    // all day events are displayed at the top of the list.
-    // Slightly inexxficient, to do this sort each time, the widget builds.
-    if (_selectedEvents?.isNotEmpty == true) {
-      _selectedEvents!.sort((a, b) {
-        if (a.isAllDay == b.isAllDay) {
-          return 0;
-        }
-        if (a.isAllDay) {
-          return -1;
-        }
-        return 1;
-      });
-    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

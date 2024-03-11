@@ -22,19 +22,29 @@ class CalendarPage extends StatelessWidget {
 
 //sample data
 final List<NeatCleanCalendarEvent> _expirationList = [
-  NeatCleanCalendarEvent('Apple',
+  NeatCleanCalendarEvent(
+    title: 'Apple',
+    qty: 1,
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 5),
   ),
-  NeatCleanCalendarEvent('Broccoli',
+  NeatCleanCalendarEvent(
+    title: 'Broccoli',
+    qty: 2,
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
   ),
-  NeatCleanCalendarEvent('Cabbage',
+  NeatCleanCalendarEvent(
+    title: 'Cabbage',
+    qty: 2,
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
-  NeatCleanCalendarEvent('Tomato',
+  NeatCleanCalendarEvent(
+    title: 'Tomato',
+    qty: 4,
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
-  NeatCleanCalendarEvent('Orange',
+  NeatCleanCalendarEvent(
+    title: 'Orange',
+    qty: 3,
     expirationDate: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2),
   ),
 ];
