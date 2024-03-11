@@ -5,7 +5,7 @@ import 'package:sous_chef_app/pages/calendar_page.dart';
 import 'package:sous_chef_app/pages/recipes_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

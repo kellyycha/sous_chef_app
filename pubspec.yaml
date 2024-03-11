@@ -33,7 +33,6 @@ dependencies:
   flutter_neat_and_clean_calendar: 
     path: ./packages/flutter_neat_and_clean_calendar/
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
@@ -42,6 +41,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.13.1
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -49,6 +50,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  iamge_path: "assets/icons/sous-chef_logo.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -62,7 +67,7 @@ flutter:
   fonts:
     - family: Italiana
       fonts:
-        - asset: fonts/Italiana-Regular.ttf
+        - asset: assets/fonts/Italiana-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

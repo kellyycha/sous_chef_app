@@ -13,7 +13,6 @@ class CalendarPage extends StatelessWidget {
           eventsList: _expirationList,
           isExpandable: true,
           isExpanded: true,
-          // datePickerType: DatePickerType.date,
         ),
       ),
     );

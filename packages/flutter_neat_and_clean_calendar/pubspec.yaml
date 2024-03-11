@@ -9,12 +9,16 @@ homepage: https://github.com/rwbr/flutter_neat_and_clean_calendar
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
+publish_to: 'none' 
+
 dependencies:
   flutter:
     sdk: flutter
   flutter_platform_widgets: ^6.1.0
   intl: ^0.18.0
   macos_ui: ^2.0.5
+  sous_chef_app:
+    path: ../../../sous_chef_app
 
 dev_dependencies:
   flutter_test:

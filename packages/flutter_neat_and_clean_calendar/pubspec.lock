@@ -200,6 +200,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  sous_chef_app:
+    dependency: "direct main"
+    description:
+      path: "../.."
+      relative: true
+    source: path
+    version: "1.0.0+1"
   stack_trace:
     dependency: transitive
     description:
@@ -257,5 +264,5 @@ packages:
     source: hosted
     version: "13.0.0"
 sdks:
-  dart: ">=3.2.0-0 <4.0.0"
+  dart: ">=3.3.0 <4.0.0"
   flutter: ">=3.16.0"
