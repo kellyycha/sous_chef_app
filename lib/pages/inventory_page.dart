@@ -100,14 +100,17 @@ class InventoryPage extends StatelessWidget {
                       height: 40,
                       child: MyDropdown(data: _location),
                       ),
+                    const Spacer(),
                     const VerticalDivider(
                       thickness: 1,
+                      width: 1,
                       indent: 3,
                       endIndent: 3,
                     ),
+                    const Spacer(),
                     // video button
                     SizedBox(
-                      width: 85,
+                      width: 80,
                       height: 40,
                       child: Container(
                         decoration: BoxDecoration(
