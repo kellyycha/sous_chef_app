@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 
 class RecipesPage extends StatelessWidget {
   const RecipesPage({super.key});
@@ -9,25 +11,21 @@ class RecipesPage extends StatelessWidget {
         children: [
           const ColoredBox(color: Colors.white),
           Positioned(
-            // alignment: Alignment.bottomCenter,
             bottom: 0,
             left: 10,
             right: 10,
             child: Container(
               height: 630,
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 250, 250, 245),
+                color: const Color.fromARGB(255, 250, 250, 245),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), 
                   topRight: Radius.circular(30),
                 ),
               ),
             )
-
           ),
-          Column(
-            children: [
-              const SizedBox(
+          const SizedBox(
                 height:135,
                 // title
                 child: Align(
@@ -44,88 +42,64 @@ class RecipesPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height:5), 
-              IntrinsicHeight(
-                child: Row(
-                  children: [
-                    const SizedBox(width:20),
-                    // saved tab
-                    SizedBox(
-                      width: 170,
-                      height: 40,
-                      child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        color: const Color.fromARGB(255, 230, 230, 230),
-                        ),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              ),
-                            backgroundColor: const Color.fromARGB(255, 67, 107, 31),
-                            foregroundColor: Colors.white,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(1),
-                          ),
-                          // TODO: clicking this opens saved screen
-                          onPressed: () {},
-                          child: const Text("Saved"),
-                          ),
-                        ), 
-                      ),
-                    const Spacer(),
-                    const VerticalDivider(
-                      thickness: 1,
-                      width: 1,
-                      indent: 3,
-                      endIndent: 3,
+              ), 
+          Container(
+            padding:EdgeInsets.only(top:135, left: 20, right: 20),
+            color: Colors.transparent,
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: <Widget>[
+                  ButtonsTabBar(
+                    backgroundColor: const Color.fromARGB(255, 67, 107, 31),
+                    unselectedBackgroundColor: Colors.transparent,
+                    labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const Spacer(),
-                    // AI tab
-                    SizedBox(
-                      width: 170,
-                      height: 40,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          // color: const Color.fromARGB(255, 230, 230, 230),
-                          ),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                ),
-                              // backgroundColor: const Color.fromARGB(255, 67, 107, 31),
-                              foregroundColor: Colors.black,
+                    unselectedLabelStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    radius: 20,
+                    tabs:[
+                          Tab(
+                            child: Container(
+                              width: 150,
+                              height: 40,
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.all(1),
+                              child: Text('Saved')
+                              ),
                             ),
-                            // TODO: clicking this opens AI generate tab
-                            onPressed: () {},
-                            child: const Text("AI Generate"),
+                          Tab(
+                            child: Container(
+                              width: 150,
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: Text('AI Generate')
+                              ),
                           ),
-                        ), 
-                      ), 
-                    const SizedBox(width:20),
-                  ],
-                ),
+                        ],
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  const Expanded(
+                    child: TabBarView(
+                      children: [
+                        Icon(Icons.book),
+                        Icon(Icons.restaurant),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const Divider(
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-            ],
+            )
           ),
-
-        ]
-      )
-      
+        ],
+      ),
     );
   }
-
 }
