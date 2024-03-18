@@ -558,7 +558,7 @@ class _CalendarState extends State<Calendar> {
             ? Container(
               color: const Color.fromARGB(255, 250, 250, 245),
               child: ListView.builder(
-                  padding: const EdgeInsets.all(0.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _selectedEvents![index];
                     //TODO: for some reason the square has too big margin on sides

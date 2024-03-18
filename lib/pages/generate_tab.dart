@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:filter_list/filter_list.dart';
 
 
 class GenerateTab extends StatefulWidget {
@@ -23,6 +24,8 @@ class _GenerateState extends State<GenerateTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox( height: 100),
+        // starts frozen
         FutureBuilder<LottieComposition>(
           future: _composition,
           builder: (context, snapshot) {
@@ -34,32 +37,59 @@ class _GenerateState extends State<GenerateTab> {
             }
           },
         ),
-        SizedBox( height: 30),
-        SizedBox(
-          width: 200,
-          height: 60,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: Color.fromARGB(255, 230, 230, 230),
-              ),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                textStyle: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+        const SizedBox( height: 50),
+        Row(
+          children: [
+            const Spacer(),
+            SizedBox(
+              width: 200,
+              height: 60,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Color.fromARGB(255, 230, 230, 230),
                   ),
-                backgroundColor: Color.fromARGB(255, 67, 107, 31),
-                foregroundColor: Colors.white,
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(1),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      ),
+                    backgroundColor: Color.fromARGB(255, 67, 107, 31),
+                    foregroundColor: Colors.white,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(1),
+                  ),
+                  // TODO: clicking this generates llm + start animation
+                  onPressed: () {},
+                  child: const Text("Generate Recipe"),
+                  ),
+                ), 
               ),
-              // TODO: clicking this generates llm
-              onPressed: () {},
-              child: Text("Generate Recipe"),
-              ),
-            ), 
-          ),
+              const SizedBox( width: 10), 
+              SizedBox(
+              width: 50,
+              height: 50,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  ),
+                child: IconButton(
+                  icon: const Icon(Icons.tune_rounded),
+                  iconSize: 30,
+                  color: Colors.black,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(1),
+                  // TODO: clicking this opens filter dialogue (dietary, cusine)
+                  onPressed: () {},
+                ), 
+              ), 
+            ),
+            const Spacer(),
+          ],
+        ),
+          
       ],
     );
   }

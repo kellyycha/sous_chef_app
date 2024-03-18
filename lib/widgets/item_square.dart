@@ -20,8 +20,9 @@ class MySquare extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
-      child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: 
+      Container(
         height: 120,
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 243, 243, 237),

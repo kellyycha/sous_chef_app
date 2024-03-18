@@ -254,7 +254,7 @@ class InventoryPage extends StatelessWidget {
               //inventory list
               Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(

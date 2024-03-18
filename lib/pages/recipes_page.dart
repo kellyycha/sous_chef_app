@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:format/format.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sous_chef_app/pages/generate_tab.dart';
+import 'package:sous_chef_app/pages/saved_tab.dart';
 
 
 class RecipesPage extends StatelessWidget {
@@ -80,7 +80,7 @@ class RecipesPage extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        Icon(Icons.book),
+                        SavedTab(),
                         GenerateTab()
                         
                       ],
