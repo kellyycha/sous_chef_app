@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:format/format.dart';
+import 'package:lottie/lottie.dart';
+import 'package:sous_chef_app/pages/generate_tab.dart';
+
 
 class RecipesPage extends StatelessWidget {
   const RecipesPage({super.key});
@@ -17,7 +21,7 @@ class RecipesPage extends StatelessWidget {
             child: Container(
               height: 630,
               decoration: const BoxDecoration(
-                color: const Color.fromARGB(255, 250, 250, 245),
+                color: Color.fromARGB(255, 250, 250, 245),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), 
                   topRight: Radius.circular(30),
@@ -51,6 +55,7 @@ class RecipesPage extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   ButtonsTabBar(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 45),
                     backgroundColor: const Color.fromARGB(255, 67, 107, 31),
                     unselectedBackgroundColor: Colors.transparent,
                     labelStyle: const TextStyle(
@@ -63,34 +68,21 @@ class RecipesPage extends StatelessWidget {
                     ),
                     radius: 20,
                     tabs:[
-                          Tab(
-                            child: Container(
-                              width: 150,
-                              height: 40,
-                              alignment: Alignment.center,
-                              child: Text('Saved')
-                              ),
-                            ),
-                          Tab(
-                            child: Container(
-                              width: 150,
-                              height: 40,
-                              alignment: Alignment.center,
-                              child: Text('AI Generate')
-                              ),
-                          ),
+                          Tab(text: format('{:^15}', 'Saved')),
+                          Tab(text: "AI Generate"),
                         ],
                   ),
                   const Divider(
                     thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
+                    indent: 5,
+                    endIndent: 5,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TabBarView(
                       children: [
                         Icon(Icons.book),
-                        Icon(Icons.restaurant),
+                        GenerateTab()
+                        
                       ],
                     ),
                   ),
