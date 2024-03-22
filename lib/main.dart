@@ -15,6 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // primaryColor: Colors.blue,
+        // hintColor: Colors.red,
+        ),
       home: BottomNav(),
       routes: {
         '/bottomnav': (context) => BottomNav(),

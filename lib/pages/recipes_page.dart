@@ -48,19 +48,20 @@ class RecipesPage extends StatelessWidget {
                 ),
               ), 
           Container(
-            padding:EdgeInsets.only(top:135, left: 20, right: 20),
+            padding: const EdgeInsets.only(top:135, left: 20, right: 20),
             color: Colors.transparent,
             child: DefaultTabController(
               length: 2,
               child: Column(
                 children: <Widget>[
                   ButtonsTabBar(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 45),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 25),
                     backgroundColor: const Color.fromARGB(255, 67, 107, 31),
                     unselectedBackgroundColor: Colors.transparent,
                     labelStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
                     unselectedLabelStyle: const TextStyle(
                       color: Colors.black,
@@ -69,14 +70,14 @@ class RecipesPage extends StatelessWidget {
                     radius: 20,
                     tabs:[
                           Tab(text: format('{:^15}', 'Saved')),
-                          Tab(text: "AI Generate"),
+                          const Tab(text: "AI Generate"),
                         ],
                   ),
                   const Divider(
                     thickness: 1,
-                    indent: 5,
-                    endIndent: 5,
+                    height: 5,
                   ),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: TabBarView(
                       children: [

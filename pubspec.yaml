@@ -40,6 +40,7 @@ dependencies:
   format: ^1.5.1
   lottie: ^3.1.0
   filter_list: ^1.0.2
+  video_player: ^2.8.3
 
 dev_dependencies:
   flutter_test:

@@ -38,7 +38,7 @@ class MySquare extends StatelessWidget{
               width: 150,
               // TODO: if image, show, else default image
               decoration: const BoxDecoration(
-                color: Colors.white, 
+                color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),)
               ),
               child: const Icon(

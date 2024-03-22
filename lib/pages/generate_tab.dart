@@ -47,7 +47,7 @@ class _GenerateState extends State<GenerateTab> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Color.fromARGB(255, 230, 230, 230),
+                  color: const Color.fromARGB(255, 230, 230, 230),
                   ),
                 child: TextButton(
                   style: TextButton.styleFrom(
@@ -55,10 +55,10 @@ class _GenerateState extends State<GenerateTab> {
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       ),
-                    backgroundColor: Color.fromARGB(255, 67, 107, 31),
+                    backgroundColor: const Color.fromARGB(255, 67, 107, 31),
                     foregroundColor: Colors.white,
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                   ),
                   // TODO: clicking this generates llm + start animation
                   onPressed: () {},
@@ -73,7 +73,7 @@ class _GenerateState extends State<GenerateTab> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Color.fromARGB(255, 230, 230, 230),
+                  color: const Color.fromARGB(255, 230, 230, 230),
                   ),
                 child: IconButton(
                   icon: const Icon(Icons.tune_rounded),

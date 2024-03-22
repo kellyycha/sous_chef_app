@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
 
@@ -70,59 +71,14 @@ class SavedTab extends StatelessWidget {
                 ),
               ), 
               const SizedBox(width:5), 
+              const MyRadio(
+                firstText: "Recent",
+                firstWidth: 90,
+                secondText: "A-Z",
+                secondWidth: 55,
+              ),
+              const SizedBox(width:5), 
               SizedBox(
-                width: 90,
-                height: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    color: const Color.fromARGB(255, 230, 230, 230),
-                    ),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        ),
-                      backgroundColor: const Color.fromARGB(255, 67, 107, 31),
-                      foregroundColor: Colors.white,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(1),
-                    ),
-                    // TODO: clicking this sorts by expiration and unselects A-Z (functions like a radio)
-                    onPressed: () {},
-                    child: const Text("Recent"),
-                    ),
-                  ), 
-                ),
-                const SizedBox(width:5), 
-                SizedBox(
-                width: 55,
-                height: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: const Color.fromARGB(255, 194, 194, 194)),
-                    ),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        ),
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(1),
-                    ),
-                    // TODO: clicking this sorts by A-Z and unselects expiration (changes colors too so green is selected)
-                    onPressed: () {},
-                    child: const Text("A-Z"),
-                    ),
-                  ), 
-                ),
-                const SizedBox(width:5), 
-                SizedBox(
                 width: 40,
                 height: 40,
                 child: Container(
