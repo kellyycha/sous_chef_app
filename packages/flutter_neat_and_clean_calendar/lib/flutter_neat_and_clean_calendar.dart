@@ -564,7 +564,9 @@ class _CalendarState extends State<Calendar> {
                     //TODO: for some reason the square has too big margin on sides
                     return MySquare(
                       title: event.title,
-                      qty: event.qty,
+                      qty: event.qty, 
+                      // TODO: remove from database
+                      onDelete: () {  },
                     );
                   },
                   itemCount: _selectedEvents!.length,

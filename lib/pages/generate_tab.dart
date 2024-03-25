@@ -76,7 +76,7 @@ class _GenerateState extends State<GenerateTab> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
                   ),
-                  // TODO: clicking this generates llm + start animation
+                  // TODO: clicking this generates llm
                   onPressed: () {
                     setState(() {
                       _isPlaying = !_isPlaying; // Toggle animation

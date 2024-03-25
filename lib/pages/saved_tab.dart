@@ -116,7 +116,9 @@ class SavedTab extends StatelessWidget {
               itemBuilder: (context, index) {
                 return MySquare(
                   title: _recipes[index][0],
-                  recipeDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+                  recipeDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day), 
+                  // TODO: remove from database
+                  onDelete: () {  },
                 );
               },
             ),

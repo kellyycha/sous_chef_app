@@ -218,7 +218,9 @@ class InventoryPage extends StatelessWidget {
                     return MySquare(
                       title: _inventory[index][0],
                       qty: _inventory[index][1],
-                      expiration: _inventory[index][2],
+                      expiration: _inventory[index][2], 
+                      // TODO: remove from database
+                      onDelete: () {  },
                     );
                   },
                 ),
