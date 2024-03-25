@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
+import 'package:sous_chef_app/widgets/filter.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
 
@@ -93,7 +94,14 @@ class SavedTab extends StatelessWidget {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
                     // TODO: clicking this opens filter dialogue (can make, dietary, cusines)
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return FilterPopup();
+                        },
+                      ); 
+                    },
                   ), 
                 ), 
               ),
