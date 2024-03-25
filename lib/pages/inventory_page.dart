@@ -127,8 +127,10 @@ class InventoryPage extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(1),
-                            // TODO: clicking this button shows video feed
-                            onPressed: () {},
+                            // clicking this button shows video feed
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/video');
+                            },
                           ), 
                         )
                       ), 

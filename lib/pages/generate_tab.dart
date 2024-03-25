@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:filter_list/filter_list.dart';
 
 
 class GenerateTab extends StatefulWidget {
