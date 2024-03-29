@@ -31,15 +31,11 @@ class _GenerateState extends State<GenerateTab> {
           future: _composition,
           builder: (context, snapshot) {
             var composition = snapshot.data;
-            if (composition != null) {
-              return Lottie(composition: composition);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
+            return Lottie(composition: composition);
           },
         )
         : Container(
-          height: 203,
+          height: 202,
           padding:EdgeInsets.all(30),
           alignment: Alignment.center,
           child: const Text(
@@ -51,7 +47,6 @@ class _GenerateState extends State<GenerateTab> {
             ),
             textAlign: TextAlign.center,
           ),
-
         ),
         const SizedBox( height: 50),
         Row(

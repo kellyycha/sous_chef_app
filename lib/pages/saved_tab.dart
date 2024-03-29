@@ -20,6 +20,7 @@ class SavedTab extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
+          const SizedBox(height:15),
           Row(
             children: [
               const SizedBox(
