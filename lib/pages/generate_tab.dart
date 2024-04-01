@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sous_chef_app/pages/recipe_card.dart';
+import 'package:sous_chef_app/pages/recipe_confirmation.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
 
+final GlobalKey<FilterPopupState> filterPopupKey = GlobalKey<FilterPopupState>();
 
 class GenerateTab extends StatefulWidget {
   const GenerateTab({super.key});
@@ -13,6 +16,10 @@ class GenerateTab extends StatefulWidget {
 class _GenerateState extends State<GenerateTab> {
   bool _isPlaying = false;
   late final Future<LottieComposition> _composition;
+  
+  List<String> dietaryRestrictions = [];
+  List<String> cuisines = [];
+
 
   @override
   void initState() {
@@ -71,10 +78,16 @@ class _GenerateState extends State<GenerateTab> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
                   ),
-                  // TODO: clicking this generates llm
                   onPressed: () {
                     setState(() {
                       _isPlaying = !_isPlaying; // Toggle animation
+                      // TODO: load chatgpt here. after loaded, show dialog.
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return RecipeConfirmation(dietaryRestrictions: dietaryRestrictions, cuisines: cuisines);
+                        },
+                      ); 
                     });
                   },
                   child: const Text("Generate Recipe"),
@@ -96,14 +109,18 @@ class _GenerateState extends State<GenerateTab> {
                   color: Colors.black,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(1),
-                  // TODO: clicking this opens filter dialogue (dietary, cusine)
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return FilterPopup();
+                        return FilterPopup(
+                          key: filterPopupKey,
+                        );
                       },
-                    );
+                    ).then((value) {
+                      dietaryRestrictions = filterPopupKey.currentState!.getSelectedDietaryRestrictions();
+                      cuisines = filterPopupKey.currentState!.getSelectedCuisines();
+                    });
                   },
                 ), 
               ), 

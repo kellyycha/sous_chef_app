@@ -14,6 +14,14 @@ class FilterPopupState extends State<FilterPopup> {
   final List<String> _dietaryRestrictions = ['Vegan', 'Vegetarian', 'Gluten-Free', 'Dairy-Free', 'Kosher'];
   final List<String> _cuisines = ['American', 'Chinese', 'Cuban', 'Greek', 'Indian', 'Italian', 'Japanese', 'Korean', 'Mexican', 'Thai', 'Vietnamese'];
 
+  List<String> getSelectedDietaryRestrictions() {
+    return _selectedDietaryRestrictions;
+  }
+
+  List<String> getSelectedCuisines() {
+    return _selectedCuisines;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
