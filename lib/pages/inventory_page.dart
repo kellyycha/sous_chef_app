@@ -7,7 +7,8 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class InventoryPage extends StatelessWidget {
   InventoryPage({super.key});
 
-  //TODO: use database for this
+  //TODO: use database for this 
+  // https://www.dhiwise.com/post/flutter-mysql-exploring-the-power-of-database-managemen
   final List _inventory = [
     ["Tomato", 2, 7, "R"], 
     ["Potato", 4, 28, "P"],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sous_chef_app/pages/recipe_card.dart';
-import 'package:sous_chef_app/pages/recipe_confirmation.dart';
+import 'package:sous_chef_app/widgets/recipe_card.dart';
+import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
+import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
 
 final GlobalKey<FilterPopupState> filterPopupKey = GlobalKey<FilterPopupState>();
@@ -16,9 +17,42 @@ class GenerateTab extends StatefulWidget {
 class _GenerateState extends State<GenerateTab> {
   bool _isPlaying = false;
   late final Future<LottieComposition> _composition;
+  String? response;
   
   List<String> dietaryRestrictions = [];
   List<String> cuisines = [];
+
+  // from DB
+  List ingredients = [
+    ["Tomato", "4/26/24"], 
+    ["Potato", "5/2/24"],
+    ["Garlic", "4/1/24"],
+    ["Broccoli", "4/1/24"],
+    ["Banana", "4/20/24"],
+    ["Cabbage", "5/10/24"],
+    ["Corn","5/10/24"],
+    ["Eggplant", "5/10/24"],
+    ["Lemon", "5/10/24"],
+    ["Carrot","5/10/24"],
+    ["Steak", "5/10/24"],
+    ["Egg", "4/10/24"],
+    ["Avocado", "5/10/24"],
+    ["Onion", "5/10/24"],
+    ["Orange", "5/10/24"],
+    ["Scallion", "3/30/24"],
+    ["Jalapeno","5/10/24"],
+    ["Mushroom", "5/10/24"],
+    ["Cauliflower", "5/10/24"],
+    ["Soy Sauce", -1],
+    ["Salt", -1],
+    ["Pepper", -1],
+    ["Paprika", -1],
+    ["Cinnamon", -1],
+    ["Vinegar", -1],
+    ["Sesame Oil", -1],
+    ["Chili Oil", -1],
+    ["Parsley", -1],];
+
 
 
   @override
@@ -26,6 +60,29 @@ class _GenerateState extends State<GenerateTab> {
     super.initState();
 
     _composition = AssetLottie('assets/animations/cooking2.json').load();
+  }
+
+  Future<String?> generateRecipe() async {
+    String prompt = constructPrompt(ingredients, dietaryRestrictions, cuisines);
+
+    response = await ChatService().request(prompt);
+
+    //TODO: follow prompting flow (parse for ingredients here to check)
+
+    return response;
+  }
+
+  String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines) {
+    String prompt = "Give me a recipe using a subset of these ingredients, given in a list of ingredients and their expiration date (assume values with -1 do not expire):\n\n";
+    prompt += "${ingredients.join(', ')}\n";
+    prompt += "You do not need to use all of the ingredients. Give higher priority to the ingredients that have sooner expiration dates.";
+    if (dietaryRestrictions.isNotEmpty) {
+      prompt += "Make sure the recipe follows these dietary restrictions: ${dietaryRestrictions.join(', ')}\n";
+    }
+    if (cuisines.isNotEmpty) {
+      prompt += "Make sure the recipe if one of the following cuisines: ${cuisines.join(', ')}\n\n";
+    }
+    return prompt;
   }
 
   @override
@@ -78,17 +135,26 @@ class _GenerateState extends State<GenerateTab> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
-                      _isPlaying = !_isPlaying; // Toggle animation
-                      // TODO: load chatgpt here. after loaded, show dialog.
+                      _isPlaying = true;
+                    });
+
+                    try {
+                      String? recipeResponse = await generateRecipe();
+                      setState(() {
+                        _isPlaying = false;
+                      });
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return RecipeConfirmation(dietaryRestrictions: dietaryRestrictions, cuisines: cuisines);
+                          return RecipeConfirmation(recipeResponse: recipeResponse);
                         },
-                      ); 
-                    });
+                      );
+                    } catch (e) {
+                      print('Error: $e');
+                      // Handle error
+                    }
                   },
                   child: const Text("Generate Recipe"),
                   ),
