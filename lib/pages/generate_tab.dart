@@ -16,13 +16,14 @@ class GenerateTab extends StatefulWidget {
 
 class _GenerateState extends State<GenerateTab> {
   bool _isPlaying = false;
+  bool _requestInProgress = false;
   late final Future<LottieComposition> _composition;
   String? response;
   
   List<String> dietaryRestrictions = [];
   List<String> cuisines = [];
 
-  // from DB
+  // TODO: from DB
   List ingredients = [
     ["Tomato", 3, "4/26/24"], 
     ["Potato", 2, "5/2/24"],
@@ -63,16 +64,25 @@ class _GenerateState extends State<GenerateTab> {
   }
 
   Future<String?> generateRecipe() async {
+    setState(() {
+      _requestInProgress = true;
+    });
+
     String prompt = constructPrompt(ingredients, dietaryRestrictions, cuisines);
     String? response = await ChatService().request(prompt);
-    print(response);
 
     // Loop requesting new prompts until "!!!" is found in the response
     while (response == null || !response.contains("!!!")) {
       response = await ChatService().request(prompt);
-      print(response);
     }
+    print(response);
+    
     int indexOfEnd = response.indexOf("!!!");
+
+    setState(() {
+      _requestInProgress = false;
+    });
+    // await Future.delayed(Duration(seconds: 15));
 
     return response.substring(0, indexOfEnd);
   }
@@ -141,7 +151,7 @@ class _GenerateState extends State<GenerateTab> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
                   ),
-                  onPressed: () async {
+                  onPressed: _requestInProgress ? null : () async {
                     setState(() {
                       _isPlaying = true;
                     });

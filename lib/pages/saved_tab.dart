@@ -14,9 +14,9 @@ class SavedTab extends StatelessWidget {
     ["Garlic Lemon Broccoli Stir-Fry", 
 """Recipe: Garlic Lemon Broccoli Stir-Fry
 Ingredients:
-- Garlic, 4/1/24
-- Lemon, 5/10/24
-- Broccoli, 4/1/24
+- Garlic, 2 cloves
+- Lemon, 1
+- Broccoli, 1
 - Soy Sauce
 - Salt
 - Pepper
@@ -57,17 +57,17 @@ Instructions:
 7. Season with soy sauce, salt, and pepper to taste.
 8. Stir-fry the ingredients until the vegetables are tender and the steak is cooked to your desired doneness.
 9. Serve hot and enjoy your Japanese Style Stir-Fried Vegetables with Steak""", 
-File('/private/var/mobile/Containers/Data/Application/FD8B55FB-8D88-40C2-811F-7D9708E69A22/tmp/image_picker_133A911D-D5CD-4338-9503-6D72A635F067-4365-000000BE412F7948.jpg')],
+null],
     ["Indian Spiced Potato and Cauliflower Curry",
 """
 Recipe: Indian Spiced Potato and Cauliflower Curry
 
 Ingredients:
-- Potato, 5/2/24
-- Garlic, 4/1/24
-- Cauliflower, 5/10/24
-- Onion, 5/10/24
-- Tomato, 4/26/24
+- Potato, 2
+- Garlic, 2 cloves
+- Cauliflower, 1
+- Onion, 1
+- Tomato, 2
 - Cumin
 - Coriander
 - Turmeric
