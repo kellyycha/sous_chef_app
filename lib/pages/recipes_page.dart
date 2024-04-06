@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:format/format.dart';
 import 'package:sous_chef_app/pages/generate_tab.dart';
@@ -82,7 +81,7 @@ class RecipesPage extends StatelessWidget {
                     child: TabBarView(
                       children: [
                         SavedTab(),
-                        GenerateTab()
+                        const GenerateTab()
                       ],
                     ),
                   ),

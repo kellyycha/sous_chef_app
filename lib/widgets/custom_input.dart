@@ -198,7 +198,7 @@ class _CustomInputState extends State<CustomInput> {
                 const Spacer(),
                 ElevatedButton(
                   onPressed: _titleController.text.isEmpty ? null : () { 
-                    // TODO: Save data in DB
+                    // TODO: Save data in inventory DB
                     print(_titleController.text);
                     Navigator.of(context).pop();
                   },

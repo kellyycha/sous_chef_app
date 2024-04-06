@@ -10,7 +10,7 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class SavedTab extends StatelessWidget {
   SavedTab({super.key});
 
-  //TODO: use database for this
+  //TODO: use DB. [title, recipe (full string), image file path]
   final List _recipes = [
     ["Garlic Lemon Broccoli Stir-Fry", 
 """Recipe: Garlic Lemon Broccoli Stir-Fry
@@ -144,7 +144,7 @@ Instructions:
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return CustomRecipe();
+                              return const CustomRecipe();
                             },
                           );
                         },
@@ -155,10 +155,10 @@ Instructions:
           ),
           const SizedBox(height:8),
           // sort by options
-          Row(
+          const Row(
             children: [
-              const Spacer(),
-              const SizedBox(
+              Spacer(),
+              SizedBox(
                 height:40,
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -175,41 +175,42 @@ Instructions:
                   ),
                 ),
               ), 
-              const SizedBox(width:5), 
+              SizedBox(width:5), 
               // TODO: Sort
-              const MyRadio(
+              MyRadio(
                 firstText: "Recent",
                 firstWidth: 90,
                 secondText: "A-Z",
                 secondWidth: 55,
               ),
-              const SizedBox(width:5), 
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Color.fromARGB(255, 230, 230, 230),
-                    ),
-                  child: IconButton(
-                    icon: const Icon(Icons.tune_rounded),
-                    iconSize: 25,
-                    color: Colors.black,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(1),
-                    // TODO: filter recipes
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FilterPopup();
-                        },
-                      ); 
-                    },
-                  ), 
-                ), 
-              ),
+              SizedBox(width:5), 
+              // Stretch goal: filter saved recipes (need to save the tags/ add tags to custom)
+              // SizedBox(
+              //   width: 40,
+              //   height: 40,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(30),
+              //       color: const Color.fromARGB(255, 230, 230, 230),
+              //       ),
+              //     child: IconButton(
+              //       icon: const Icon(Icons.tune_rounded),
+              //       iconSize: 25,
+              //       color: Colors.black,
+              //       alignment: Alignment.center,
+              //       padding: const EdgeInsets.all(1),
+              //       // TODO: filter
+              //       onPressed: () {
+              //         showDialog(
+              //           context: context,
+              //           builder: (BuildContext context) {
+              //             return const FilterPopup();
+              //           },
+              //         ); 
+              //       },
+              //     ), 
+              //   ), 
+              // ),
             ],
           ),
           const SizedBox(height:20), 
@@ -235,7 +236,7 @@ Instructions:
                     );
                   },
                   onDelete: () {  
-                    // TODO: remove from database
+                    // TODO: remove from DB
                   },
                 );
               },

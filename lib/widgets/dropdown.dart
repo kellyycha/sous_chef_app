@@ -42,6 +42,7 @@ class _LocationState extends State<MyDropdown> {
           onChanged: (String? value) {
             setState(() {
               dropdownValue = value!;
+              // TODO: Filter depending on value
             });
           },
           items: widget.data.map<DropdownMenuItem<String>>((value) {
@@ -49,10 +50,13 @@ class _LocationState extends State<MyDropdown> {
               value: value,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(value,
+                child: Text(
+                  value,
                   style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20),),
+                    color: Colors.white,
+                    fontSize: 20
+                  ),
+                ),
               )
             );
           }).toList(),

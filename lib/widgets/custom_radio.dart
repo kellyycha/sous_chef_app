@@ -29,6 +29,7 @@ class _MyRadioState extends State<MyRadio> {
         onPressed: () {
           setState(() {
             value = index;
+            //TODO: sort according to value
           });
         },
         style: OutlinedButton.styleFrom(

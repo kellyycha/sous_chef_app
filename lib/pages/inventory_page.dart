@@ -8,7 +8,7 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class InventoryPage extends StatelessWidget {
   InventoryPage({super.key});
 
-  //TODO: use database for this 
+  //TODO: use DB. [ingredient, qty, days left from today to expiration]
   // https://www.dhiwise.com/post/flutter-mysql-exploring-the-power-of-database-managemen
   final List _inventory = [
     ["Tomato", 2, 7, "R"], 
@@ -56,7 +56,6 @@ class InventoryPage extends StatelessWidget {
         children: [
           const ColoredBox(color: Colors.white),
           Positioned(
-            // alignment: Alignment.bottomCenter,
             bottom: 0,
             left: 10,
             right: 10,
@@ -70,13 +69,11 @@ class InventoryPage extends StatelessWidget {
                 ),
               ),
             )
-
           ),
           Column(
             children: [
               const SizedBox(
                 height:135,
-                // title
                 child: Align(
                   alignment: Alignment.topLeft,
                     child:Padding(
@@ -101,7 +98,7 @@ class InventoryPage extends StatelessWidget {
                     SizedBox(
                       width: 250,
                       height: 40,
-                      child: MyDropdown(data: _location),
+                      child: MyDropdown(data: _location), // TODO: filter
                       ),
                     const Spacer(),
                     const VerticalDivider(
@@ -129,7 +126,6 @@ class InventoryPage extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(1),
-                            // clicking this button shows video feed
                             onPressed: () {
                               Navigator.pushNamed(context, '/video');
                             },
@@ -153,7 +149,7 @@ class InventoryPage extends StatelessWidget {
                   const SizedBox(
                     width: 290,
                     height: 40,
-                    child: MySearchBar(),
+                    child: MySearchBar(), //TODO: search
                     ),
                   const Spacer(),
                   SizedBox(
@@ -174,7 +170,7 @@ class InventoryPage extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return CustomInput();
+                              return const CustomInput(); //TODO: add to DB
                             },
                           );
                         },
@@ -207,6 +203,7 @@ class InventoryPage extends StatelessWidget {
                     ),
                   ), 
                   SizedBox(width:5), 
+                  // TODO: sort
                   MyRadio(
                     firstText: "Expiration",
                     firstWidth: 105,
@@ -223,12 +220,14 @@ class InventoryPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
+                    // Stretch Goal: click on item to edit (image, qty) using pop up
                     return MySquare(
                       title: _inventory[index][0],
                       qty: _inventory[index][1],
                       expiration: _inventory[index][2], 
-                      // TODO: remove from database
-                      onDelete: () {  },
+                      onDelete: () { 
+                        // TODO: remove from DB
+                      },
                     );
                   },
                 ),

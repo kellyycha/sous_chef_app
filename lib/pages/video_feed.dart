@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stream_video/stream_video.dart';
 
 class VideoScreen extends StatelessWidget {
+  const VideoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +19,14 @@ class VideoScreen extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.all(1),
               onPressed: () {
-                Navigator.pop(context); // Navigate back to the previous page
+                Navigator.pop(context);
               },
             ),
           ),
           const SizedBox(height: 20),
 
+          // TODO: Stream
+          
           // StreamVideo(
           //   streamUrl: 'YOUR_VIDEO_STREAM_URL_HERE',
           //   aspectRatio: 16 / 9, // Adjust according to your video stream aspect ratio

@@ -28,7 +28,7 @@ class MySquare extends StatelessWidget {
       onTap: onTap,
       child: Dismissible(
         key: UniqueKey(),
-        onDismissed: (_) => onDelete(),
+        onDismissed: (_) => onDelete(), //TODO: create onDelete function that takes in item and removes it from DB
         direction: DismissDirection.endToStart,
         background: Container(
           alignment: Alignment.centerRight,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
@@ -23,7 +22,7 @@ class _GenerateState extends State<GenerateTab> {
   List<String> dietaryRestrictions = [];
   List<String> cuisines = [];
 
-  // TODO: from DB
+  // TODO: from DB. [ingredient, qty, expiration]
   List ingredients = [
     ["Tomato", 3, "4/26/24"], 
     ["Potato", 2, "5/2/24"],
@@ -116,7 +115,7 @@ class _GenerateState extends State<GenerateTab> {
         )
         : Container(
           height: 202,
-          padding:EdgeInsets.all(30),
+          padding: const EdgeInsets.all(30),
           alignment: Alignment.center,
           child: const Text(
             'WARNING: Sous-Chef will try to recommend recipes that use ingredients expiring soon. Please check all ingredients for signs of rotting before use.',
@@ -164,12 +163,12 @@ class _GenerateState extends State<GenerateTab> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
+                          // Stretch goal: pass in the Dietary Restrictions and Cuisine values to filter the saved recipes
                           return RecipeConfirmation(recipeResponse: recipeResponse);
                         },
                       );
                     } catch (e) {
                       print('Error: $e');
-                      // Handle error
                     }
                   },
                   child: const Text("Generate Recipe"),

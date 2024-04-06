@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
