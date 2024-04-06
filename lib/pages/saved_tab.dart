@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/custom_recipe.dart';
-import 'package:sous_chef_app/widgets/filter.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
@@ -184,7 +182,7 @@ Instructions:
                 secondWidth: 55,
               ),
               SizedBox(width:5), 
-              // Stretch goal: filter saved recipes (need to save the tags/ add tags to custom)
+              // Stretch Goal: filter saved recipes (need to save the tags/ add tags to custom)
               // SizedBox(
               //   width: 40,
               //   height: 40,
@@ -199,7 +197,6 @@ Instructions:
               //       color: Colors.black,
               //       alignment: Alignment.center,
               //       padding: const EdgeInsets.all(1),
-              //       // TODO: filter
               //       onPressed: () {
               //         showDialog(
               //           context: context,
@@ -219,6 +216,7 @@ Instructions:
               padding: const EdgeInsets.all(0),
               itemCount: _recipes.length,
               itemBuilder: (context, index) {
+                // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
                 return MySquare(
                   title: _recipes[index][0],
                   recipeDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
