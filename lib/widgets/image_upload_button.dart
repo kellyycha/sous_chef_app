@@ -9,13 +9,14 @@ class ImageUploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool remove = false;
     return SizedBox(
       height: 26,
-      width: 100,
+      width: 110,
       child: TextButton(
         style: TextButton.styleFrom(
           textStyle: const TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
           backgroundColor: const Color.fromARGB(255, 67, 107, 31),
@@ -51,18 +52,25 @@ class ImageUploadButton extends StatelessWidget {
                     leading: const Icon(Icons.delete),
                     title: const Text('Remove Image'),
                     onTap: () {
+                      remove = true;
                       Navigator.pop(context, null);
                     },
                   ),
+                  SizedBox(height: 20)
                 ],
               );
             },
           );
 
-          if (onImageSelected != null) {
+          if (remove) {
+            onImageSelected!(null); 
+          }
+
+          if (pickedImage != null && onImageSelected != null) {
             onImageSelected!(pickedImage);
           }
         },
+
         child: const Text("Upload Image"),
       ),
     );
