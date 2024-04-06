@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/widgets/custom_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
@@ -170,7 +171,15 @@ class InventoryPage extends StatelessWidget {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(1),
                         // TODO: clicking this adds custom item
-                        onPressed: () {},
+                         onPressed: () {
+                          showDialog(
+                            context: context,
+                            // isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return CustomInput();
+                            },
+                          );
+                        },
                         ),
                       ), 
                     ), 

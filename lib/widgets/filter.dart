@@ -25,7 +25,7 @@ class FilterPopupState extends State<FilterPopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Color.fromARGB(255, 219, 235, 188),
+      backgroundColor: const Color.fromARGB(255, 219, 235, 188),
       title: const Text(
         'Filter Options',
         style: TextStyle(
@@ -58,7 +58,7 @@ class FilterPopupState extends State<FilterPopup> {
             Navigator.pop(context);
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 67, 107, 31)), // Button color
+            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 67, 107, 31)), // Button color
           ),
           child: const Text(
             'Apply Changes',
