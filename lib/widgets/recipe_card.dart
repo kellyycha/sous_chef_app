@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
+import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
@@ -15,7 +16,7 @@ class RecipeCard extends StatefulWidget {
 }
 
 class _RecipeCardState extends State<RecipeCard> {
-  bool isBookmarked = false;
+  bool isSaved = false;
   File? _image;
 
   @override
@@ -71,7 +72,16 @@ class _RecipeCardState extends State<RecipeCard> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _image != null ? Image.file(_image!) 
+                  _image != null ? 
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Image.file(
+                        _image!,
+                        height: 220,
+                        width: 320,
+                        fit: BoxFit.cover
+                      )
+                  )
                   : Container(
                     height: 220,
                     width: 320,
@@ -89,43 +99,26 @@ class _RecipeCardState extends State<RecipeCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Row(
                       children: [
-                        SizedBox(
-                          height: 26,
-                          width: 100,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              textStyle: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                ),
-                              backgroundColor: const Color.fromARGB(255, 67, 107, 31),
-                              foregroundColor: Colors.white,
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(1),
-                            ),
-                            onPressed: () async {
-                              // TODO: Image Picker
-                            },
-                            child: const Text("Upload Image"),
-                          ),
-                        ),
+                        const ImageUploadButton(),
                         const Spacer(),
                         SizedBox(
                           width: 30,
                             child: IconButton(
                               icon: Icon(
-                                isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                                isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
                               ),
                               iconSize: 35,
-                              color: isBookmarked ? Colors.red : Colors.black,
+                              color: isSaved ? const Color.fromARGB(255, 67, 107, 31) : Colors.black,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(1),
                               onPressed: () {
                                 setState(() {
-                                  isBookmarked = !isBookmarked; // Toggle bookmark state
+                                  isSaved = !isSaved;
                                 });
+                                // TODO: save to DB as [title, recipe, date saved]
                               },
                             ), 
+
                           )
                       ],
                     ),
