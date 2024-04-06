@@ -170,11 +170,9 @@ class InventoryPage extends StatelessWidget {
                         color: Colors.black,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(1),
-                        // TODO: clicking this adds custom item
                          onPressed: () {
                           showDialog(
                             context: context,
-                            // isScrollControlled: true,
                             builder: (BuildContext context) {
                               return CustomInput();
                             },

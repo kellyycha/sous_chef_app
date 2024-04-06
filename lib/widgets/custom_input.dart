@@ -16,17 +16,21 @@ class CustomInput extends StatefulWidget {
 }
 
 class _CustomInputState extends State<CustomInput> {
+  late TextEditingController _titleController;
   late TextEditingController _expirationDateController;
   late TextEditingController _quantityController;
-  late TextEditingController _titleController;
   File? _image;
 
   @override
   void initState() {
     super.initState();
+    _titleController = TextEditingController();
     _expirationDateController = TextEditingController();
     _quantityController = TextEditingController();
-    _titleController = TextEditingController();
+
+    _titleController.addListener(() {
+      setState(() {});
+    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -193,9 +197,7 @@ class _CustomInputState extends State<CustomInput> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                  // trying to disable button to only submit if title is not empty but doesnt work
-                  // _titleController.text.isEmpty ? null : 
-                  onPressed: () { 
+                  onPressed: _titleController.text.isEmpty ? null : () { 
                     // TODO: Save data in DB
                     print(_titleController.text);
                     Navigator.of(context).pop();

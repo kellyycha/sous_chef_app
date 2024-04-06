@@ -40,17 +40,14 @@ class _RecipeCardState extends State<RecipeCard> {
     int ingredientsEndIndex = lines.indexOf('Instructions:');
     List<String> ingredients = lines.sublist(ingredientsStartIndex, ingredientsEndIndex)
         .where((element) => element.trim().isNotEmpty)
-        .map((ingredient) => ingredient.replaceAll(RegExp(r'^- '), ''))
+        .map((ingredient) => ingredient.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
 
     int instructionsStartIndex = ingredientsEndIndex + 1;
     List<String> instructions = lines.sublist(instructionsStartIndex)
         .where((element) => element.trim().isNotEmpty)
-        .map((instruction) {
-          return instruction.replaceAll(RegExp(r'^\d+\. '), '');
-        })
+        .map((instruction) => instruction.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
-    print(_image);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 245),
@@ -91,14 +88,14 @@ class _RecipeCardState extends State<RecipeCard> {
                     borderRadius: BorderRadius.circular(18),
                     child: Image.file(
                         _image!,
-                        height: 220,
-                        width: 320,
+                        height: 264,
+                        width: 330,
                         fit: BoxFit.cover
                       )
                   )
                   : Container(
-                    height: 220,
-                    width: 320,
+                    height: 264,
+                    width: 330,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:BorderRadius.all(Radius.circular(18)),
@@ -135,7 +132,7 @@ class _RecipeCardState extends State<RecipeCard> {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
-                                // TODO: save to DB as [title, recipe, date saved].
+                                // TODO: save to DB as [title, recipe, date saved, image].
                                 // if opened from saved tab, it should stay filled in and remove from DB if unchecked.
                               },
                             ), 

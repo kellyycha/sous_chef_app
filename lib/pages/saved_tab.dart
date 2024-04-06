@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
+import 'package:sous_chef_app/widgets/custom_recipe.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
@@ -87,6 +88,26 @@ Instructions:
 8. Cover and let the vegetables cook until tender, stirring occasionally.
 9. Once the vegetables are cooked, garnish with fresh cilantro.
 10. Serve the spiced potato and cauliflower curry hot with rice or naan. Enjoy your meal!
+""", null],
+    ["cake",
+"""cake
+
+Ingredients:
+
+- dash
+- blah 
+* bullet 
+* bullet point 
+1. number 
+2. numbering 
+2 eggs
+
+Instructions:
+
+- first do this 
+* second do this 
+3. third do this 
+
 """, null]
     ];
 
@@ -119,8 +140,14 @@ Instructions:
                     color: Colors.black,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
-                    // TODO: clicking this adds custom recipe
-                    onPressed: () {},
+                    onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomRecipe();
+                            },
+                          );
+                        },
                     ),
                   ), 
                 ), 
@@ -149,6 +176,7 @@ Instructions:
                 ),
               ), 
               const SizedBox(width:5), 
+              // TODO: Sort
               const MyRadio(
                 firstText: "Recent",
                 firstWidth: 90,
@@ -170,7 +198,7 @@ Instructions:
                     color: Colors.black,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(1),
-                    // TODO: clicking this opens filter dialogue (can make, dietary, cusines)
+                    // TODO: filter recipes
                     onPressed: () {
                       showDialog(
                         context: context,
