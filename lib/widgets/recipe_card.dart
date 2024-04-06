@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
@@ -8,8 +7,16 @@ import 'package:sous_chef_app/widgets/image_upload_button.dart';
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
   final String title;
+  final File? image;
 
-  const RecipeCard({super.key, required this.recipeResponse, required this.title});
+  final void Function(File? image)? onImageSelected;
+
+  const RecipeCard({super.key, 
+    required this.recipeResponse, 
+    required this.title, 
+    this.image,
+    this.onImageSelected
+  });
 
   @override
   _RecipeCardState createState() => _RecipeCardState();
@@ -18,6 +25,12 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   bool isSaved = false;
   File? _image;
+
+  @override
+  void initState() {
+    super.initState();
+    _image = widget.image;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +50,7 @@ class _RecipeCardState extends State<RecipeCard> {
           return instruction.replaceAll(RegExp(r'^\d+\. '), '');
         })
         .toList();
+    print(_image);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 245),
@@ -52,7 +66,7 @@ class _RecipeCardState extends State<RecipeCard> {
               alignment: Alignment.center,
               padding: const EdgeInsets.all(1),
               onPressed: () {
-                Navigator.pop(context); // Navigate back to the previous page
+                Navigator.pop(context);
               },
             ),
           ),
@@ -99,7 +113,13 @@ class _RecipeCardState extends State<RecipeCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Row(
                       children: [
-                        const ImageUploadButton(),
+                        ImageUploadButton(
+                          onImageSelected: (File? image) {
+                            setState(() {
+                              _image = image;
+                            });
+                          },
+                        ),
                         const Spacer(),
                         SizedBox(
                           width: 30,
@@ -115,7 +135,8 @@ class _RecipeCardState extends State<RecipeCard> {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
-                                // TODO: save to DB as [title, recipe, date saved]
+                                // TODO: save to DB as [title, recipe, date saved].
+                                // if opened from saved tab, it should stay filled in and remove from DB if unchecked.
                               },
                             ), 
 

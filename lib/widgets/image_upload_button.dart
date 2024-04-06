@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageUploadButton extends StatelessWidget {
   final void Function(File? image)? onImageSelected;
 
-  const ImageUploadButton({Key? key, this.onImageSelected}) : super(key: key);
+  const ImageUploadButton({super.key, this.onImageSelected});
 
   @override
   Widget build(BuildContext context) {

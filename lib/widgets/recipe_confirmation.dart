@@ -19,6 +19,9 @@ class RecipeConfirmation extends StatelessWidget {
       if (title.startsWith('Recipe:')) {
         title = title.substring(7).trim();
       }
+      if (title.startsWith('###')) {
+        title = title.substring(3).trim();
+      }
 
     return AlertDialog(
       title: Text(title),
@@ -30,7 +33,7 @@ class RecipeConfirmation extends StatelessWidget {
             Navigator.pop(context);
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 230, 230, 230),), // Button color
+            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 230, 230, 230),),
           ),
           child: const Text(
             'Back',
@@ -50,7 +53,7 @@ class RecipeConfirmation extends StatelessWidget {
             }
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 67, 107, 31)), // Button color
+            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 67, 107, 31)),
           ),
           child: const Text(
             "Let's get cooking!",

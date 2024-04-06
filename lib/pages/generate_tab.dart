@@ -24,34 +24,34 @@ class _GenerateState extends State<GenerateTab> {
 
   // from DB
   List ingredients = [
-    ["Tomato", "4/26/24"], 
-    ["Potato", "5/2/24"],
-    ["Garlic", "4/1/24"],
-    ["Broccoli", "4/1/24"],
-    ["Banana", "4/20/24"],
-    ["Cabbage", "5/10/24"],
-    ["Corn","5/10/24"],
-    ["Eggplant", "5/10/24"],
-    ["Lemon", "5/10/24"],
-    ["Carrot","5/10/24"],
-    ["Steak", "5/10/24"],
-    ["Egg", "4/10/24"],
-    ["Avocado", "5/10/24"],
-    ["Onion", "5/10/24"],
-    ["Orange", "5/10/24"],
-    ["Scallion", "3/30/24"],
-    ["Jalapeno","5/10/24"],
-    ["Mushroom", "5/10/24"],
-    ["Cauliflower", "5/10/24"],
-    ["Soy Sauce", -1],
-    ["Salt", -1],
-    ["Pepper", -1],
-    ["Paprika", -1],
-    ["Cinnamon", -1],
-    ["Vinegar", -1],
-    ["Sesame Oil", -1],
-    ["Chili Oil", -1],
-    ["Parsley", -1],];
+    ["Tomato", 3, "4/26/24"], 
+    ["Potato", 2, "5/2/24"],
+    ["Garlic", 6, "4/1/24"],
+    ["Broccoli", 4, "4/1/24"],
+    ["Banana", 5, "4/20/24"],
+    ["Cabbage", 1, "5/10/24"],
+    ["Corn", 1, "5/10/24"],
+    ["Eggplant", 2, "5/10/24"],
+    ["Lemon", 4, "5/10/24"],
+    ["Carrot", 10, "5/10/24"],
+    ["Steak", 2, "5/10/24"],
+    ["Egg", 12, "4/10/24"],
+    ["Avocado", 4, "5/10/24"],
+    ["Onion", 6, "5/10/24"],
+    ["Orange", 2, "5/10/24"],
+    ["Scallion", 11, "3/30/24"],
+    ["Jalapeno", 8, "5/10/24"],
+    ["Mushroom", 4, "5/10/24"],
+    ["Cauliflower", 1, "5/10/24"],
+    ["Soy Sauce", -1, -1],
+    ["Salt", -1, -1],
+    ["Pepper", -1, -1],
+    ["Paprika", -1, -1],
+    ["Cinnamon", -1, -1],
+    ["Vinegar", -1, -1],
+    ["Sesame Oil", -1, -1],
+    ["Chili Oil", -1, -1],
+    ["Parsley", -1, -1],];
 
 
 
@@ -78,7 +78,7 @@ class _GenerateState extends State<GenerateTab> {
   }
 
   String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines) {
-    String prompt = "Give me a recipe using a subset of these ingredients, given in a list of ingredients and their expiration date (assume values with -1 do not expire):\n\n";
+    String prompt = "Give me a recipe using a subset of these ingredients, given in a list of ingredients, their quantities, and their expiration date (assume values with -1 have unlimited quantity and do not expire):\n\n";
     prompt += "${ingredients.join(', ')}\n";
     prompt += "You do not need to use all of the ingredients. Give higher priority to the ingredients that have sooner expiration dates.";
     if (dietaryRestrictions.isNotEmpty) {
