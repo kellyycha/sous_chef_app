@@ -64,12 +64,17 @@ class _GenerateState extends State<GenerateTab> {
 
   Future<String?> generateRecipe() async {
     String prompt = constructPrompt(ingredients, dietaryRestrictions, cuisines);
+    String? response = await ChatService().request(prompt);
+    print(response);
 
-    response = await ChatService().request(prompt);
+    // Loop requesting new prompts until "!!!" is found in the response
+    while (response == null || !response.contains("!!!")) {
+      response = await ChatService().request(prompt);
+      print(response);
+    }
+    int indexOfEnd = response.indexOf("!!!");
 
-    //TODO: follow prompting flow (parse for ingredients here to check)
-
-    return response;
+    return response.substring(0, indexOfEnd);
   }
 
   String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines) {
@@ -82,6 +87,7 @@ class _GenerateState extends State<GenerateTab> {
     if (cuisines.isNotEmpty) {
       prompt += "Make sure the recipe if one of the following cuisines: ${cuisines.join(', ')}\n\n";
     }
+    prompt += "Denote the end of the recipe with '!!!', after the last step in the instructions.";
     return prompt;
   }
 

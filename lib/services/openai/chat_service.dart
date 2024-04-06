@@ -19,7 +19,7 @@ class ChatService {
       }
       
       // Construct the request object
-      ChatRequest request = ChatRequest(model: "gpt-3.5-turbo", maxTokens: 150, messages: [Message(role: "system", content: prompt)]);
+      ChatRequest request = ChatRequest(model: "gpt-3.5-turbo", messages: [Message(role: "system", content: prompt)]);
 
       // Make the API call
       http.Response response = await http.post(
@@ -32,7 +32,7 @@ class ChatService {
       if (response.statusCode == 200) {
         // Parse the response
         ChatResponse chatResponse = ChatResponse.fromResponse(response);
-        print(chatResponse.choices?[0].message?.content);
+        // print(chatResponse.choices?[0].message?.content);
         return chatResponse.choices?[0].message?.content;
       } else {
         // Handle other unsuccessful responses
