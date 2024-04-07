@@ -22,6 +22,9 @@ class RecipeConfirmation extends StatelessWidget {
       if (title.startsWith('###')) {
         title = title.substring(3).trim();
       }
+      if (title.startsWith('##')) {
+        title = title.substring(2).trim();
+      }
 
     return AlertDialog(
       title: Text(title),

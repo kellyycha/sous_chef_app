@@ -35,8 +35,26 @@ class _RecipeCardState extends State<RecipeCard> {
   Widget build(BuildContext context) {
     List<String> lines = widget.recipeResponse!.split('\n');
 
-    int ingredientsStartIndex = lines.indexOf('Ingredients:') + 1;
-    int ingredientsEndIndex = lines.indexOf('Instructions:');
+    int findIngredientsIndex(List<String> lines) {
+      for (int i = 0; i < lines.length; i++) {
+        if (lines[i].toLowerCase().contains('ingredients')) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    int findInstructionsIndex(List<String> lines) {
+      for (int i = 0; i < lines.length; i++) {
+        if (lines[i].toLowerCase().contains('instructions')) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    int ingredientsStartIndex = findIngredientsIndex(lines) + 1;
+    int ingredientsEndIndex = findInstructionsIndex(lines);
+
     List<String> ingredients = lines.sublist(ingredientsStartIndex, ingredientsEndIndex)
         .where((element) => element.trim().isNotEmpty)
         .map((ingredient) => ingredient.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
