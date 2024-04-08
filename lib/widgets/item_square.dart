@@ -8,7 +8,6 @@ class MySquare extends StatelessWidget {
   final File? img;
   final int? expiration;
   final DateTime? recipeDate;
-  final VoidCallback onDelete;
   final VoidCallback? onTap;
 
   const MySquare({
@@ -18,9 +17,13 @@ class MySquare extends StatelessWidget {
     this.img,
     this.expiration,
     this.recipeDate,
-    required this.onDelete,
     this.onTap,
   });
+
+  void onDelete() {
+    print(title);
+    //TODO: remove item from DB
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class MySquare extends StatelessWidget {
       onTap: onTap,
       child: Dismissible(
         key: UniqueKey(),
-        onDismissed: (_) => onDelete(), //TODO: create onDelete function that takes in item and removes it from DB
+        onDismissed: (_) => onDelete(), 
         direction: DismissDirection.endToStart,
         background: Container(
           alignment: Alignment.centerRight,

@@ -19,8 +19,14 @@ class MyRadio extends StatefulWidget {
   State<MyRadio> createState() => _MyRadioState();
 }
 
+void sortBy(String text) {
+    print(text);
+    //TODO: sort according to value (expiration, recent, or a-z)
+  }
+
 class _MyRadioState extends State<MyRadio> {
   int value = 1;
+
   Widget CustomRadioButton(String text, int index, double width) {
     return SizedBox(
       height: 40,
@@ -29,7 +35,7 @@ class _MyRadioState extends State<MyRadio> {
         onPressed: () {
           setState(() {
             value = index;
-            //TODO: sort according to value
+            sortBy(text);
           });
         },
         style: OutlinedButton.styleFrom(

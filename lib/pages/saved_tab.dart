@@ -174,7 +174,6 @@ Instructions:
                 ),
               ), 
               SizedBox(width:5), 
-              // TODO: Sort
               MyRadio(
                 firstText: "Recent",
                 firstWidth: 90,
@@ -232,9 +231,6 @@ Instructions:
                         ),
                       ),
                     );
-                  },
-                  onDelete: () {  
-                    // TODO: remove from DB
                   },
                 );
               },

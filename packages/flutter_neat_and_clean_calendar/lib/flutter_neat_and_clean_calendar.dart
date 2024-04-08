@@ -561,12 +561,9 @@ class _CalendarState extends State<Calendar> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _selectedEvents![index];
-                    //TODO: for some reason the square has too big margin on sides
                     return MySquare(
                       title: event.title,
                       qty: event.qty, 
-                      // TODO: remove from database
-                      onDelete: () {  },
                     );
                   },
                   itemCount: _selectedEvents!.length,

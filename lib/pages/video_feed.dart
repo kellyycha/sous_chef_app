@@ -25,7 +25,7 @@ class VideoScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // TODO: Stream
+          // TODO: Stream video (kelly's task)
           
           // StreamVideo(
           //   streamUrl: 'YOUR_VIDEO_STREAM_URL_HERE',

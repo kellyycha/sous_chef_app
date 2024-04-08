@@ -156,7 +156,7 @@ class InventoryPage extends StatelessWidget {
                   const SizedBox(
                     width: 290,
                     height: 40,
-                    child: MySearchBar(), //TODO: search
+                    child: MySearchBar(),
                     ),
                   const Spacer(),
                   SizedBox(
@@ -177,7 +177,7 @@ class InventoryPage extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const CustomInput(); //TODO: add to DB
+                              return const CustomInput(); 
                             },
                           );
                         },
@@ -210,7 +210,6 @@ class InventoryPage extends StatelessWidget {
                     ),
                   ), 
                   SizedBox(width:5), 
-                  // TODO: sort
                   MyRadio(
                     firstText: "Expiration",
                     firstWidth: 105,
@@ -232,9 +231,6 @@ class InventoryPage extends StatelessWidget {
                       title: _inventory[index][0],
                       qty: _inventory[index][1],
                       expiration: _inventory[index][2], 
-                      onDelete: () { 
-                        // TODO: remove from DB
-                      },
                     );
                   },
                 ),
