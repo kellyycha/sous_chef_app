@@ -49,6 +49,10 @@ class InventoryPage extends StatelessWidget {
     'Spices/Sauces'
     ];
 
+  void handleLocationSelection(String location) {
+    // TODO: Filter inventory based on selected location
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,8 +102,11 @@ class InventoryPage extends StatelessWidget {
                     SizedBox(
                       width: 250,
                       height: 40,
-                      child: MyDropdown(data: _location), // TODO: filter
-                      ),
+                      child: MyDropdown(
+                        data: _location,
+                        onSelect: handleLocationSelection,
+                      ), 
+                    ),
                     const Spacer(),
                     const VerticalDivider(
                       thickness: 1,
@@ -234,10 +241,8 @@ class InventoryPage extends StatelessWidget {
               ),
             ],
           ),
-
         ]
       )
-      
     );
   }
 } 

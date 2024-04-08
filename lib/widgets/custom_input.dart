@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 
 class CustomInput extends StatefulWidget {
@@ -19,7 +20,15 @@ class _CustomInputState extends State<CustomInput> {
   late TextEditingController _titleController;
   late TextEditingController _expirationDateController;
   late TextEditingController _quantityController;
+  late String _locationSelected;
   File? _image;
+
+  final List<String> _location = <String>[
+    'Refrigerator', 
+    'Freezer', 
+    'Pantry',
+    'Spices/Sauces'
+  ];
 
   @override
   void initState() {
@@ -27,6 +36,7 @@ class _CustomInputState extends State<CustomInput> {
     _titleController = TextEditingController();
     _expirationDateController = TextEditingController();
     _quantityController = TextEditingController();
+    _locationSelected = _location[0];
 
     _titleController.addListener(() {
       setState(() {});
@@ -57,6 +67,10 @@ class _CustomInputState extends State<CustomInput> {
         _expirationDateController.text = DateFormat('MM/dd/yyyy').format(pickedDate);
       });
     }
+  }
+
+  void setLocation(String location) {
+    _locationSelected = location;
   }
 
   @override
@@ -123,6 +137,14 @@ class _CustomInputState extends State<CustomInput> {
                 ),
               ),
             const SizedBox(height: 10),
+            SizedBox(
+              width: 250,
+              height: 40,
+              child: MyDropdown(
+                data: _location,
+                onSelect: setLocation,
+              ), 
+            ),
             InkWell(
               onTap: () {
                 _selectDate(context);
@@ -200,6 +222,7 @@ class _CustomInputState extends State<CustomInput> {
                   onPressed: _titleController.text.isEmpty ? null : () { 
                     // TODO: Save data in inventory DB
                     print(_titleController.text);
+                    print(_locationSelected);
                     Navigator.of(context).pop();
                   },
                   style: ButtonStyle(
