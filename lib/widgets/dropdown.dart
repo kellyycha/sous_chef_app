@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 class MyDropdown extends StatefulWidget {
   final List data;
+  final String? initValue;
   final void Function(String)? onSelect;
+  
 
   const MyDropdown({super.key, 
     required this.data, 
-    this.onSelect
+    this.initValue,
+    this.onSelect, 
   });
 
   @override
@@ -14,7 +17,7 @@ class MyDropdown extends StatefulWidget {
 }
 
 class _LocationState extends State<MyDropdown> {
-  late String dropdownValue = widget.data.first;
+  late String dropdownValue = widget.initValue ?? widget.data.first;
 
   @override
   Widget build(BuildContext context) {

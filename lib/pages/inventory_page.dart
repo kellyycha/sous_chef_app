@@ -8,37 +8,37 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class InventoryPage extends StatelessWidget {
   InventoryPage({super.key});
 
-  //TODO: use DB. [ingredient, qty, days left from today to expiration]
+  //TODO: use DB. [ingredient, qty, days left from today to expiration, location, image]
   // https://www.dhiwise.com/post/flutter-mysql-exploring-the-power-of-database-managemen
   final List _inventory = [
-    ["Tomato", 2, 7, "R"], 
-    ["Potato", 4, 28, "P"],
-    ["Garlic", 3, 120, "P"],
-    ["Broccoli", 2, 10, "R"],
-    ["Banana", 5, 7, "P"],
-    ["Cabbage", 1, 20, "R"],
-    ["Corn", 2, 5, "R"],
-    ["Eggplant", 1, 10, "R"],
-    ["Lemon", 4, 30, "R"],
-    ["Carrot", 5, 25, "R"],
-    ["Steak", 1, 4, "R"],
-    ["Egg", 12, 50, "R"],
-    ["Avocado", 1, 5, "P"],
-    ["Onion", 4, 60, "P"],
-    ["Orange", 3, 20, "R"],
-    ["Scallion", 6, 14, "R"],
-    ["Jalapeno", 4, 9, "R"],
-    ["Mushroom", 5, 10, "R"],
-    ["Cauliflower", 1, 12, "R"],
-    ["Soy Sauce", -1, -1, "S"],
-    ["Salt", -1, -1, "S"],
-    ["Pepper", -1, -1, "S"],
-    ["Paprika", -1, -1, "S"],
-    ["Cinnamon", -1, -1, "S"],
-    ["Vinegar", -1, -1, "S"],
-    ["Sesame Oil", -1, -1, "S"],
-    ["Chili Oil", -1, -1, "S"],
-    ["Parsley", -1, -1, "S"],
+    ["Tomato", 2, 7, "Refrigerator", null], 
+    ["Potato", 4, 28, "Pantry", null],
+    ["Garlic", 3, 120, "Pantry", null],
+    ["Broccoli", 2, 10, "Refrigerator", null],
+    ["Banana", 5, 7, "Pantry", null],
+    ["Cabbage", 1, 20, "Refrigerator", null],
+    ["Corn", 2, 5, "Refrigerator", null],
+    ["Eggplant", 1, 10, "Refrigerator", null],
+    ["Lemon", 4, 30, "Refrigerator", null],
+    ["Carrot", 5, 25, "Refrigerator", null],
+    ["Steak", 1, 4, "Refrigerator", null],
+    ["Egg", 12, 50, "Refrigerator", null],
+    ["Avocado", 1, 5, "Pantry", null],
+    ["Onion", 4, 60, "Pantry", null],
+    ["Orange", 3, 20, "Refrigerator", null],
+    ["Scallion", 6, 14, "Refrigerator", null],
+    ["Jalapeno", 4, 9, "Refrigerator", null],
+    ["Mushroom", 5, 10, "Refrigerator", null],
+    ["Cauliflower", 1, 12, "Refrigerator", null],
+    ["Soy Sauce", -1, -1, "Spices/Sauces", null],
+    ["Salt", -1, -1, "Spices/Sauces", null],
+    ["Pepper", -1, -1, "Spices/Sauces", null],
+    ["Paprika", -1, -1, "Spices/Sauces", null],
+    ["Cinnamon", -1, -1, "Spices/Sauces", null],
+    ["Vinegar", -1, -1, "Spices/Sauces", null],
+    ["Sesame Oil", -1, -1, "Spices/Sauces", null],
+    ["Chili Oil", -1, -1, "Spices/Sauces", null],
+    ["Parsley", -1, -1, "Spices/Sauces", null],
     ];
 
   final List<String> _location = <String>[
@@ -226,11 +226,25 @@ class InventoryPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
-                    // Stretch Goal: click on item to edit (image, qty) using pop up
                     return MySquare(
                       title: _inventory[index][0],
                       qty: _inventory[index][1],
-                      expiration: _inventory[index][2], 
+                      expiration: _inventory[index][2],
+                      img: _inventory[index][4],
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomInput(
+                              title: _inventory[index][0],
+                              qty: _inventory[index][1],
+                              expiration: _inventory[index][2],
+                              location: _inventory[index][3],
+                              image: _inventory[index][4],
+                            ); 
+                          },
+                        );
+                      }, 
                     );
                   },
                 ),

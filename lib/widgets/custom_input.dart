@@ -7,9 +7,19 @@ import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class CustomInput extends StatefulWidget {
   final void Function(File? image)? onImageSelected;
+  final String? title;
+  final int? qty;
+  final int? expiration;
+  final String? location;
+  final File? image;
 
   const CustomInput({super.key,
-    this.onImageSelected
+    this.onImageSelected, 
+    this.title,
+    this.qty,
+    this.expiration,
+    this.location,
+    this.image,
   });
 
   @override
@@ -17,10 +27,12 @@ class CustomInput extends StatefulWidget {
 }
 
 class _CustomInputState extends State<CustomInput> {
-  late TextEditingController _titleController;
-  late TextEditingController _expirationDateController;
-  late TextEditingController _quantityController;
+  late final TextEditingController _titleController = TextEditingController();
+  late final TextEditingController _expirationDateController = TextEditingController();
+  late final TextEditingController _quantityController = TextEditingController();
   late String _locationSelected;
+  late bool isSpices = false;
+  late bool edit = false;
   File? _image;
 
   final List<String> _location = <String>[
@@ -33,10 +45,30 @@ class _CustomInputState extends State<CustomInput> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _expirationDateController = TextEditingController();
-    _quantityController = TextEditingController();
-    _locationSelected = _location[0];
+
+    if (widget.image != null){
+      _image = widget.image;
+    }
+    
+    if (widget.title != null){
+      edit = true;
+      _titleController.text = widget.title!;
+    }
+    
+    if (widget.expiration != null){
+      DateTime expirationDate = DateTime.now().add(Duration(days: widget.expiration ?? 0));
+      _expirationDateController.text =  DateFormat('MM/dd/yyyy').format(expirationDate);
+    }
+
+    if (widget.qty != null){
+      _quantityController.text = widget.qty.toString();
+    }
+    
+    _locationSelected = widget.location ?? _location[0];
+    isSpices = _locationSelected == 'Spices/Sauces';
+   
+    print(_locationSelected);
+
 
     _titleController.addListener(() {
       setState(() {});
@@ -70,16 +102,24 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   void setLocation(String location) {
-    _locationSelected = location;
+    setState(() {
+      _locationSelected = location;
+      // if spices and sauces selected, remove the bottom two inputs
+      if (location == 'Spices/Sauces'){
+        isSpices = true;
+      } else {
+        isSpices = false;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 244, 247, 234),
-      title: const Text(
-        'Custom Input',
-        style: TextStyle(
+      title: Text(
+        edit ? 'Edit':'Custom Input',
+        style: const TextStyle(
           color: Color.fromARGB(255, 67, 107, 31),
           fontWeight: FontWeight.w600,
         ),
@@ -142,9 +182,12 @@ class _CustomInputState extends State<CustomInput> {
               height: 40,
               child: MyDropdown(
                 data: _location,
+                initValue: _locationSelected,
                 onSelect: setLocation,
               ), 
             ),
+            isSpices ?
+            Container() :
             InkWell(
               onTap: () {
                 _selectDate(context);
@@ -157,6 +200,8 @@ class _CustomInputState extends State<CustomInput> {
               ),
             ),
             const SizedBox(height: 10),
+            isSpices ?
+            Container() :
             Row(
               children: [
                 const Spacer(),
@@ -223,6 +268,8 @@ class _CustomInputState extends State<CustomInput> {
                     // TODO: Save data in inventory DB
                     print(_titleController.text);
                     print(_locationSelected);
+                    print(_quantityController.text); 
+                    // save expiration date as date and number
                     Navigator.of(context).pop();
                   },
                   style: ButtonStyle(

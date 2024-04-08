@@ -19,7 +19,7 @@ class CalendarPage extends StatelessWidget {
   }
 }
 
-// TODO: use DB to populate NeatCleanCalendarEvent. [title, qty, expiration]
+// TODO: use DB to populate NeatCleanCalendarEvent. [title, qty, expiration date]
 final List<NeatCleanCalendarEvent> _expirationList = [
   NeatCleanCalendarEvent(
     title: 'Apple',

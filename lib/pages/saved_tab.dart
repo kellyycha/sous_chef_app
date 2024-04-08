@@ -8,7 +8,7 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class SavedTab extends StatelessWidget {
   SavedTab({super.key});
 
-  //TODO: use DB. [title, recipe (full string), image file path]
+  //TODO: use DB. [title, recipe (full string), date saved, image file path]
   final List _recipes = [
     ["Garlic Lemon Broccoli Stir-Fry", 
 """Recipe: Garlic Lemon Broccoli Stir-Fry
@@ -31,9 +31,11 @@ Instructions:
 7. Season with soy sauce, salt, and pepper to taste.
 8. Stir well to combine all the flavors.
 9. Cook for an additional 2-3 minutes until the broccoli is cooked to your desired tenderness.
-10. Serve hot and enjoy""", null],
+10. Serve hot and enjoy""", 
+null,
+DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
     ["Japanese Style Stir-Fried Vegetables with Steak",
-"""Recipe: Japanese Style Stir-Fried Vegetables with Steak
+"""Japanese Style Stir-Fried Vegetables with Steak
 
 Ingredients:
 - Steak
@@ -56,7 +58,8 @@ Instructions:
 7. Season with soy sauce, salt, and pepper to taste.
 8. Stir-fry the ingredients until the vegetables are tender and the steak is cooked to your desired doneness.
 9. Serve hot and enjoy your Japanese Style Stir-Fried Vegetables with Steak""", 
-null],
+null,
+DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
     ["Indian Spiced Potato and Cauliflower Curry",
 """
 Recipe: Indian Spiced Potato and Cauliflower Curry
@@ -86,7 +89,9 @@ Instructions:
 8. Cover and let the vegetables cook until tender, stirring occasionally.
 9. Once the vegetables are cooked, garnish with fresh cilantro.
 10. Serve the spiced potato and cauliflower curry hot with rice or naan. Enjoy your meal!
-""", null],
+""", 
+null,
+DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
     ["cake",
 """cake
 
@@ -106,7 +111,9 @@ Instructions:
 * second do this 
 3. third do this 
 
-""", null]
+""", 
+null,
+DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)]
     ];
 
   @override
@@ -218,8 +225,8 @@ Instructions:
                 // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
                 return MySquare(
                   title: _recipes[index][0],
-                  recipeDate:DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-                  img: _recipes[index][2],  
+                  img: _recipes[index][2],
+                  recipeDate: _recipes[index][3],
                   onTap: () {
                     Navigator.push(
                       context,
