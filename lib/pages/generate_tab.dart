@@ -59,7 +59,7 @@ class _GenerateState extends State<GenerateTab> {
   void initState() {
     super.initState();
 
-    _composition = AssetLottie('assets/animations/cooking2.json').load();
+    _composition = AssetLottie('assets/animations/cooking.json').load();
   }
 
   Future<String?> generateRecipe() async {
@@ -78,10 +78,12 @@ class _GenerateState extends State<GenerateTab> {
     
     int indexOfEnd = response.indexOf("!!!");
 
+    // Let animation play
+    await Future.delayed(const Duration(seconds: 15));
+
     setState(() {
       _requestInProgress = false;
     });
-    // await Future.delayed(Duration(seconds: 15));
 
     return response.substring(0, indexOfEnd);
   }

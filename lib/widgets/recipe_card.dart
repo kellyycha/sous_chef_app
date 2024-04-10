@@ -1,14 +1,15 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
   final String title;
-  final File? image;
+  final String? image;
 
-  final void Function(File? image)? onImageSelected;
+  final void Function(String? image)? onImageSelected;
 
   const RecipeCard({super.key, 
     required this.recipeResponse, 
@@ -23,12 +24,34 @@ class RecipeCard extends StatefulWidget {
 
 class _RecipeCardState extends State<RecipeCard> {
   bool isSaved = false;
-  File? _image;
+  String? _image;
 
   @override
   void initState() {
     super.initState();
     _image = widget.image;
+  }
+
+  bool isNetworkImage(String imageUrl) {
+    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  }
+
+  Widget getImageWidget(image) {
+    if (isNetworkImage(image)) {
+      return Image.network(
+        image!,
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        File(image!),
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    }
   }
 
   @override
@@ -103,12 +126,7 @@ class _RecipeCardState extends State<RecipeCard> {
                   _image != null ? 
                   ClipRRect(
                     borderRadius: BorderRadius.circular(18),
-                    child: Image.file(
-                        _image!,
-                        height: 264,
-                        width: 330,
-                        fit: BoxFit.cover
-                      )
+                    child: getImageWidget(_image)
                   )
                   : Container(
                     height: 264,
@@ -128,7 +146,7 @@ class _RecipeCardState extends State<RecipeCard> {
                     child: Row(
                       children: [
                         ImageUploadButton(
-                          onImageSelected: (File? image) {
+                          onImageSelected: (String? image) {
                             setState(() {
                               _image = image;
                             });

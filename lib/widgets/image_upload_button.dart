@@ -1,9 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageUploadButton extends StatelessWidget {
-  final void Function(File? image)? onImageSelected;
+  final void Function(String? image)? onImageSelected;
 
   const ImageUploadButton({super.key, this.onImageSelected});
 
@@ -25,7 +24,7 @@ class ImageUploadButton extends StatelessWidget {
           padding: const EdgeInsets.all(1),
         ),
         onPressed: () async {
-          final pickedImage = await showModalBottomSheet<File?>(
+          final pickedImage = await showModalBottomSheet<String?>(
             backgroundColor: const Color.fromARGB(255, 219, 235, 188),
             context: context,
             builder: (BuildContext context) {
@@ -37,7 +36,7 @@ class ImageUploadButton extends StatelessWidget {
                     title: const Text('From Photo Library'),
                     onTap: () async {
                       final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-                      Navigator.pop(context, pickedImage != null ? File(pickedImage.path) : null);
+                      Navigator.pop(context, pickedImage?.path);
                     },
                   ),
                   ListTile(
@@ -45,7 +44,7 @@ class ImageUploadButton extends StatelessWidget {
                     title: const Text('From Camera'),
                     onTap: () async {
                       final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
-                      Navigator.pop(context, pickedImage != null ? File(pickedImage.path) : null);
+                      Navigator.pop(context, pickedImage?.path);
                     },
                   ),
                   ListTile(
@@ -67,6 +66,7 @@ class ImageUploadButton extends StatelessWidget {
           }
 
           if (pickedImage != null && onImageSelected != null) {
+            print(pickedImage);
             onImageSelected!(pickedImage);
           }
         },

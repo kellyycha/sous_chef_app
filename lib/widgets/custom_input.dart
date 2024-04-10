@@ -6,12 +6,12 @@ import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 
 class CustomInput extends StatefulWidget {
-  final void Function(File? image)? onImageSelected;
+  final void Function(String? image)? onImageSelected;
   final String? title;
   final int? qty;
   final int? expiration;
   final String? location;
-  final File? image;
+  final String? image;
 
   const CustomInput({super.key,
     this.onImageSelected, 
@@ -33,7 +33,7 @@ class _CustomInputState extends State<CustomInput> {
   late String _locationSelected;
   late bool isSpices = false;
   late bool edit = false;
-  File? _image;
+  String? _image;
 
   final List<String> _location = <String>[
     'Refrigerator', 
@@ -113,6 +113,28 @@ class _CustomInputState extends State<CustomInput> {
     });
   }
 
+  bool isNetworkImage(String imageUrl) {
+    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  }
+
+  Widget getImageWidget(image) {
+    if (isNetworkImage(image)) {
+      return Image.network(
+        image!,
+        height: 168,
+        width: 210,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        File(image!),
+        height: 168,
+        width: 210,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -131,12 +153,7 @@ class _CustomInputState extends State<CustomInput> {
               _image != null ? 
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.file(
-                    _image!,
-                    height: 168,
-                    width: 210,
-                    fit: BoxFit.cover
-                  )
+                child: getImageWidget(_image)
               )
               : Container(
                 height: 168,
@@ -155,7 +172,7 @@ class _CustomInputState extends State<CustomInput> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ImageUploadButton(
-                  onImageSelected: (File? image) {
+                  onImageSelected: (String? image) {
                     setState(() {
                       _image = image;
                     });

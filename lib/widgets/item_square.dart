@@ -1,11 +1,12 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MySquare extends StatelessWidget {
   final String title;
   final int? qty;
-  final File? img;
+  final String? img;
   final int? expiration;
   final DateTime? recipeDate;
   final VoidCallback? onTap;
@@ -23,6 +24,28 @@ class MySquare extends StatelessWidget {
   void onDelete() {
     print(title);
     //TODO: remove item from DB
+  }
+
+  bool isNetworkImage(String imageUrl) {
+    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  }
+
+  Widget getImageWidget(image) {
+    if (isNetworkImage(image)) {
+      return Image.network(
+        image!,
+        height: 120,
+        width: 150,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        File(image!),
+        height: 120,
+        width: 150,
+        fit: BoxFit.cover,
+      );
+    }
   }
 
   @override
@@ -62,12 +85,7 @@ class MySquare extends StatelessWidget {
               img != null ? 
               ClipRRect(
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),),
-                child: Image.file(
-                    img!,
-                    height: 120,
-                    width: 150,
-                    fit: BoxFit.cover
-                  )
+                child: getImageWidget(img)
               )
               : Container(
                 height: 120,

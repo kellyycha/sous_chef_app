@@ -31,8 +31,8 @@ Instructions:
 7. Season with soy sauce, salt, and pepper to taste.
 8. Stir well to combine all the flavors.
 9. Cook for an additional 2-3 minutes until the broccoli is cooked to your desired tenderness.
-10. Serve hot and enjoy""", 
-null,
+10. Serve hot and enjoy""",
+"https://cdn.apartmenttherapy.info/image/upload/v1641581833/k/Photo/Recipes/2022-01_Sauteed-Broccoli/2022-01-05_ATK-0099.jpg",
 DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
     ["Japanese Style Stir-Fried Vegetables with Steak",
 """Japanese Style Stir-Fried Vegetables with Steak
@@ -58,7 +58,7 @@ Instructions:
 7. Season with soy sauce, salt, and pepper to taste.
 8. Stir-fry the ingredients until the vegetables are tender and the steak is cooked to your desired doneness.
 9. Serve hot and enjoy your Japanese Style Stir-Fried Vegetables with Steak""", 
-null,
+"https://playswellwithbutter.com/wp-content/uploads/2022/02/Beef-and-Vegetable-Stir-Fry-16.jpg",
 DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
     ["Indian Spiced Potato and Cauliflower Curry",
 """
@@ -90,30 +90,30 @@ Instructions:
 9. Once the vegetables are cooked, garnish with fresh cilantro.
 10. Serve the spiced potato and cauliflower curry hot with rice or naan. Enjoy your meal!
 """, 
-null,
+"https://www.indianhealthyrecipes.com/wp-content/uploads/2022/03/aloo-gobi-recipe.jpg.webp",
 DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)],
-    ["cake",
-"""cake
+//     ["cake",
+// """cake
 
-Ingredients:
+// Ingredients:
 
-- dash
-- blah 
-* bullet 
-* bullet point 
-1. number 
-2. numbering 
-2 eggs
+// - dash
+// - blah 
+// * bullet 
+// * bullet point 
+// 1. number 
+// 2. numbering 
+// 2 eggs
 
-Instructions:
+// Instructions:
 
-- first do this 
-* second do this 
-3. third do this 
+// - first do this 
+// * second do this 
+// 3. third do this 
 
-""", 
-null,
-DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)]
+// """, 
+// null,
+// DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)]
     ];
 
   @override

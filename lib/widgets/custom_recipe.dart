@@ -17,7 +17,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
   late TextEditingController _titleController;
   late TextEditingController _ingredientsController;
   late TextEditingController _instructionsController;
-  File? _image;
+  String? _image;
 
   @override
   void initState() {
@@ -35,6 +35,28 @@ class _CustomRecipeState extends State<CustomRecipe> {
     _instructionsController.addListener(() {
       setState(() {});
     });
+  }
+
+  bool isNetworkImage(String imageUrl) {
+    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  }
+
+  Widget getImageWidget(image) {
+    if (isNetworkImage(image)) {
+      return Image.network(
+        image!,
+        height: 216,
+        width: 270,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        File(image!),
+        height: 216,
+        width: 270,
+        fit: BoxFit.cover,
+      );
+    }
   }
 
   @override
@@ -55,12 +77,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
               _image != null ? 
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.file(
-                    _image!,
-                    height: 216,
-                    width: 270,
-                    fit: BoxFit.cover
-                  )
+                child: getImageWidget(_image)
               )
               : Container(
                 height: 216,
@@ -79,7 +96,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: ImageUploadButton(
-                  onImageSelected: (File? image) {
+                  onImageSelected: (String? image) {
                     setState(() {
                       _image = image;
                     });
