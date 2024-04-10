@@ -79,7 +79,7 @@ class _GenerateState extends State<GenerateTab> {
     int indexOfEnd = response.indexOf("!!!");
 
     // Let animation play
-    await Future.delayed(const Duration(seconds: 15));
+    await Future.delayed(const Duration(seconds: 16));
 
     setState(() {
       _requestInProgress = false;

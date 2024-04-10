@@ -23,13 +23,17 @@ class RecipeCard extends StatefulWidget {
 }
 
 class _RecipeCardState extends State<RecipeCard> {
-  bool isSaved = false;
+  late bool isSaved;
   String? _image;
 
   @override
   void initState() {
     super.initState();
     _image = widget.image;
+
+    // TODO: check if recipe is in the DB. yes: isSaved true. no: isSaved false
+    isSaved = false; 
+
   }
 
   bool isNetworkImage(String imageUrl) {
@@ -167,8 +171,11 @@ class _RecipeCardState extends State<RecipeCard> {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
-                                // TODO: save to DB as [title, recipe, date saved, image].
-                                // if opened from saved tab, it should stay filled in and remove from DB if unchecked.
+                                isSaved ?
+                                  // TODO: save to DB as [title, recipe, date saved, image]
+                                  print("save")
+                                : // TODO: remove from DB
+                                  print("remove");
                               },
                             ), 
 
