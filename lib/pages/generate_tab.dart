@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sous_chef_app/services/openai/image_service.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
@@ -58,8 +59,27 @@ class _GenerateState extends State<GenerateTab> {
   @override
   void initState() {
     super.initState();
-
     _composition = AssetLottie('assets/animations/cooking.json').load();
+  }
+
+    Future<String?> generateImage(recipeResponse) async {
+    try {
+      final imageUrl = await OpenAI().generateImageUrl(
+        prompt: "a photograph of this dish: $recipeResponse",
+        size: '1024x1024',
+      );
+      print(imageUrl);
+
+      setState(() {
+        _requestInProgress = false;
+      });
+
+      return imageUrl;
+      
+    } catch (e) {
+      print('Error: $e');
+    }
+    return null;
   }
 
   Future<String?> generateRecipe() async {
@@ -78,14 +98,12 @@ class _GenerateState extends State<GenerateTab> {
     
     int indexOfEnd = response.indexOf("!!!");
 
+    String recipeResponse = response.substring(0, indexOfEnd);
+
     // Let animation play
-    await Future.delayed(const Duration(seconds: 16));
+    // await Future.delayed(const Duration(seconds: 16));
 
-    setState(() {
-      _requestInProgress = false;
-    });
-
-    return response.substring(0, indexOfEnd);
+    return recipeResponse;
   }
 
   String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines) {
@@ -159,14 +177,20 @@ class _GenerateState extends State<GenerateTab> {
 
                     try {
                       String? recipeResponse = await generateRecipe();
+                      String? imageResponse = await generateImage(recipeResponse);
+
                       setState(() {
                         _isPlaying = false;
                       });
+                      
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           // Stretch goal: pass in the Dietary Restrictions and Cuisine values to filter the saved recipes
-                          return RecipeConfirmation(recipeResponse: recipeResponse);
+                          return RecipeConfirmation(
+                            recipeResponse: recipeResponse,
+                            imageResponse: imageResponse,
+                            );
                         },
                       );
                     } catch (e) {

@@ -3,8 +3,12 @@ import 'package:sous_chef_app/widgets/recipe_card.dart';
 
 class RecipeConfirmation extends StatelessWidget {
   final String? recipeResponse;
+  final String? imageResponse;
 
-  const RecipeConfirmation({super.key, required this.recipeResponse});
+  const RecipeConfirmation({super.key, 
+    required this.recipeResponse, 
+    this.imageResponse
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,17 @@ class RecipeConfirmation extends StatelessWidget {
     return AlertDialog(
       title: Text(title),
       backgroundColor: const Color.fromARGB(255, 219, 235, 188),
-
+      content: imageResponse != null ? 
+        ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: Image.network(
+            imageResponse!,
+            height: 216,
+            width: 270,
+            fit: BoxFit.cover,
+          )
+        )
+        : Container(),
       actions: [
         ElevatedButton(
           onPressed: () {
@@ -48,7 +62,12 @@ class RecipeConfirmation extends StatelessWidget {
             try {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RecipeCard(recipeResponse: recipeResponse, title: title)),
+                MaterialPageRoute(builder: (context) => 
+                  RecipeCard(
+                    recipeResponse: recipeResponse, 
+                    title: title,
+                    image: imageResponse,
+                  )),
               );
             } catch (e) {
               print('Error: $e');
