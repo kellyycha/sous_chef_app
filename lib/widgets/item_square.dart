@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,6 +29,13 @@ class MySquare extends StatelessWidget {
   bool isNetworkImage(String imageUrl) {
     return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
   }
+  
+  bool isValidFilePath(String path) {
+    final file = File(path);
+    return file.existsSync();
+  }
+
+  // TODO: once DB connected, no links: encode the preset inventory images to save in DB
 
   Widget getImageWidget(image) {
     if (isNetworkImage(image)) {
@@ -38,11 +45,21 @@ class MySquare extends StatelessWidget {
         width: 150,
         fit: BoxFit.cover,
       );
-    } else {
+    } else if (isValidFilePath(image)) {
       return Image.file(
         File(image!),
-        height: 120,
-        width: 150,
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    } else { // Encoded image
+      final decodedBytes = base64Decode(image);
+      var file = File("test.png");
+      file.writeAsBytesSync(decodedBytes);
+      return Image.file(
+        file,
+        height: 264,
+        width: 330,
         fit: BoxFit.cover,
       );
     }

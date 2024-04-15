@@ -8,7 +8,7 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class SavedTab extends StatelessWidget {
   SavedTab({super.key});
 
-  //TODO: use DB. [title, recipe (full string), date saved, image file path]
+  //TODO: use DB. [title, recipe (full string), date saved, image encoded string]
   final List _recipes = [
     ["Garlic Lemon Broccoli Stir-Fry", 
 """Recipe: Garlic Lemon Broccoli Stir-Fry

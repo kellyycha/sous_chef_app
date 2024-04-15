@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stream_video/stream_video.dart';
 
 class VideoScreen extends StatelessWidget {
   const VideoScreen({super.key});
@@ -26,12 +25,7 @@ class VideoScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // TODO: Stream video (kelly's task)
-          // https://pub.dev/packages/stream_video
-          
-          // StreamVideo(
-          //   streamUrl: 'YOUR_VIDEO_STREAM_URL_HERE',
-          //   aspectRatio: 16 / 9, // Adjust according to your video stream aspect ratio
-          // ),
+
 
           Container(
             height: 400,

@@ -66,7 +66,6 @@ class _GenerateState extends State<GenerateTab> {
     try {
       final imageUrl = await OpenAI().generateImageUrl(
         prompt: "a photograph of this dish: $recipeResponse",
-        size: '1024x1024',
       );
       print(imageUrl);
 
@@ -116,6 +115,7 @@ class _GenerateState extends State<GenerateTab> {
     if (cuisines.isNotEmpty) {
       prompt += "Make sure the recipe if one of the following cuisines: ${cuisines.join(', ')}\n\n";
     }
+    prompt += "Give the name of the recipe, label an Ingredients section where you will list the ingredients and the amount needed in the recipe, and label an Instructions section where you will list the steps of the recipe";
     prompt += "Denote the end of the recipe with '!!!', after the last step in the instructions.";
     return prompt;
   }

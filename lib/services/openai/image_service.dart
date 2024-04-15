@@ -12,7 +12,6 @@ class OpenAI {
 
   Future<String> generateImageUrl({
     required String prompt,
-    required String size,
   }) async {
     final response = await http.post(
       url,
@@ -20,7 +19,7 @@ class OpenAI {
       body: json.encode({
         'model': 'dall-e-3',
         'prompt': prompt,
-        'size': size,
+        'size': '1024x1024',
         'quality': 'standard',
         'n': 1,
       }),

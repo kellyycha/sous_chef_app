@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/encode_image.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class CustomRecipe extends StatefulWidget {
@@ -37,23 +39,27 @@ class _CustomRecipeState extends State<CustomRecipe> {
     });
   }
 
-  bool isNetworkImage(String imageUrl) {
-    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  bool isValidFilePath(String path) {
+    final file = File(path);
+    return file.existsSync();
   }
 
   Widget getImageWidget(image) {
-    if (isNetworkImage(image)) {
-      return Image.network(
-        image!,
-        height: 216,
-        width: 270,
-        fit: BoxFit.cover,
-      );
-    } else {
+    if (isValidFilePath(image)) {
       return Image.file(
         File(image!),
-        height: 216,
-        width: 270,
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    } else { // Encoded image
+      final decodedBytes = base64Decode(image);
+      var file = File("test.png");
+      file.writeAsBytesSync(decodedBytes);
+      return Image.file(
+        file,
+        height: 264,
+        width: 330,
         fit: BoxFit.cover,
       );
     }
@@ -158,7 +164,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
                 ElevatedButton(
                   onPressed: (_titleController.text.isEmpty || 
                     _ingredientsController.text.isEmpty || 
-                    _instructionsController.text.isEmpty) ? null : () {
+                    _instructionsController.text.isEmpty) ? null : () async {
 
                     String recipe = _titleController.text;
                     recipe += "\n\nIngredients:\n\n";
@@ -167,7 +173,12 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     recipe += _instructionsController.text;
                     print(recipe);
 
-                    // TODO: Save data in DB [title, recipe, today's date, image]
+                    if (_image != null && isValidFilePath(_image!)) {
+                      var encodedImage = await fileImageToBase64(_image!);
+                      print(encodedImage);
+                    }
+                    
+                    // TODO: Save data in DB [title, recipe, today's date, encoded image]
 
                     Navigator.of(context).pop();
                   },

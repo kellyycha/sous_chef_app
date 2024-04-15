@@ -14,6 +14,12 @@ class RecipeConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> lines = recipeResponse!.split('\n');
     String title = lines.firstWhere((line) => line.trim().isNotEmpty, orElse: () => '');
+      if (title.startsWith('###')) {
+        title = title.substring(3).trim();
+      }
+      if (title.startsWith('##')) {
+        title = title.substring(2).trim();
+      }
       if (title.startsWith('-') && title.endsWith('-')) {
         title = title.substring(1, title.length - 1);
       }
@@ -22,12 +28,6 @@ class RecipeConfirmation extends StatelessWidget {
       }
       if (title.startsWith('Recipe:')) {
         title = title.substring(7).trim();
-      }
-      if (title.startsWith('###')) {
-        title = title.substring(3).trim();
-      }
-      if (title.startsWith('##')) {
-        title = title.substring(2).trim();
       }
 
     return AlertDialog(

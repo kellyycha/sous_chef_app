@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:sous_chef_app/services/encode_image.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 
@@ -66,9 +68,6 @@ class _CustomInputState extends State<CustomInput> {
     
     _locationSelected = widget.location ?? _location[0];
     isSpices = _locationSelected == 'Spices/Sauces';
-   
-    print(_locationSelected);
-
 
     _titleController.addListener(() {
       setState(() {});
@@ -112,24 +111,28 @@ class _CustomInputState extends State<CustomInput> {
       }
     });
   }
-
-  bool isNetworkImage(String imageUrl) {
-    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+  
+  bool isValidFilePath(String path) {
+    final file = File(path);
+    return file.existsSync();
   }
 
   Widget getImageWidget(image) {
-    if (isNetworkImage(image)) {
-      return Image.network(
-        image!,
-        height: 168,
-        width: 210,
-        fit: BoxFit.cover,
-      );
-    } else {
+    if (isValidFilePath(image)) {
       return Image.file(
         File(image!),
-        height: 168,
-        width: 210,
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    } else { // Encoded image
+      final decodedBytes = base64Decode(image);
+      var file = File("test.png");
+      file.writeAsBytesSync(decodedBytes);
+      return Image.file(
+        file,
+        height: 264,
+        width: 330,
         fit: BoxFit.cover,
       );
     }
@@ -281,12 +284,16 @@ class _CustomInputState extends State<CustomInput> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: _titleController.text.isEmpty ? null : () { 
+                  onPressed: _titleController.text.isEmpty ? null : () async { 
+                    if (_image != null && isValidFilePath(_image!)) {
+                      var encodedImage = await fileImageToBase64(_image!);
+                      print(encodedImage);
+                    }
+
+                    // save expiration date as date and number of days remaining
+
                     // TODO: Save data in inventory DB
-                    print(_titleController.text);
-                    print(_locationSelected);
-                    print(_quantityController.text); 
-                    // save expiration date as date and number
+
                     Navigator.of(context).pop();
                   },
                   style: ButtonStyle(

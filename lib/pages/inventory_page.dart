@@ -8,8 +8,8 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 class InventoryPage extends StatelessWidget {
   InventoryPage({super.key});
 
-  //TODO: use DB. [ingredient, qty, days left from today to expiration, location, image]
-  // https://www.dhiwise.com/post/flutter-mysql-exploring-the-power-of-database-managemen
+  //TODO: inventory DB [ingredient, qty, days left from today to expiration date, location, image]
+  // encode and save these images into DB that has [title, days to expiration, image] - this DB is referenced when adding items from camera
   final List _inventory = [
     ["Tomato", 2, 7, "Refrigerator", 'https://i5.walmartimages.com/seo/Fresh-Slicing-Tomato-Each_9f8b7456-81d0-4dc2-b422-97cf63077762.0ddba51bbf14a5029ce82f5fce878dee.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF'], 
     ["Potato", 4, 28, "Pantry", 'https://i5.walmartimages.com/seo/Russet-Baking-Potatoes-Whole-Fresh-Each_c638c006-a982-48f7-aa33-6d3a8dc2983c.8fd015937ebfdd46c8fcb6177d0d1b1d.jpeg'],

@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/encode_image.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
@@ -40,6 +41,27 @@ class _RecipeCardState extends State<RecipeCard> {
     return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
   }
 
+  bool isValidFilePath(String path) {
+    final file = File(path);
+    return file.existsSync();
+  }
+
+  Future<String?> encodeImage(String image) async {
+    String? encodedImage;
+    
+    if (isNetworkImage(image)){
+      print("network");
+      encodedImage = await networkImageToBase64(image);
+    }
+
+    else if (isValidFilePath(image)){
+      print("file");
+      encodedImage = await fileImageToBase64(image);
+    }
+    print(encodedImage); 
+    return encodedImage;
+  }
+
   Widget getImageWidget(image) {
     if (isNetworkImage(image)) {
       return Image.network(
@@ -48,9 +70,19 @@ class _RecipeCardState extends State<RecipeCard> {
         width: 330,
         fit: BoxFit.cover,
       );
-    } else {
+    } else if (isValidFilePath(image)) {
       return Image.file(
         File(image!),
+        height: 264,
+        width: 330,
+        fit: BoxFit.cover,
+      );
+    } else { // Encoded image
+      final decodedBytes = base64Decode(image);
+      var file = File("test.png");
+      file.writeAsBytesSync(decodedBytes);
+      return Image.file(
+        file,
         height: 264,
         width: 330,
         fit: BoxFit.cover,
@@ -167,15 +199,27 @@ class _RecipeCardState extends State<RecipeCard> {
                               color: isSaved ? const Color.fromARGB(255, 67, 107, 31) : Colors.black,
                               alignment: Alignment.center,
                               padding: const EdgeInsets.all(1),
-                              onPressed: () {
+                              onPressed: () async {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
-                                isSaved ?
-                                  // TODO: save to DB as [title, recipe, date saved, image]
-                                  print("save")
-                                : // TODO: remove from DB
+                                if (isSaved) {
+                                  
+
+                                  if (_image != null){
+                                    if (isNetworkImage(_image!) || isValidFilePath(_image!)) {
+                                      var encodedImage = await encodeImage(_image!);
+                                    }
+                                  }
+                                  print("save");
+
+                                  // TODO: save to DB as [title, recipe, date saved, encodedImage]
+
+                                } else {
                                   print("remove");
+
+                                  // TODO: remove from DB
+                                }
                               },
                             ), 
 
