@@ -20,11 +20,11 @@ class RecipeConfirmation extends StatelessWidget {
       if (title.startsWith('##')) {
         title = title.substring(2).trim();
       }
-      if (title.startsWith('-') && title.endsWith('-')) {
-        title = title.substring(1, title.length - 1);
-      }
       if (title.startsWith('**') && title.endsWith('**')) {
         title = title.substring(2, title.length - 2);
+      }
+      if (title.startsWith('-') && title.endsWith('-')) {
+        title = title.substring(1, title.length - 1);
       }
       if (title.startsWith('Recipe:')) {
         title = title.substring(7).trim();
@@ -41,6 +41,24 @@ class RecipeConfirmation extends StatelessWidget {
             height: 216,
             width: 270,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return SizedBox(
+                  height: 216,
+                  width: 270, 
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: const Color.fromARGB(255, 67, 107, 31),
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Text('Error loading image');
+              },
           )
         )
         : Container(),
