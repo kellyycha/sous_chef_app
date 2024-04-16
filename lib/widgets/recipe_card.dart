@@ -27,6 +27,8 @@ class _RecipeCardState extends State<RecipeCard> {
   late bool isSaved;
   String? _image;
 
+  // Stretch Goal: be able to edit recipe on this page
+
   @override
   void initState() {
     super.initState();
@@ -134,10 +136,22 @@ class _RecipeCardState extends State<RecipeCard> {
                     child: Row(
                       children: [
                         ImageUploadButton(
-                          onImageSelected: (String? image) {
+                          onImageSelected: (String? image) async {
+                            String? encodedImage;
+                            if (isSaved){
+                              if (image != null){
+                                if (imageHelper.isNetworkImage(image) || imageHelper.isValidFilePath(image)) {
+                                  encodedImage = await imageHelper.encodeImage(image);
+                                }
+                              } 
+                              print(encodedImage);
+                              // TODO: update image in DB when image is changed
+                            }
                             setState(() {
                               _image = image;
-                            });
+                              print("new image");
+                              }
+                            );
                           },
                         ),
                         const Spacer(),
@@ -155,17 +169,13 @@ class _RecipeCardState extends State<RecipeCard> {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
+                                String? encodedImage;
                                 if (isSaved) {
-                                  
-                                  
                                   if (_image != null){
-                                    String? encodedImage;
                                     if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
                                       encodedImage = await imageHelper.encodeImage(_image!);
-                                      writeText(encodedImage!);
                                     }
                                   }
-
                                   print("save");
 
                                   // TODO: save to DB as [title, recipe, date saved, encodedImage]
@@ -251,24 +261,4 @@ class _RecipeCardState extends State<RecipeCard> {
       )
     );
   }
-}
-
-
-Future<String> get _localPath async {
-  final directory = await getApplicationDocumentsDirectory();
-
-  return directory.path;
-}
-
-Future<File> get _localFile async {
-  final path = await _localPath;
-  return File('$path/saved.txt');
-}
-  
-Future<File> writeText(String text) async {
-  final file = await _localFile;
-  print(file);
-
-  // Write the file
-  return file.writeAsString(text);
 }

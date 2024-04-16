@@ -261,16 +261,22 @@ class _CustomInputState extends State<CustomInput> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: _titleController.text.isEmpty ? null : () async { 
+                  onPressed: _titleController.text.isEmpty ? null : () async {
+                    String? encodedImage; 
 
                     if (_image != null && imageHelper.isValidFilePath(_image!)) {
-                      String? encodedImage = await imageHelper.encodeImage(_image!);
+                      encodedImage = await imageHelper.encodeImage(_image!);
                     }
 
                     // save expiration date as date and number of days remaining
-
-                    // TODO: Save or edit data in inventory DB
-                    print("save");
+                    
+                    if (edit) {
+                      print("edit");
+                      // TODO: edit data in inventory DB
+                    } else {
+                      print("save");
+                      // TODO: Save in inventory DB
+                    }
 
                     Navigator.of(context).pop();
                   },
@@ -283,9 +289,9 @@ class _CustomInputState extends State<CustomInput> {
                     }),
                   ),
                   
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    edit ? 'Save Changes' : 'Save',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],

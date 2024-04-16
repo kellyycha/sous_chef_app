@@ -151,8 +151,10 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     recipe += _instructionsController.text;
                     print(recipe);
 
+                    String? encodedImage;
+
                     if (_image != null && imageHelper.isValidFilePath(_image!)) {
-                      String? encodedImage = await imageHelper.encodeImage(_image!);
+                      encodedImage = await imageHelper.encodeImage(_image!);
                     }
                     
                     // TODO: Save data in DB [title, recipe, today's date, encoded image]

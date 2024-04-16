@@ -293,6 +293,18 @@ class _CalendarState extends State<Calendar> {
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
+              builder: (BuildContext context, Widget? child) {
+                return Theme(
+                  data: ThemeData(
+                    colorScheme: const ColorScheme.light(
+                      primary: Color.fromARGB(255, 67, 107, 31),
+                      onPrimary: Color.fromARGB(255, 205, 219, 192),
+                      surface: Color.fromARGB(255, 225, 235, 206),
+                    ),
+                  ),
+                  child: child!,
+                );
+              },
             ).then((date) {
               if (date != null) {
                 // The selected date is printed to the console in ISO 8601 format for debugging purposes.
@@ -563,7 +575,8 @@ class _CalendarState extends State<Calendar> {
                     final NeatCleanCalendarEvent event = _selectedEvents![index];
                     return MySquare(
                       title: event.title,
-                      qty: event.qty, 
+                      qty: event.qty,
+                      img: event.image,
                     );
                   },
                   itemCount: _selectedEvents!.length,
