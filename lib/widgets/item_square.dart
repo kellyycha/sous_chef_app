@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sous_chef_app/services/image_helper.dart';
 
 class MySquare extends StatelessWidget {
   final String title;
@@ -26,47 +25,9 @@ class MySquare extends StatelessWidget {
     //TODO: remove item from DB
   }
 
-  bool isNetworkImage(String imageUrl) {
-    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
-  }
-  
-  bool isValidFilePath(String path) {
-    final file = File(path);
-    return file.existsSync();
-  }
-
-  // TODO: once DB connected, no links: encode the preset inventory images to save in DB
-
-  Widget getImageWidget(image) {
-    if (isNetworkImage(image)) {
-      return Image.network(
-        image!,
-        height: 120,
-        width: 150,
-        fit: BoxFit.cover,
-      );
-    } else if (isValidFilePath(image)) {
-      return Image.file(
-        File(image!),
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    } else { // Encoded image
-      final decodedBytes = base64Decode(image);
-      var file = File("test.png");
-      file.writeAsBytesSync(decodedBytes);
-      return Image.file(
-        file,
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageHelper = ImageHelper();
     return GestureDetector(
       onTap: onTap,
       child: Dismissible(
@@ -102,7 +63,11 @@ class MySquare extends StatelessWidget {
               img != null ? 
               ClipRRect(
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),),
-                child: getImageWidget(img)
+                child: imageHelper.getImageWidget(
+                  image: img,
+                  height: 120,
+                  width: 150,
+                ),
               )
               : Container(
                 height: 120,

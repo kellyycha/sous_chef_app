@@ -1,9 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:sous_chef_app/services/encode_image.dart';
+import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 
@@ -111,35 +109,10 @@ class _CustomInputState extends State<CustomInput> {
       }
     });
   }
-  
-  bool isValidFilePath(String path) {
-    final file = File(path);
-    return file.existsSync();
-  }
-
-  Widget getImageWidget(image) {
-    if (isValidFilePath(image)) {
-      return Image.file(
-        File(image!),
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    } else { // Encoded image
-      final decodedBytes = base64Decode(image);
-      var file = File("test.png");
-      file.writeAsBytesSync(decodedBytes);
-      return Image.file(
-        file,
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final imageHelper = ImageHelper();
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 244, 247, 234),
       title: Text(
@@ -156,7 +129,11 @@ class _CustomInputState extends State<CustomInput> {
               _image != null ? 
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: getImageWidget(_image)
+                child: imageHelper.getImageWidget(
+                  image: _image,
+                  height: 168,
+                  width: 210,
+                ),
               )
               : Container(
                 height: 168,
@@ -285,14 +262,15 @@ class _CustomInputState extends State<CustomInput> {
                 const Spacer(),
                 ElevatedButton(
                   onPressed: _titleController.text.isEmpty ? null : () async { 
-                    if (_image != null && isValidFilePath(_image!)) {
-                      var encodedImage = await fileImageToBase64(_image!);
-                      print(encodedImage);
+
+                    if (_image != null && imageHelper.isValidFilePath(_image!)) {
+                      String? encodedImage = await imageHelper.encodeImage(_image!);
                     }
 
                     // save expiration date as date and number of days remaining
 
-                    // TODO: Save data in inventory DB
+                    // TODO: Save or edit data in inventory DB
+                    print("save");
 
                     Navigator.of(context).pop();
                   },

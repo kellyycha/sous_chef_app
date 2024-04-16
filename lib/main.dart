@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BottomNav(),
+      home: const BottomNav(),
       routes: {
-        '/bottomnav': (context) => BottomNav(),
+        '/bottomnav': (context) => const BottomNav(),
         '/inventorypage': (context) => InventoryPage(), 
-        '/calendarpage': (context) => CalendarPage(),
-        '/recipespage': (context) => RecipesPage(),
-        '/video': (context) => VideoScreen(),
+        '/calendarpage': (context) => const CalendarPage(),
+        '/recipespage': (context) => const RecipesPage(),
+        '/video': (context) => const VideoScreen(),
       },
 
     );

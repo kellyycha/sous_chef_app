@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/services/encode_image.dart';
+import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class CustomRecipe extends StatefulWidget {
@@ -39,34 +38,9 @@ class _CustomRecipeState extends State<CustomRecipe> {
     });
   }
 
-  bool isValidFilePath(String path) {
-    final file = File(path);
-    return file.existsSync();
-  }
-
-  Widget getImageWidget(image) {
-    if (isValidFilePath(image)) {
-      return Image.file(
-        File(image!),
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    } else { // Encoded image
-      final decodedBytes = base64Decode(image);
-      var file = File("test.png");
-      file.writeAsBytesSync(decodedBytes);
-      return Image.file(
-        file,
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageHelper = ImageHelper();
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 244, 247, 234),
       title: const Text(
@@ -83,7 +57,11 @@ class _CustomRecipeState extends State<CustomRecipe> {
               _image != null ? 
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: getImageWidget(_image)
+                child: imageHelper.getImageWidget(
+                  image: _image,
+                  height: 216,
+                  width: 270,
+                ),
               )
               : Container(
                 height: 216,
@@ -173,9 +151,8 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     recipe += _instructionsController.text;
                     print(recipe);
 
-                    if (_image != null && isValidFilePath(_image!)) {
-                      var encodedImage = await fileImageToBase64(_image!);
-                      print(encodedImage);
+                    if (_image != null && imageHelper.isValidFilePath(_image!)) {
+                      String? encodedImage = await imageHelper.encodeImage(_image!);
                     }
                     
                     // TODO: Save data in DB [title, recipe, today's date, encoded image]

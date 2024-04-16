@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/services/encode_image.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
@@ -37,61 +37,9 @@ class _RecipeCardState extends State<RecipeCard> {
 
   }
 
-  bool isNetworkImage(String imageUrl) {
-    return imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
-  }
-
-  bool isValidFilePath(String path) {
-    final file = File(path);
-    return file.existsSync();
-  }
-
-  Future<String?> encodeImage(String image) async {
-    String? encodedImage;
-    
-    if (isNetworkImage(image)){
-      print("network");
-      encodedImage = await networkImageToBase64(image);
-    }
-
-    else if (isValidFilePath(image)){
-      print("file");
-      encodedImage = await fileImageToBase64(image);
-    }
-    print(encodedImage); 
-    return encodedImage;
-  }
-
-  Widget getImageWidget(image) {
-    if (isNetworkImage(image)) {
-      return Image.network(
-        image!,
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    } else if (isValidFilePath(image)) {
-      return Image.file(
-        File(image!),
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    } else { // Encoded image
-      final decodedBytes = base64Decode(image);
-      var file = File("test.png");
-      file.writeAsBytesSync(decodedBytes);
-      return Image.file(
-        file,
-        height: 264,
-        width: 330,
-        fit: BoxFit.cover,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final imageHelper = ImageHelper();
     List<String> lines = widget.recipeResponse!.split('\n');
 
     int findIngredientsIndex(List<String> lines) {
@@ -162,7 +110,11 @@ class _RecipeCardState extends State<RecipeCard> {
                   _image != null ? 
                   ClipRRect(
                     borderRadius: BorderRadius.circular(18),
-                    child: getImageWidget(_image)
+                    child: imageHelper.getImageWidget(
+                      image: _image,
+                      height: 264,
+                      width: 330,
+                    ),
                   )
                   : Container(
                     height: 264,
@@ -205,12 +157,15 @@ class _RecipeCardState extends State<RecipeCard> {
                                 });
                                 if (isSaved) {
                                   
-
+                                  
                                   if (_image != null){
-                                    if (isNetworkImage(_image!) || isValidFilePath(_image!)) {
-                                      var encodedImage = await encodeImage(_image!);
+                                    String? encodedImage;
+                                    if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
+                                      encodedImage = await imageHelper.encodeImage(_image!);
+                                      writeText(encodedImage!);
                                     }
                                   }
+
                                   print("save");
 
                                   // TODO: save to DB as [title, recipe, date saved, encodedImage]
@@ -296,4 +251,24 @@ class _RecipeCardState extends State<RecipeCard> {
       )
     );
   }
+}
+
+
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
+}
+
+Future<File> get _localFile async {
+  final path = await _localPath;
+  return File('$path/saved.txt');
+}
+  
+Future<File> writeText(String text) async {
+  final file = await _localFile;
+  print(file);
+
+  // Write the file
+  return file.writeAsString(text);
 }

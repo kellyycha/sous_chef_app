@@ -4,7 +4,7 @@ import 'package:sous_chef_app/pages/calendar_page.dart';
 import 'package:sous_chef_app/pages/recipes_page.dart';
 
 class BottomNav extends StatefulWidget {
-  BottomNav({super.key});
+  const BottomNav({super.key});
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -21,8 +21,8 @@ class _BottomNavState extends State<BottomNav> {
 
   final List _pages = [
     InventoryPage(),
-    CalendarPage(),
-    RecipesPage(),
+    const CalendarPage(),
+    const RecipesPage(),
   ];
 
   @override

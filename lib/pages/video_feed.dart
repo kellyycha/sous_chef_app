@@ -29,7 +29,7 @@ class VideoScreen extends StatelessWidget {
 
           Container(
             height: 400,
-            padding:EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             alignment: Alignment.center,
             child: const Text(
               'Camera is not active.',
