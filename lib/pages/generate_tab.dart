@@ -22,6 +22,7 @@ class _GenerateState extends State<GenerateTab> {
   
   List<String> dietaryRestrictions = [];
   List<String> cuisines = [];
+  String? timing;
 
   // TODO: from DB. [ingredient, qty, expiration]
   List ingredients = [
@@ -86,7 +87,7 @@ class _GenerateState extends State<GenerateTab> {
       _requestInProgress = true;
     });
 
-    String prompt = constructPrompt(ingredients, dietaryRestrictions, cuisines);
+    String prompt = constructPrompt(ingredients, dietaryRestrictions, cuisines, timing);
     String? response = await ChatService().request(prompt);
 
     // Loop requesting new prompts until "!!!" is found in the response
@@ -105,7 +106,7 @@ class _GenerateState extends State<GenerateTab> {
     return recipeResponse;
   }
 
-  String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines) {
+  String constructPrompt(List ingredients, List<String> dietaryRestrictions, List<String> cuisines, String? timing) {
     String prompt = "Give me a recipe using a subset of these ingredients, given in a list of ingredients, their quantities, and their expiration date (assume values with -1 have unlimited quantity and do not expire):\n\n";
     prompt += "${ingredients.join(', ')}\n";
     prompt += "You do not need to use all of the ingredients. Give higher priority to the ingredients that have sooner expiration dates.";
@@ -115,6 +116,9 @@ class _GenerateState extends State<GenerateTab> {
     if (cuisines.isNotEmpty) {
       prompt += "Make sure the recipe if one of the following cuisines: ${cuisines.join(', ')}\n\n";
     }
+    if (timing != null) {
+      prompt += "Make sure the recipe takes under $timing, which includes time to prep ingredients and cook.\n\n";
+    } 
     prompt += "Give the name of the recipe, label an Ingredients section where you will list the ingredients and the amount needed in the recipe, and label an Instructions section where you will list the steps of the recipe";
     prompt += "Denote the end of the recipe with '!!!', after the last step in the instructions.";
     return prompt;
@@ -227,6 +231,7 @@ class _GenerateState extends State<GenerateTab> {
                     ).then((value) {
                       dietaryRestrictions = filterPopupKey.currentState!.getSelectedDietaryRestrictions();
                       cuisines = filterPopupKey.currentState!.getSelectedCuisines();
+                      timing = filterPopupKey.currentState!.getSelectedTiming(); 
                     });
                   },
                 ), 

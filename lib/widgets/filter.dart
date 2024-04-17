@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FilterPopup extends StatefulWidget {
-  const FilterPopup({super.key});
+  const FilterPopup({Key? key}) : super(key: key);
 
   @override
   FilterPopupState createState() => FilterPopupState();
@@ -10,9 +10,11 @@ class FilterPopup extends StatefulWidget {
 class FilterPopupState extends State<FilterPopup> {
   final List<String> _selectedDietaryRestrictions = [];
   final List<String> _selectedCuisines = [];
+  String? _selectedTiming;
 
-  final List<String> _dietaryRestrictions = ['Vegan', 'Vegetarian', 'Gluten-Free', 'Dairy-Free', 'Kosher'];
+  final List<String> _dietaryRestrictions = ['Vegan', 'Vegetarian', 'Gluten-Free', 'Dairy-Free', 'Kosher', 'Keto'];
   final List<String> _cuisines = ['American', 'Chinese', 'Cuban', 'Greek', 'Indian', 'Italian', 'Japanese', 'Korean', 'Mexican', 'Thai', 'Vietnamese'];
+  final List<String> _timing = ['10 minutes', '30 minutes', '1 hour'];
 
   List<String> getSelectedDietaryRestrictions() {
     return _selectedDietaryRestrictions;
@@ -20,6 +22,10 @@ class FilterPopupState extends State<FilterPopup> {
 
   List<String> getSelectedCuisines() {
     return _selectedCuisines;
+  }
+
+  String? getSelectedTiming() {
+    return _selectedTiming;
   }
 
   @override
@@ -33,23 +39,35 @@ class FilterPopupState extends State<FilterPopup> {
           fontWeight: FontWeight.w600,
         ),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // Dietary Restrictions Section
-          _buildSection(
-            title: 'Dietary Restrictions',
-            options: _dietaryRestrictions,
-            selectedOptions: _selectedDietaryRestrictions,
-          ),
-          // Cuisine Section
-          const SizedBox(height: 16),
-          _buildSection(
-            title: 'Cuisine',
-            options: _cuisines,
-            selectedOptions: _selectedCuisines,
-          ),
-        ],
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            // Dietary Restrictions Section
+            _buildSection(
+              title: 'Dietary Restrictions',
+              options: _dietaryRestrictions,
+              selectedOptions: _selectedDietaryRestrictions,
+              isMultipleSelection: true,
+            ),
+            // Cuisine Section
+            const SizedBox(height: 16),
+            _buildSection(
+              title: 'Cuisine',
+              options: _cuisines,
+              selectedOptions: _selectedCuisines,
+              isMultipleSelection: true,
+            ),
+            // Timing Section
+            const SizedBox(height: 16),
+            _buildSection(
+              title: 'Timing',
+              options: _timing,
+              selectedOptions: [_selectedTiming ?? ''],
+              isMultipleSelection: false,
+            ),
+          ],
+        ),
       ),
       actions: <Widget>[
         ElevatedButton(
@@ -69,7 +87,7 @@ class FilterPopupState extends State<FilterPopup> {
     );
   }
 
-  Widget _buildSection({required String title, required List<String> options, required List<String> selectedOptions}) {
+  Widget _buildSection({required String title, required List<String> options, required List<String> selectedOptions, required bool isMultipleSelection}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,10 +108,14 @@ class FilterPopupState extends State<FilterPopup> {
               selected: isSelected,
               onSelected: (isSelected) {
                 setState(() {
-                  if (isSelected) {
-                    selectedOptions.add(option);
+                  if (isMultipleSelection) {
+                    if (isSelected) {
+                      selectedOptions.add(option);
+                    } else {
+                      selectedOptions.remove(option);
+                    }
                   } else {
-                    selectedOptions.remove(option);
+                    _selectedTiming = option;
                   }
                 });
               },
