@@ -1,45 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/widgets/custom_edit_input.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:sous_chef_app/widgets/custom_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
 
-class InventoryPage extends StatelessWidget {
-  InventoryPage({super.key});
 
-  //TODO: inventory DB [ingredient, qty, days left from today to expiration date, location, image]
-  // add the default images to this db: [title, days to expiration, image] - this DB is referenced when adding items to ^ db from camera
-  final List _inventory = [
-    ["Tomato", 2, 7, "Refrigerator", null],
-    ["Potato", 4, 28, "Pantry", null],
-    ["Garlic", 3, 120, "Pantry", null],
-    ["Broccoli", 2, 10, "Refrigerator", null],
-    ["Banana", 5, 7, "Pantry", null],
-    ["Cabbage", 1, 20, "Refrigerator", null],
-    ["Corn", 2, 5, "Refrigerator", null],
-    ["Eggplant", 1, 10, "Refrigerator", null],
-    ["Lemon", 4, 30, "Refrigerator", null],
-    ["Carrot", 5, 25, "Refrigerator", null],
-    ["Steak", 1, 4, "Refrigerator", null],
-    ["Egg", 12, 50, "Refrigerator", null],
-    ["Avocado", 1, 5, "Pantry", null],
-    ["Onion", 4, 60, "Pantry", null],
-    ["Orange", 3, 20, "Refrigerator", null],
-    ["Scallion", 6, 14, "Refrigerator", null],
-    ["Jalapeno", 4, 9, "Refrigerator", null],
-    ["Mushroom", 5, 10, "Refrigerator", null],
-    ["Cauliflower", 1, 12, "Refrigerator", null],
-    ["Soy Sauce", -1, -1, "Spices/Sauces", null],
-    ["Salt", -1, -1, "Spices/Sauces", null],
-    ["Pepper", -1, -1, "Spices/Sauces", null],
-    ["Paprika", -1, -1, "Spices/Sauces", null],
-    ["Cinnamon", -1, -1, "Spices/Sauces", null],
-    ["Vinegar", -1, -1, "Spices/Sauces", null],
-    ["Sesame Oil", -1, -1, "Spices/Sauces", null],
-    ["Chili Oil", -1, -1, "Spices/Sauces", null],
-    ["Parsley", -1, -1, "Spices/Sauces", null],
-    ];
+class InventoryPage extends StatefulWidget {
+  const InventoryPage({super.key});
+
+  @override
+  _InventoryPageState createState() => _InventoryPageState();
+}
+
+class _InventoryPageState extends State<InventoryPage> {
+  List<List<dynamic>> _inventory = [];
+  final List<List<dynamic>> _entireInventory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchInventoryData();
+  }
+
+  Future<void> _fetchInventoryData() async {
+    try {
+      //SERVER CHANGE API CALL
+      final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        jsonData.forEach((key, value) {
+          String name = value['name'];
+          int quantity = value['quantity'];
+          String expirationDate = value['expiration_date'];
+          String location = value['food_type'];
+          String imageUrl = value['image_url'];
+
+          // Calculate days left from today to expiration date
+          DateTime today = DateTime.now();
+          DateTime expiryDate = DateTime.parse(expirationDate);
+          int daysLeft = expiryDate.difference(today).inDays;
+
+          // Create list of food details
+          List<dynamic> foodDetails = [
+            name,
+            quantity,
+            daysLeft,
+            location,
+            imageUrl,
+          ];
+
+          // Add food details to _inventory list
+          setState(() {
+            _inventory.add(foodDetails);
+            _entireInventory.add(foodDetails);
+          });
+        });
+      } else {
+        throw Exception('Failed to load inventory');
+      }
+    } catch (e) {
+      print('Error fetching inventory: $e');
+    }
+  }
 
   final List<String> _location = <String>[
     'All', 
@@ -50,8 +77,22 @@ class InventoryPage extends StatelessWidget {
     ];
 
   void handleLocationSelection(String location) {
-    // TODO: Filter inventory based on selected location
+    // Filter inventory based on selected location
+    List<List<dynamic>> filteredInventory = [];
+
+    for (List<dynamic> item in _entireInventory) {
+      String itemLocation = item[3]; // Location is at index 3 in the item list
+      if (itemLocation == location || location == 'All') {
+        filteredInventory.add(item);
+      }
+    }
+
+    // Update _inventory to display filtered items
+    setState(() {
+      _inventory = filteredInventory;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
