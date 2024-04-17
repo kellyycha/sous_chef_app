@@ -4,10 +4,18 @@ import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class CustomRecipe extends StatefulWidget {
-  final void Function(File? image)? onImageSelected;
+  final void Function(String? image)? onImageSelected;
+  final String? title;
+  final String? ingredients;
+  final String? instructions;
+  final String? image;
 
   const CustomRecipe({super.key,
-    this.onImageSelected
+    this.onImageSelected, 
+    this.title,
+    this.ingredients,
+    this.instructions,
+    this.image,
   });
 
   @override
@@ -15,17 +23,32 @@ class CustomRecipe extends StatefulWidget {
 }
 
 class _CustomRecipeState extends State<CustomRecipe> {
-  late TextEditingController _titleController;
-  late TextEditingController _ingredientsController;
-  late TextEditingController _instructionsController;
+  late final TextEditingController _titleController = TextEditingController();
+  late final TextEditingController _ingredientsController = TextEditingController();
+  late final TextEditingController _instructionsController = TextEditingController();
   String? _image;
+  late bool edit = false;
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _ingredientsController = TextEditingController();
-    _instructionsController = TextEditingController();
+
+    if (widget.image != null){
+      _image = widget.image;
+    }
+    
+    if (widget.title != null){
+      edit = true;
+      _titleController.text = widget.title!;
+    }
+
+    if (widget.ingredients != null){
+      _ingredientsController.text = widget.ingredients!;
+    }
+
+    if (widget.instructions != null){
+      _instructionsController.text = widget.instructions!;
+    }
 
     _titleController.addListener(() {
       setState(() {});
@@ -43,9 +66,9 @@ class _CustomRecipeState extends State<CustomRecipe> {
     final imageHelper = ImageHelper();
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 244, 247, 234),
-      title: const Text(
-        'Custom Recipe',
-        style: TextStyle(
+      title: Text(
+        edit ? 'Edit':'Custom Recipe',
+        style: const TextStyle(
           color: Color.fromARGB(255, 67, 107, 31),
           fontWeight: FontWeight.w600,
         ),
@@ -158,6 +181,11 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     }
                     
                     // TODO: Save data in DB [title, recipe, today's date, encoded image]
+                    if (edit) {
+                      print("edit");
+                    } else {
+                      print("save");
+                    }
 
                     Navigator.of(context).pop();
                   },
@@ -169,10 +197,9 @@ class _CustomRecipeState extends State<CustomRecipe> {
                       return const Color.fromARGB(255, 67, 107, 31); 
                     }),
                   ),
-                  
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    edit ? 'Save Changes' : 'Save',
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],

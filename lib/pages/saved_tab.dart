@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
-import 'package:sous_chef_app/widgets/custom_recipe.dart';
+import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';

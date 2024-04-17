@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
+import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class RecipeCard extends StatefulWidget {
@@ -69,11 +70,15 @@ class _RecipeCardState extends State<RecipeCard> {
         .map((ingredient) => ingredient.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
 
+    String ingredientsStr = ingredients.join('\n');
+
     int instructionsStartIndex = ingredientsEndIndex + 1;
     List<String> instructions = lines.sublist(instructionsStartIndex)
         .where((element) => element.trim().isNotEmpty)
         .map((instruction) => instruction.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
+
+    String instructionsStr = instructions.join('\n');
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 245),
@@ -158,6 +163,29 @@ class _RecipeCardState extends State<RecipeCard> {
                         SizedBox(
                           width: 30,
                             child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              iconSize: 30,
+                              color: const Color.fromARGB(255, 67, 107, 31),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(0),
+                              onPressed: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CustomRecipe(
+                                      title: widget.title,
+                                      ingredients: ingredientsStr,
+                                      instructions: instructionsStr,
+                                      image: _image
+                                    );
+                                  },
+                                );
+                              },
+                            ), 
+                          ),
+                        SizedBox(
+                          width: 30,
+                            child: IconButton(
                               icon: Icon(
                                 isSaved ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
                               ),
@@ -188,7 +216,7 @@ class _RecipeCardState extends State<RecipeCard> {
                               },
                             ), 
 
-                          )
+                          ),
                       ],
                     ),
                   ),
