@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sous_chef_app/widgets/custom_input.dart';
+import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
