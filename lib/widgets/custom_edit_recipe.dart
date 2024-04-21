@@ -9,7 +9,7 @@ class CustomRecipe extends StatefulWidget {
   final String? instructions;
   final String? image;
 
-  CustomRecipe({
+  const CustomRecipe({super.key, 
     this.onUpdate,
     this.title,
     this.ingredients,

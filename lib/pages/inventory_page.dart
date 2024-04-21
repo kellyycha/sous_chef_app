@@ -5,11 +5,15 @@ import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
 
-class InventoryPage extends StatelessWidget {
+class InventoryPage extends StatefulWidget {
   InventoryPage({super.key});
 
+  @override
+  State<InventoryPage> createState() => _InventoryPageState();
+}
+
+class _InventoryPageState extends State<InventoryPage> {
   //TODO: inventory DB [ingredient, qty, days left from today to expiration date, location, image]
-  // add the default images to this db: [title, days to expiration, image] - this DB is referenced when adding items to ^ db from camera
   final List _inventory = [
     ["Tomato", 2, 7, "Refrigerator", null],
     ["Potato", 4, 28, "Pantry", null],
@@ -231,8 +235,8 @@ class InventoryPage extends StatelessWidget {
                       qty: _inventory[index][1],
                       expiration: _inventory[index][2],
                       img: _inventory[index][4],
-                      onTap: () {
-                        showDialog(
+                      onTap: () async {
+                        await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
@@ -241,10 +245,19 @@ class InventoryPage extends StatelessWidget {
                               expiration: _inventory[index][2],
                               location: _inventory[index][3],
                               image: _inventory[index][4],
+                              onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
+                                setState(() {
+                                  _inventory[index][0] = updatedTitle ?? _inventory[index][0];
+                                  _inventory[index][1] = updatedQty ?? _inventory[index][1];
+                                  _inventory[index][2] = updatedExpiration ?? _inventory[index][2];
+                                  _inventory[index][3] = updatedLocation ?? _inventory[index][3];
+                                  _inventory[index][4] = updatedImage ?? _inventory[index][4];
+                                });
+                              },
                             );
                           },
                         );
-                      }, 
+                      },
                     );
                   },
                 ),
@@ -255,4 +268,4 @@ class InventoryPage extends StatelessWidget {
       )
     );
   }
-} 
+}

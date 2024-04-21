@@ -4,20 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
-import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
   String title;
   final String? image;
 
-  final void Function(String? image)? onImageSelected;
-
   RecipeCard({super.key, 
     required this.recipeResponse, 
     required this.title, 
     this.image,
-    this.onImageSelected
   });
 
   @override
