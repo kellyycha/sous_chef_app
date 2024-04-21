@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
-import 'package:sous_chef_app/widgets/image_upload_button.dart';
+import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CustomInput extends StatefulWidget {
   final void Function(String? image, String? title, int? qty, int? expiration, String? location)? onItemUpdated;
@@ -95,6 +97,40 @@ class _CustomInputState extends State<CustomInput> {
       setState(() {
         _expirationDateController.text = DateFormat('MM/dd/yyyy').format(pickedDate);
       });
+    }
+  }
+
+  Future<void> saveToInventoryDB() async {
+    final url = Uri.parse('http://127.0.0.1:8000/add_food/');
+
+    String expirationDateString = _expirationDateController.text;
+    DateTime expirationDate = DateFormat('MM/dd/yyyy').parse(expirationDateString);
+    DateTime currentDate = DateTime.now();
+    Duration difference = expirationDate.difference(currentDate);
+    int expirationDuration = difference.inDays;
+
+    final foodData = {
+      'name': _titleController.text,
+      'expiration_duration': expirationDuration, // Assuming this is in days
+      'food_type': _locationSelected,
+      'quantity': int.tryParse(_quantityController.text) ?? 1,
+      'image_url': _image ?? '',
+    };
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(foodData),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success, e.g., show a success message
+      print('Food item saved successfully!');
+    } else {
+      // Handle error, e.g., show an error message
+      print('Failed to save food item: ${response.body}');
     }
   }
 
@@ -284,12 +320,13 @@ class _CustomInputState extends State<CustomInput> {
                                 _locationSelected,
                               );
 
-                              //TODO: save edited to DB
+                              // save expiration date as date and number of days remaining
 
                               print("edited");
+                              // TODO: edit data in inventory DB
                             } else {
-                              //TODO: save custom input to DB
                               print("new");
+                              await saveToInventoryDB();
                             }
 
                             Navigator.of(context).pop();

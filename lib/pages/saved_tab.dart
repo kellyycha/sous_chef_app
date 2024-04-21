@@ -5,9 +5,58 @@ import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
 import 'package:sous_chef_app/sample_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class SavedTab extends StatelessWidget {
-  SavedTab({super.key});
+class SavedTab extends StatefulWidget {
+  const SavedTab({super.key});
+
+  @override
+  _savedTabState createState() => _savedTabState();
+}
+
+class _savedTabState extends State<SavedTab> {
+  List<List<dynamic>> _recipes = [];
+  @override
+  void initState() {
+    super.initState();
+    _fetchRecipes();
+  }
+
+  Future<void> _fetchRecipes() async {
+    try {
+      //SERVER CHANGE API CALL
+      final response = await http.get(Uri.parse('http://127.0.0.1:8000/get_recipes/'));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        jsonData.forEach((key, value) {
+          String name = value['name'];
+          DateTime dateSaved = DateTime.parse(value['date_saved']);
+          String instructions = value['instructions'];
+          String imageEncodedString = value['recipe_longtext'];
+
+          List<dynamic> recipe = [
+            name,
+            instructions,
+            imageEncodedString,
+            dateSaved,
+          ];
+          print(recipe[0]);
+
+          setState(() {
+            _recipes.add(recipe);
+          });
+        });
+
+      } else {
+        throw Exception('Failed to load recipe data');
+      }
+    } catch (e) {
+      print('Error fetching recipe data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,21 +162,23 @@ class SavedTab extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(0),
-              itemCount: recipes.length,
+              itemCount: _recipes.length,
               itemBuilder: (context, index) {
                 // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
                 return MySquare(
-                  title: recipes[index][0],
-                  img: recipes[index][2],
-                  recipeDate: recipes[index][3],
+                  title: _recipes[index][0],
+                  //TODO: FIX ENCODED IMAGES
+                  //img: _recipes[index][2],
+                  recipeDate: _recipes[index][3],
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => RecipeCard(
-                          title: recipes[index][0],
-                          recipeResponse: recipes[index][1],
-                          image: recipes[index][2], 
+                          title: _recipes[index][0],
+                          recipeResponse: _recipes[index][1],
+                          //TODO: FIX ENCODED IMAGES
+                          //image: _recipes[index][2], 
                         ),
                       ),
                     );

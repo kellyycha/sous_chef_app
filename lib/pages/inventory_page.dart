@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
@@ -7,13 +9,64 @@ import 'package:sous_chef_app/widgets/search_bar.dart';
 import 'package:sous_chef_app/sample_data.dart';
 
 class InventoryPage extends StatefulWidget {
-  InventoryPage({super.key});
+  const InventoryPage({super.key});
 
   @override
-  State<InventoryPage> createState() => _InventoryPageState();
+  _InventoryPageState createState() => _InventoryPageState();
 }
 
 class _InventoryPageState extends State<InventoryPage> {
+  List<List<dynamic>> _inventory = [];
+  final List<List<dynamic>> _entireInventory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchInventoryData();
+  }
+
+  Future<void> _fetchInventoryData() async {
+    try {
+      //SERVER CHANGE API CALL
+      final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        jsonData.forEach((key, value) {
+          String name = value['name'];
+          int quantity = value['quantity'];
+          String expirationDate = value['expiration_date'];
+          String location = value['food_type'];
+          String imageUrl = value['image_url'];
+
+          // Calculate days left from today to expiration date
+          DateTime today = DateTime.now();
+          DateTime expiryDate = DateTime.parse(expirationDate);
+          int daysLeft = expiryDate.difference(today).inDays;
+
+          // Create list of food details
+          List<dynamic> foodDetails = [
+            name,
+            quantity,
+            daysLeft,
+            location,
+            imageUrl,
+          ];
+
+          // Add food details to _inventory list
+          setState(() {
+            _inventory.add(foodDetails);
+            _entireInventory.add(foodDetails);
+          });
+        });
+      } else {
+        throw Exception('Failed to load inventory');
+      }
+    } catch (e) {
+      print('Error fetching inventory: $e');
+    }
+  }
 
   final List<String> _location = <String>[
     'All', 
@@ -24,8 +77,22 @@ class _InventoryPageState extends State<InventoryPage> {
     ];
 
   void handleLocationSelection(String location) {
-    // TODO: Filter inventory based on selected location
+    // Filter inventory based on selected location
+    List<List<dynamic>> filteredInventory = [];
+
+    for (List<dynamic> item in _entireInventory) {
+      String itemLocation = item[3]; // Location is at index 3 in the item list
+      if (itemLocation == location || location == 'All') {
+        filteredInventory.add(item);
+      }
+    }
+
+    // Update _inventory to display filtered items
+    setState(() {
+      _inventory = filteredInventory;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -210,18 +277,18 @@ class _InventoryPageState extends State<InventoryPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
-                              title: inventory[index][0],
-                              qty: inventory[index][1],
-                              expiration: inventory[index][2],
-                              location: inventory[index][3],
-                              image: inventory[index][4],
+                              title: _inventory[index][0],
+                              qty: _inventory[index][1],
+                              expiration: _inventory[index][2],
+                              location: _inventory[index][3],
+                              image: _inventory[index][4],
                               onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
                                 setState(() {
-                                  inventory[index][0] = updatedTitle ?? inventory[index][0];
-                                  inventory[index][1] = updatedQty ?? inventory[index][1];
-                                  inventory[index][2] = updatedExpiration ?? inventory[index][2];
-                                  inventory[index][3] = updatedLocation ?? inventory[index][3];
-                                  inventory[index][4] = updatedImage ?? inventory[index][4];
+                                  _inventory[index][0] = updatedTitle ?? _inventory[index][0];
+                                  _inventory[index][1] = updatedQty ?? _inventory[index][1];
+                                  _inventory[index][2] = updatedExpiration ?? _inventory[index][2];
+                                  _inventory[index][3] = updatedLocation ?? _inventory[index][3];
+                                  _inventory[index][4] = updatedImage ?? _inventory[index][4];
                                 });
                               },
                             );
