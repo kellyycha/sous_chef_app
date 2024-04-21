@@ -4,6 +4,7 @@ import 'package:sous_chef_app/services/openai/image_service.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
+import 'package:sous_chef_app/sample_data.dart';
 
 final GlobalKey<FilterPopupState> filterPopupKey = GlobalKey<FilterPopupState>();
 
@@ -23,39 +24,6 @@ class _GenerateState extends State<GenerateTab> {
   List<String> dietaryRestrictions = [];
   List<String> cuisines = [];
   String? timing;
-
-  // TODO: from DB. [ingredient, qty, expiration]
-  List ingredients = [
-    ["Tomato", 3, "4/26/24"], 
-    ["Potato", 2, "5/2/24"],
-    ["Garlic", 6, "4/1/24"],
-    ["Broccoli", 4, "4/1/24"],
-    ["Banana", 5, "4/20/24"],
-    ["Cabbage", 1, "5/10/24"],
-    ["Corn", 1, "5/10/24"],
-    ["Eggplant", 2, "5/10/24"],
-    ["Lemon", 4, "5/10/24"],
-    ["Carrot", 10, "5/10/24"],
-    ["Steak", 2, "5/10/24"],
-    ["Egg", 12, "4/10/24"],
-    ["Avocado", 4, "5/10/24"],
-    ["Onion", 6, "5/10/24"],
-    ["Orange", 2, "5/10/24"],
-    ["Scallion", 11, "3/30/24"],
-    ["Jalapeno", 8, "5/10/24"],
-    ["Mushroom", 4, "5/10/24"],
-    ["Cauliflower", 1, "5/10/24"],
-    ["Soy Sauce", -1, -1],
-    ["Salt", -1, -1],
-    ["Pepper", -1, -1],
-    ["Paprika", -1, -1],
-    ["Cinnamon", -1, -1],
-    ["Vinegar", -1, -1],
-    ["Sesame Oil", -1, -1],
-    ["Chili Oil", -1, -1],
-    ["Parsley", -1, -1],];
-
-
 
   @override
   void initState() {

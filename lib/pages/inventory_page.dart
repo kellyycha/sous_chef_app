@@ -4,6 +4,7 @@ import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
+import 'package:sous_chef_app/sample_data.dart';
 
 class InventoryPage extends StatefulWidget {
   InventoryPage({super.key});
@@ -13,37 +14,6 @@ class InventoryPage extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryPage> {
-  //TODO: inventory DB [ingredient, qty, days left from today to expiration date, location, image]
-  final List _inventory = [
-    ["Tomato", 2, 7, "Refrigerator", null],
-    ["Potato", 4, 28, "Pantry", null],
-    ["Garlic", 3, 120, "Pantry", null],
-    ["Broccoli", 2, 10, "Refrigerator", null],
-    ["Banana", 5, 7, "Pantry", null],
-    ["Cabbage", 1, 20, "Refrigerator", null],
-    ["Corn", 2, 5, "Refrigerator", null],
-    ["Eggplant", 1, 10, "Refrigerator", null],
-    ["Lemon", 4, 30, "Refrigerator", null],
-    ["Carrot", 5, 25, "Refrigerator", null],
-    ["Steak", 1, 4, "Refrigerator", null],
-    ["Egg", 12, 50, "Refrigerator", null],
-    ["Avocado", 1, 5, "Pantry", null],
-    ["Onion", 4, 60, "Pantry", null],
-    ["Orange", 3, 20, "Refrigerator", null],
-    ["Scallion", 6, 14, "Refrigerator", null],
-    ["Jalapeno", 4, 9, "Refrigerator", null],
-    ["Mushroom", 5, 10, "Refrigerator", null],
-    ["Cauliflower", 1, 12, "Refrigerator", null],
-    ["Soy Sauce", -1, -1, "Spices/Sauces", null],
-    ["Salt", -1, -1, "Spices/Sauces", null],
-    ["Pepper", -1, -1, "Spices/Sauces", null],
-    ["Paprika", -1, -1, "Spices/Sauces", null],
-    ["Cinnamon", -1, -1, "Spices/Sauces", null],
-    ["Vinegar", -1, -1, "Spices/Sauces", null],
-    ["Sesame Oil", -1, -1, "Spices/Sauces", null],
-    ["Chili Oil", -1, -1, "Spices/Sauces", null],
-    ["Parsley", -1, -1, "Spices/Sauces", null],
-    ];
 
   final List<String> _location = <String>[
     'All', 
@@ -228,30 +198,30 @@ class _InventoryPageState extends State<InventoryPage> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: _inventory.length,
+                  itemCount: inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      title: _inventory[index][0],
-                      qty: _inventory[index][1],
-                      expiration: _inventory[index][2],
-                      img: _inventory[index][4],
+                      title: inventory[index][0],
+                      qty: inventory[index][1],
+                      expiration: inventory[index][2],
+                      img: inventory[index][4],
                       onTap: () async {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
-                              title: _inventory[index][0],
-                              qty: _inventory[index][1],
-                              expiration: _inventory[index][2],
-                              location: _inventory[index][3],
-                              image: _inventory[index][4],
+                              title: inventory[index][0],
+                              qty: inventory[index][1],
+                              expiration: inventory[index][2],
+                              location: inventory[index][3],
+                              image: inventory[index][4],
                               onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
                                 setState(() {
-                                  _inventory[index][0] = updatedTitle ?? _inventory[index][0];
-                                  _inventory[index][1] = updatedQty ?? _inventory[index][1];
-                                  _inventory[index][2] = updatedExpiration ?? _inventory[index][2];
-                                  _inventory[index][3] = updatedLocation ?? _inventory[index][3];
-                                  _inventory[index][4] = updatedImage ?? _inventory[index][4];
+                                  inventory[index][0] = updatedTitle ?? inventory[index][0];
+                                  inventory[index][1] = updatedQty ?? inventory[index][1];
+                                  inventory[index][2] = updatedExpiration ?? inventory[index][2];
+                                  inventory[index][3] = updatedLocation ?? inventory[index][3];
+                                  inventory[index][4] = updatedImage ?? inventory[index][4];
                                 });
                               },
                             );
