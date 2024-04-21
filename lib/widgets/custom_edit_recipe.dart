@@ -163,6 +163,14 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     _ingredientsController.text.isEmpty || 
                     _instructionsController.text.isEmpty) ? null : () async {
                       
+                      String? encodedImage;
+                      if (_image != null){
+                        if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
+                          encodedImage = await imageHelper.encodeImage(_image!);
+                          _image = encodedImage;
+                        }
+                      } 
+                      
                       if (widget.onUpdate != null) {
                         widget.onUpdate!(
                           title: _titleController.text,
@@ -170,7 +178,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
                           instructions: _instructionsController.text,
                           image: _image,
                         );
-
+                      
                         //TODO: save changes to DB
                         print("edited recipe");
                       }

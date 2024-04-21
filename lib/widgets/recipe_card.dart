@@ -79,26 +79,18 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   void updateRecipe({String? title, String? ingredients, String? instructions, String? image}) {
-    if (title != null) {
-      setState(() {
-        widget.title = title;
-      });
-    }
-    if (ingredients != null) {
-      setState(() {
-        _ingredientsStr = ingredients;
-      });
-    }
-    if (instructions != null) {
-      setState(() {
-        _instructionsStr = instructions;
-      });
-    }
-    if (image != null) {
-      setState(() {
-        _image = image;
-      });
-    }
+    setState(() {
+      widget.title = title!;
+    });
+    setState(() {
+      _ingredientsStr = ingredients!;
+    });
+    setState(() {
+      _instructionsStr = instructions!;
+    });
+    setState(() {
+      _image = image;
+    });
   }
 
   @override
@@ -165,52 +157,44 @@ class _RecipeCardState extends State<RecipeCard> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Row(
                       children: [
-                        ImageUploadButton(
-                          onImageSelected: (String? image) async {
-                            String? encodedImage;
-                            if (isSaved){
-                              if (image != null){
-                                if (imageHelper.isNetworkImage(image) || imageHelper.isValidFilePath(image)) {
-                                  encodedImage = await imageHelper.encodeImage(image);
-                                }
-                              } 
-                              print(encodedImage);
-                              // TODO: update image in DB when image is changed
-                            }
-                            setState(() {
-                              _image = image;
-                              print("new image");
-                              }
-                            );
-                          },
-                        ),
-                        const Spacer(),
-                        isSaved ?
-                          SizedBox(
-                            width: 30,
-                              child: IconButton(
-                                icon: const Icon(Icons.edit),
-                                iconSize: 30,
-                                color: const Color.fromARGB(255, 67, 107, 31),
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(0),
-                                onPressed: () async {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return CustomRecipe(
-                                        title: widget.title,
-                                        ingredients: _ingredientsStr,
-                                        instructions: _instructionsStr,
-                                        image: _image,
-                                        onUpdate: updateRecipe,
-                                      );
-                                    },
+                        isSaved ? SizedBox(
+                          width: 130,
+                          height: 30,
+                          child: TextButton.icon(
+                            onPressed: () async {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomRecipe(
+                                    title: widget.title,
+                                    ingredients: _ingredientsStr,
+                                    instructions: _instructionsStr,
+                                    image: _image,
+                                    onUpdate: updateRecipe,
                                   );
                                 },
-                              ), 
-                            )
-                          : const Spacer(), 
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 20, 
+                            ),
+                            label: const Text(
+                              'Edit Recipe',
+                            ),
+                            style: TextButton.styleFrom(
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              backgroundColor: const Color.fromARGB(255, 67, 107, 31),
+                              foregroundColor: Colors.white,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(0),
+                            ),
+                          ),
+                        ) : const Spacer(),
+                        const Spacer(),
                         SizedBox(
                           width: 30,
                             child: IconButton(
@@ -225,16 +209,18 @@ class _RecipeCardState extends State<RecipeCard> {
                                 setState(() {
                                   isSaved = !isSaved;
                                 });
+                                
                                 String? encodedImage;
                                 if (isSaved) {
                                   if (_image != null){
                                     if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
                                       encodedImage = await imageHelper.encodeImage(_image!);
+                                      _image = encodedImage;
                                     }
                                   }
                                   print("save");
 
-                                  // TODO: save to DB as [title, recipe, date saved, encodedImage]
+                                  // TODO: save to DB as [title, recipe, date saved, _image]
 
                                 } else {
                                   print("remove");
