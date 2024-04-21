@@ -1,17 +1,16 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class CustomRecipe extends StatefulWidget {
-  final void Function(String? image)? onImageSelected;
+  final void Function({String? title, String? ingredients, String? instructions, String? image})? onUpdate;
   final String? title;
   final String? ingredients;
   final String? instructions;
   final String? image;
 
-  const CustomRecipe({super.key,
-    this.onImageSelected, 
+  CustomRecipe({
+    this.onUpdate,
     this.title,
     this.ingredients,
     this.instructions,
@@ -27,29 +26,26 @@ class _CustomRecipeState extends State<CustomRecipe> {
   late final TextEditingController _ingredientsController = TextEditingController();
   late final TextEditingController _instructionsController = TextEditingController();
   String? _image;
-  late bool edit = false;
+  bool edit = false;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.image != null){
+    if (widget.image != null) {
       _image = widget.image;
     }
-    
-    if (widget.title != null){
+    if (widget.title != null) {
       edit = true;
       _titleController.text = widget.title!;
     }
-
-    if (widget.ingredients != null){
+    if (widget.ingredients != null) {
       _ingredientsController.text = widget.ingredients!;
     }
-
-    if (widget.instructions != null){
+    if (widget.instructions != null) {
       _instructionsController.text = widget.instructions!;
     }
-
+    
     _titleController.addListener(() {
       setState(() {});
     });
@@ -64,66 +60,66 @@ class _CustomRecipeState extends State<CustomRecipe> {
   @override
   Widget build(BuildContext context) {
     final imageHelper = ImageHelper();
+
     return AlertDialog(
       backgroundColor: const Color.fromARGB(255, 244, 247, 234),
       title: Text(
-        edit ? 'Edit':'Custom Recipe',
+        edit ? 'Edit' : 'Custom Recipe',
         style: const TextStyle(
           color: Color.fromARGB(255, 67, 107, 31),
           fontWeight: FontWeight.w600,
         ),
       ),
       content: SingleChildScrollView(
-        child: Form(
-          child: Column(
-            children: [
-              _image != null ? 
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: imageHelper.getImageWidget(
-                  image: _image,
-                  height: 216,
-                  width: 270,
-                ),
-              )
-              : Container(
+        child: Column(
+          children: [
+            _image != null ? 
+            ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: imageHelper.getImageWidget(
+                image: _image,
                 height: 216,
                 width: 270,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:BorderRadius.all(Radius.circular(18)),
+              ),
+            )
+            : Container(
+              height: 216,
+              width: 270,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+              ),
+              child: const Icon(
+                Icons.add_photo_alternate_outlined,
+                size: 60,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: ImageUploadButton(
+                onImageSelected: (String? image) {
+                  setState(() {
+                    _image = image;
+                  });
+                },
+              ),
+            ),
+            TextFormField(
+              cursorColor: const Color.fromARGB(155, 67, 107, 31),
+              controller: _titleController,
+              decoration: const InputDecoration(
+                labelText: 'Title',
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300,
                 ),
-                child: const Icon(
-                  Icons.add_photo_alternate_outlined,
-                  size: 60,
-                  color: Colors.grey,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(155, 67, 107, 31)),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: ImageUploadButton(
-                  onImageSelected: (String? image) {
-                    setState(() {
-                      _image = image;
-                    });
-                  },
-                ),
-              ),
-              TextFormField(
-                cursorColor: const Color.fromARGB(155, 67, 107, 31),
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(155, 67, 107, 31)),
-                  ),
-                ),
-              ),
+            ),
             const SizedBox(height: 10),
             TextFormField(
               cursorColor: const Color.fromARGB(155, 67, 107, 31),
@@ -166,29 +162,25 @@ class _CustomRecipeState extends State<CustomRecipe> {
                   onPressed: (_titleController.text.isEmpty || 
                     _ingredientsController.text.isEmpty || 
                     _instructionsController.text.isEmpty) ? null : () async {
+                      
+                      if (widget.onUpdate != null) {
+                        widget.onUpdate!(
+                          title: _titleController.text,
+                          ingredients: _ingredientsController.text,
+                          instructions: _instructionsController.text,
+                          image: _image,
+                        );
 
-                    String recipe = _titleController.text;
-                    recipe += "\n\nIngredients:\n\n";
-                    recipe += _ingredientsController.text;
-                    recipe += "\n\nInstructions:\n\n";
-                    recipe += _instructionsController.text;
-                    print(recipe);
+                        //TODO: save changes to DB
+                        print("edited recipe");
+                      }
+                      else {
+                        //TODO: save new recipe to DB
+                        print("new custom recipe");
+                      }
 
-                    String? encodedImage;
-
-                    if (_image != null && imageHelper.isValidFilePath(_image!)) {
-                      encodedImage = await imageHelper.encodeImage(_image!);
-                    }
-                    
-                    // TODO: Save data in DB [title, recipe, today's date, encoded image]
-                    if (edit) {
-                      print("edit");
-                    } else {
-                      print("save");
-                    }
-
-                    Navigator.of(context).pop();
-                  },
+                      Navigator.of(context).pop();
+                    },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
                       if (states.contains(MaterialState.disabled)) {
@@ -207,7 +199,6 @@ class _CustomRecipeState extends State<CustomRecipe> {
           ],
         ),
       ),
-    )
     );
   }
 }

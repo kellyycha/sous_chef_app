@@ -1,6 +1,6 @@
-import 'dart:io';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
@@ -8,12 +8,12 @@ import 'package:sous_chef_app/widgets/image_upload_button.dart';
 
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
-  final String title;
+  String title;
   final String? image;
 
   final void Function(String? image)? onImageSelected;
 
-  const RecipeCard({super.key, 
+  RecipeCard({super.key, 
     required this.recipeResponse, 
     required this.title, 
     this.image,
@@ -27,22 +27,18 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   late bool isSaved;
   String? _image;
-
-  // Stretch Goal: be able to edit recipe on this page
+  String _ingredientsStr = '';
+  String _instructionsStr = '';
 
   @override
   void initState() {
     super.initState();
     _image = widget.image;
-
-    // TODO: check if recipe is in the DB. yes: isSaved true. no: isSaved false
     isSaved = false; 
-
+    _extractRecipeData();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final imageHelper = ImageHelper();
+  void _extractRecipeData() {
     List<String> lines = widget.recipeResponse!.split('\n');
 
     int findIngredientsIndex(List<String> lines) {
@@ -53,6 +49,7 @@ class _RecipeCardState extends State<RecipeCard> {
       }
       return -1;
     }
+
     int findInstructionsIndex(List<String> lines) {
       for (int i = 0; i < lines.length; i++) {
         if (lines[i].toLowerCase().contains('instructions')) {
@@ -70,7 +67,7 @@ class _RecipeCardState extends State<RecipeCard> {
         .map((ingredient) => ingredient.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
 
-    String ingredientsStr = ingredients.join('\n');
+    _ingredientsStr = ingredients.join('\n');
 
     int instructionsStartIndex = ingredientsEndIndex + 1;
     List<String> instructions = lines.sublist(instructionsStartIndex)
@@ -78,7 +75,35 @@ class _RecipeCardState extends State<RecipeCard> {
         .map((instruction) => instruction.replaceAll(RegExp(r'^[\-*]\s*|\d+\.\s*'), ''))
         .toList();
 
-    String instructionsStr = instructions.join('\n');
+    _instructionsStr = instructions.join('\n');
+  }
+
+  void updateRecipe({String? title, String? ingredients, String? instructions, String? image}) {
+    if (title != null) {
+      setState(() {
+        widget.title = title;
+      });
+    }
+    if (ingredients != null) {
+      setState(() {
+        _ingredientsStr = ingredients;
+      });
+    }
+    if (instructions != null) {
+      setState(() {
+        _instructionsStr = instructions;
+      });
+    }
+    if (image != null) {
+      setState(() {
+        _image = image;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final imageHelper = ImageHelper();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 245),
@@ -160,29 +185,32 @@ class _RecipeCardState extends State<RecipeCard> {
                           },
                         ),
                         const Spacer(),
-                        SizedBox(
-                          width: 30,
-                            child: IconButton(
-                              icon: const Icon(Icons.edit),
-                              iconSize: 30,
-                              color: const Color.fromARGB(255, 67, 107, 31),
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(0),
-                              onPressed: () async {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return CustomRecipe(
-                                      title: widget.title,
-                                      ingredients: ingredientsStr,
-                                      instructions: instructionsStr,
-                                      image: _image
-                                    );
-                                  },
-                                );
-                              },
-                            ), 
-                          ),
+                        isSaved ?
+                          SizedBox(
+                            width: 30,
+                              child: IconButton(
+                                icon: const Icon(Icons.edit),
+                                iconSize: 30,
+                                color: const Color.fromARGB(255, 67, 107, 31),
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(0),
+                                onPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomRecipe(
+                                        title: widget.title,
+                                        ingredients: _ingredientsStr,
+                                        instructions: _instructionsStr,
+                                        image: _image,
+                                        onUpdate: updateRecipe,
+                                      );
+                                    },
+                                  );
+                                },
+                              ), 
+                            )
+                          : const Spacer(), 
                         SizedBox(
                           width: 30,
                             child: IconButton(
@@ -248,7 +276,7 @@ class _RecipeCardState extends State<RecipeCard> {
                               )
                             ),
                             const SizedBox(height: 8),
-                            BulletList(ingredients),
+                            BulletList(_ingredientsStr.split('\n')),
                             const SizedBox(height: 16),
                             const Text(
                               'Instructions:', 
@@ -259,7 +287,7 @@ class _RecipeCardState extends State<RecipeCard> {
                             ),
                             const SizedBox(height: 8),
                             Column(
-                              children: instructions.asMap().entries.map((entry) => ListTile(
+                              children: _instructionsStr.split('\n').asMap().entries.map((entry) => ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: const Color.fromARGB(255, 219, 235, 188),
                                   foregroundColor: const Color.fromARGB(255, 67, 107, 31),
