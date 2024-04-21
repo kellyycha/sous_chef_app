@@ -26,8 +26,14 @@ class RecipeConfirmation extends StatelessWidget {
       if (title.startsWith('-') && title.endsWith('-')) {
         title = title.substring(1, title.length - 1);
       }
-      if (title.startsWith('Recipe:')) {
-        title = title.substring(7).trim();
+      if (title.startsWith('Recipe')) {
+        title = title.substring(6).trim();
+      }
+      if (title.startsWith('Name')) {
+        title = title.substring(4).trim();
+      }
+      if (title.startsWith(':')) {
+        title = title.substring(1).trim();
       }
 
     return AlertDialog(

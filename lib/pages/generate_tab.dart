@@ -4,6 +4,7 @@ import 'package:sous_chef_app/services/openai/image_service.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
+import 'package:sous_chef_app/sample_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

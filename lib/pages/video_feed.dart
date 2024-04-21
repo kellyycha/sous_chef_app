@@ -1,7 +1,52 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class VideoScreen extends StatelessWidget {
-  const VideoScreen({super.key});
+class VideoScreen extends StatefulWidget {
+  const VideoScreen({Key? key}) : super(key: key);
+
+  @override
+  _VideoScreenState createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends State<VideoScreen> {
+  late WebViewController controller;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadImage();
+  }
+
+  void _loadImage() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            setState(() {
+              isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse('http://172.26.3.177:4000'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +68,44 @@ class VideoScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-
-          // TODO: Stream video (kelly's task)
-
-
-          Container(
-            height: 400,
-            padding: const EdgeInsets.all(30),
-            alignment: Alignment.center,
-            child: const Text(
-              'Camera is not active.',
-              style: TextStyle(
-                color:Colors.black,
-                fontSize: 25.0,
-                fontWeight: FontWeight.w600,
+          const Spacer(),
+          isLoading?
+          const Row(
+            children: [
+              Spacer(),
+              Icon(
+                Icons.videocam_outlined,
+                size: 40,
               ),
-              textAlign: TextAlign.center,
+              Text(
+                'Live Video Feed',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                ),
+              ),
+              Spacer(),
+            ]
+          )
+          : const Center(
+            child: Text(
+              'Camera disconnected',
+              style: TextStyle(
+                fontSize: 28,
+                color: Colors.red,
+              ),
             ),
-
           ),
+          SizedBox(
+            height: 400,
+            width: 400,
+            child: Stack(
+              children: [
+                WebViewWidget(controller: controller),
+              ],
+            ),
+          ),
+          const Spacer(),
         ],
       ),
     );

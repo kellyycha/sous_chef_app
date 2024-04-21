@@ -4,6 +4,7 @@ import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
+import 'package:sous_chef_app/sample_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -13,7 +14,6 @@ class SavedTab extends StatefulWidget {
   @override
   _savedTabState createState() => _savedTabState();
 }
-
 
 class _savedTabState extends State<SavedTab> {
   List<List<dynamic>> _recipes = [];
@@ -91,7 +91,7 @@ class _savedTabState extends State<SavedTab> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const CustomRecipe();
+                              return CustomRecipe();
                             },
                           );
                         },
