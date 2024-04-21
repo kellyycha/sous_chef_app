@@ -58,8 +58,6 @@ class _savedTabState extends State<SavedTab> {
     }
   }
 
-  //TODO: use DB. [title, recipe (full string), image encoded string, date saved]
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +167,8 @@ class _savedTabState extends State<SavedTab> {
                 // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
                 return MySquare(
                   title: _recipes[index][0],
-                  img: _recipes[index][2],
+                  //TODO: FIX ENCODED IMAGES
+                  //img: _recipes[index][2],
                   recipeDate: _recipes[index][3],
                   onTap: () {
                     Navigator.push(
@@ -178,7 +177,8 @@ class _savedTabState extends State<SavedTab> {
                         builder: (context) => RecipeCard(
                           title: _recipes[index][0],
                           recipeResponse: _recipes[index][1],
-                          image: _recipes[index][2], 
+                          //TODO: FIX ENCODED IMAGES
+                          //image: _recipes[index][2], 
                         ),
                       ),
                     );
