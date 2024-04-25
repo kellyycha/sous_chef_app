@@ -25,7 +25,7 @@ class _savedTabState extends State<SavedTab> {
 
   Future<void> _fetchRecipes() async {
     try {
-      //SERVER CHANGE API CALL
+      //TODO: SERVER CHANGE API CALL
       final response = await http.get(Uri.parse('http://127.0.0.1:8000/get_recipes/'));
 
       if (response.statusCode == 200) {

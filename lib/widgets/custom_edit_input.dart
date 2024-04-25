@@ -101,6 +101,7 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   Future<void> saveToInventoryDB() async {
+    //TODO: SERVER CHANGE API CALL
     final url = Uri.parse('http://127.0.0.1:8000/add_food/');
 
     String expirationDateString = _expirationDateController.text;

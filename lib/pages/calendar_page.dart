@@ -23,7 +23,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   Future<void> _fetchExpirationEvents() async {
     try {
-      //SERVER CHANGE API CALL
+      //TODO: SERVER CHANGE API CALL
       final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
 
       if (response.statusCode == 200) {
@@ -58,7 +58,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       body: SafeArea(
         child: Calendar(
-          eventsList: expirationList,
+          eventsList: _expirationList,
           isExpandable: true,
           isExpanded: true,
           datePickerType: DatePickerType.date,

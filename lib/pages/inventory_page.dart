@@ -27,7 +27,7 @@ class _InventoryPageState extends State<InventoryPage> {
 
   Future<void> _fetchInventoryData() async {
     try {
-      //SERVER CHANGE API CALL
+      //TODO: SERVER CHANGE API CALL
       final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
 
       if (response.statusCode == 200) {
@@ -265,13 +265,13 @@ class _InventoryPageState extends State<InventoryPage> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: inventory.length,
+                  itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      title: inventory[index][0],
-                      qty: inventory[index][1],
-                      expiration: inventory[index][2],
-                      img: inventory[index][4],
+                      title: _inventory[index][0],
+                      qty: _inventory[index][1],
+                      expiration: _inventory[index][2],
+                      img: _inventory[index][4],
                       onTap: () async {
                         await showDialog(
                           context: context,

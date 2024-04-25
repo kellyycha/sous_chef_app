@@ -45,6 +45,7 @@ class _VideoScreenState extends State<VideoScreen> {
           },
         ),
       )
+      //TODO: CONNECT TO SCANNER ADDRESS/PORT
       ..loadRequest(Uri.parse('http://172.26.3.177:4000'));
   }
 
