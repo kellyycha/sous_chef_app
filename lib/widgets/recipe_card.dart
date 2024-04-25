@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RecipeCard extends StatefulWidget {
   final String? recipeResponse;
@@ -87,6 +89,33 @@ class _RecipeCardState extends State<RecipeCard> {
     setState(() {
       _image = image;
     });
+  }
+
+    Future<void> saveRecipe() async {
+    final url = Uri.parse('http://127.0.0.1:8000/add_recipe/');
+    
+
+    final recipeData = {
+      'name': widget.title,
+      'instructions': widget.recipeResponse,
+      'recipe_longtext': _image ?? '',
+    };
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(recipeData),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success, e.g., show a success message
+      print('Food item saved successfully!');
+    } else {
+      // Handle error, e.g., show an error message
+      print('Failed to save food item: ${response.body}');
+    }
   }
 
   @override
@@ -215,8 +244,7 @@ class _RecipeCardState extends State<RecipeCard> {
                                     }
                                   }
                                   print("save");
-
-                                  // TODO: save to DB as [title, recipe, date saved, _image]
+                                  saveRecipe();
 
                                 } else {
                                   print("remove");
