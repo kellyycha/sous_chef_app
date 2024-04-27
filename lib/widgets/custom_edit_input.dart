@@ -137,13 +137,13 @@ class _CustomInputState extends State<CustomInput> {
     }
   }
 
-  // Future<void> editInventoryDB(editId) async {
+  Future<void> editInventoryDB(editId) async {
   //   //TODO: write this 
   //   final editQuery = 'http://127.0.0.1/edit_food/$editId';
   //   final url = Uri.parse(editQuery);
 
   //   final title = 
-  // }
+  }
 
 
   void setLocation(String location) {
