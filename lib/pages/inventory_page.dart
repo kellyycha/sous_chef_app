@@ -7,7 +7,6 @@ import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
-import 'package:sous_chef_app/sample_data.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({super.key});

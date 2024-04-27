@@ -4,7 +4,6 @@ import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
-import 'package:sous_chef_app/sample_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
