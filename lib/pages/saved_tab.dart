@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
@@ -25,7 +26,7 @@ class _savedTabState extends State<SavedTab> {
   Future<void> _fetchRecipes() async {
     try {
       //TODO: SERVER CHANGE API CALL
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/get_recipes/'));
+      final response = await http.get(Uri.parse('http://${Server.address}/get_recipes/'));
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

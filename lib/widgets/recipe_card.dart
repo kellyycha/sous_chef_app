@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:http/http.dart' as http;
@@ -96,7 +97,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
   Future<void> saveRecipe() async {
       //TODO: SERVER CHANGE API CALL
-    final url = Uri.parse('http://127.0.0.1:8000/add_recipe/');
+    final url = Uri.parse('http://${Server.address}/add_recipe/');
     
 
     final recipeData = {
@@ -124,7 +125,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
   Future<void> deleteRecipe() async {
     try {
-      final deleteQuery = "http://127.0.0.1:8000/remove_recipe/${widget.id}";
+      final deleteQuery = "http://${Server.address}/remove_recipe/${widget.id}";
       final response = await http.delete(Uri.parse(deleteQuery));
 
       if (response.statusCode == 200) {

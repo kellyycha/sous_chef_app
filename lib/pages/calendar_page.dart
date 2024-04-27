@@ -3,6 +3,8 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 //import 'package:sous_chef_app/sample_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:sous_chef_app/services/server.dart';
 // https://github.com/rwbr/flutter_neat_and_clean_calendar
 
 class CalendarPage extends StatefulWidget {
@@ -24,7 +26,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> _fetchExpirationEvents() async {
     try {
       //TODO: SERVER CHANGE API CALL
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
+      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

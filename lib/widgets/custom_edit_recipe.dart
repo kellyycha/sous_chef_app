@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -63,7 +64,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
 
   Future<void> saveRecipe() async {
     //TODO: SERVER CHANGE API CALL
-    final url = Uri.parse('http://127.0.0.1:8000/add_recipe/');
+    final url = Uri.parse('http://${Server.address}/add_recipe/');
     
 
     final recipeData = {

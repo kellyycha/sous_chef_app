@@ -4,6 +4,8 @@ import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:sous_chef_app/services/server.dart';
+
 class MySquare extends StatelessWidget {
   final int id;
   final String title;
@@ -28,7 +30,7 @@ class MySquare extends StatelessWidget {
   Future<void> deleteIngredient() async {
     try {
       //TODO: SERVER CHANGE API CALL
-      final deleteQuery = "http://127.0.0.1:8000/delete_food/$id";
+      final deleteQuery = "http://${Server.address}/delete_food/$id";
       final response = await http.delete(Uri.parse(deleteQuery));
 
       if (response.statusCode == 200) {
@@ -44,7 +46,7 @@ class MySquare extends StatelessWidget {
 
   Future<void> deleteRecipe() async {
     try {
-      final deleteQuery = "http://127.0.0.1:8000/remove_recipe/$id";
+      final deleteQuery = "http://${Server.address}/remove_recipe/$id";
       final response = await http.delete(Uri.parse(deleteQuery));
 
       if (response.statusCode == 200) {

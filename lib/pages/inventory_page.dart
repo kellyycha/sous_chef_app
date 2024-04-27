@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:sous_chef_app/services/server.dart';
 import 'dart:convert';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
@@ -28,7 +29,7 @@ class _InventoryPageState extends State<InventoryPage> {
   Future<void> _fetchInventoryData() async {
     try {
       //TODO: SERVER CHANGE API CALL
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
+      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

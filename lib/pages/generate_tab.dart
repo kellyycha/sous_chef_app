@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sous_chef_app/services/openai/image_service.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
@@ -38,7 +39,7 @@ class _GenerateState extends State<GenerateTab> {
   Future<void> _fetchIngredientsData() async {
     try {
       //TODO: SERVER CHANGE API CALL
-      final response = await http.get(Uri.parse('http://127.0.0.1:8000/inventory/'));
+      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
       
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

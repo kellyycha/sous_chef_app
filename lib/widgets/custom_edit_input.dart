@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 import 'package:http/http.dart' as http;
@@ -104,7 +105,7 @@ class _CustomInputState extends State<CustomInput> {
 
   Future<void> saveToInventoryDB() async {
     //TODO: SERVER CHANGE API CALL
-    final url = Uri.parse('http://127.0.0.1:8000/add_food/');
+    final url = Uri.parse('http://${Server.address}/add_food/');
 
     String expirationDateString = _expirationDateController.text;
     DateTime expirationDate = DateFormat('MM/dd/yyyy').parse(expirationDateString);
@@ -139,7 +140,7 @@ class _CustomInputState extends State<CustomInput> {
 
   Future<void> editInventoryDB(editId) async {
   //   //TODO: write this 
-  //   final editQuery = 'http://127.0.0.1/edit_food/$editId';
+  //   final editQuery = 'http://${Server.address}/edit_food/$editId';
   //   final url = Uri.parse(editQuery);
 
   //   final title = 
