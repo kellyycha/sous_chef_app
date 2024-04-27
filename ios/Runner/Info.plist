@@ -55,5 +55,56 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocalNotificationUsageDescription</key>
+	<string>Can we send you notifications?</string>
+	<key>NSRemoteNotificationType</key>
+	<integer>1</integer>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UIUserNotificationSettings</key>
+	<dict>
+		<key>categories</key>
+		<array>
+			<dict>
+				<key>actions</key>
+				<array>
+					<dict>
+						<key>activationMode</key>
+						<string>background</string>
+						<key>authenticationRequired</key>
+						<false/>
+						<key>destructive</key>
+						<false/>
+						<key>identifier</key>
+						<string>ACCEPT_IDENTIFIER</string>
+						<key>title</key>
+						<string>Accept</string>
+					</dict>
+					<dict>
+						<key>activationMode</key>
+						<string>background</string>
+						<key>authenticationRequired</key>
+						<false/>
+						<key>destructive</key>
+						<false/>
+						<key>identifier</key>
+						<string>REJECT_IDENTIFIER</string>
+						<key>title</key>
+						<string>Reject</string>
+					</dict>
+				</array>
+				<key>intentIdentifiers</key>
+				<array/>
+				<key>name</key>
+				<string>ACCEPT_REJECT_CATEGORY</string>
+			</dict>
+		</array>
+		<key>sound</key>
+		<string>default</string>
+	</dict>
+
+
 </dict>
 </plist>

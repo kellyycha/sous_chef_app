@@ -1,79 +1,45 @@
 PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
-  - connectivity_plus (0.0.1):
-    - Flutter
-    - ReachabilitySwift
   - Flutter (1.0.0)
-  - flutter_vlc_player (3.0.3):
+  - flutter_local_notifications (0.0.1):
     - Flutter
-    - MobileVLCKit (~> 3.6.0b9)
-  - flutter_webrtc (0.9.36):
-    - Flutter
-    - WebRTC-SDK (= 114.5735.08)
   - image_picker_ios (0.0.1):
     - Flutter
-  - MobileVLCKit (3.6.0b11)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - ReachabilitySwift (5.2.2)
-  - video_player_avfoundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - WebRTC-SDK (114.5735.08)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
-  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
-  - flutter_vlc_player (from `.symlinks/plugins/flutter_vlc_player/ios`)
-  - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
-
-SPEC REPOS:
-  trunk:
-    - MobileVLCKit
-    - ReachabilitySwift
-    - WebRTC-SDK
 
 EXTERNAL SOURCES:
   camera_avfoundation:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
-  connectivity_plus:
-    :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
-  flutter_vlc_player:
-    :path: ".symlinks/plugins/flutter_vlc_player/ios"
-  flutter_webrtc:
-    :path: ".symlinks/plugins/flutter_webrtc/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
-  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_vlc_player: 2e318881576450ff081eb023d47c289f2c6681eb
-  flutter_webrtc: 55df3aaa802114dad390191a46c2c8d535751268
+  flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
-  MobileVLCKit: d20b1e96a93446d97abd377a1daa230202147619
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  ReachabilitySwift: 2128f3a8c9107e1ad33574c6e58e8285d460b149
-  video_player_avfoundation: 2b4384f3b157206b5e150a0083cdc0c905d260d3
-  WebRTC-SDK: c24d2a6c9f571f2ed42297cb8ffba9557093142b
   webview_flutter_wkwebview: be0f0d33777f1bfd0c9fdcb594786704dbf65f36
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796

@@ -19,4 +19,3 @@ class CalendarPage extends StatelessWidget {
     );
   }
 }
-

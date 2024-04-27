@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/notifications.dart';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
@@ -25,6 +26,20 @@ class _InventoryPageState extends State<InventoryPage> {
 
   void handleLocationSelection(String location) {
     // TODO: Filter inventory based on selected location
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    DateTime fivesec = DateTime.now().add(Duration(seconds:5));
+
+    NotificationService().scheduleNotification(
+      title: 'Scheduled Notification',
+      body: 'Test',
+      scheduledNotificationDateTime: fivesec
+    ); //TODO: date from DB
+
+    print("scheudled time: $fivesec");
   }
 
   @override
