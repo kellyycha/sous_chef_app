@@ -45,3 +45,6 @@ app.*.map.json
 # OpenAI
 /node_modules
 /lib/services/openai/api_key.dart
+
+# Sample data
+/lib/sample_data.dart

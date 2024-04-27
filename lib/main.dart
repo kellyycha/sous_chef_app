@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
