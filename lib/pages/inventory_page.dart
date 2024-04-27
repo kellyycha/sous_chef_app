@@ -34,6 +34,7 @@ class _InventoryPageState extends State<InventoryPage> {
         final jsonData = jsonDecode(response.body);
 
         jsonData.forEach((key, value) {
+          int id = value['id'];
           String name = value['name'];
           int quantity = value['quantity'];
           String expirationDate = value['expiration_date'];
@@ -47,6 +48,7 @@ class _InventoryPageState extends State<InventoryPage> {
 
           // Create list of food details
           List<dynamic> foodDetails = [
+            id,
             name,
             quantity,
             daysLeft,
@@ -268,27 +270,28 @@ class _InventoryPageState extends State<InventoryPage> {
                   itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      title: _inventory[index][0],
-                      qty: _inventory[index][1],
-                      expiration: _inventory[index][2],
-                      img: _inventory[index][4],
+                      id: _inventory[index][0],
+                      title: _inventory[index][1],
+                      qty: _inventory[index][2],
+                      expiration: _inventory[index][3],
+                      img: _inventory[index][5],
                       onTap: () async {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
-                              title: _inventory[index][0],
-                              qty: _inventory[index][1],
-                              expiration: _inventory[index][2],
-                              location: _inventory[index][3],
-                              image: _inventory[index][4],
+                              title: _inventory[index][1],
+                              qty: _inventory[index][2],
+                              expiration: _inventory[index][3],
+                              location: _inventory[index][4],
+                              image: _inventory[index][5],
                               onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
                                 setState(() {
-                                  _inventory[index][0] = updatedTitle ?? _inventory[index][0];
-                                  _inventory[index][1] = updatedQty ?? _inventory[index][1];
-                                  _inventory[index][2] = updatedExpiration ?? _inventory[index][2];
-                                  _inventory[index][3] = updatedLocation ?? _inventory[index][3];
-                                  _inventory[index][4] = updatedImage ?? _inventory[index][4];
+                                  _inventory[index][1] = updatedTitle ?? _inventory[index][1];
+                                  _inventory[index][2] = updatedQty ?? _inventory[index][2];
+                                  _inventory[index][3] = updatedExpiration ?? _inventory[index][3];
+                                  _inventory[index][4] = updatedLocation ?? _inventory[index][4];
+                                  _inventory[index][5] = updatedImage ?? _inventory[index][5];
                                 });
                               },
                             );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
-import 'package:sous_chef_app/sample_data.dart';
+//import 'package:sous_chef_app/sample_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 // https://github.com/rwbr/flutter_neat_and_clean_calendar
@@ -33,6 +33,7 @@ class _CalendarPageState extends State<CalendarPage> {
         jsonData.forEach((key, value) {
           // Parse individual item data and create NeatCleanCalendarEvent
           NeatCleanCalendarEvent event = NeatCleanCalendarEvent(
+            id: value['id'],
             title: value['name'],
             qty: value['quantity'],
             expirationDate: DateTime.parse(value['expiration_date']),

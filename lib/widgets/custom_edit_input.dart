@@ -9,6 +9,7 @@ import 'dart:convert';
 
 class CustomInput extends StatefulWidget {
   final void Function(String? image, String? title, int? qty, int? expiration, String? location)? onItemUpdated;
+  final int? id;
   final String? title;
   final int? qty;
   final int? expiration;
@@ -17,6 +18,7 @@ class CustomInput extends StatefulWidget {
 
   const CustomInput({
     super.key,
+    this.id,
     this.onItemUpdated,
     this.title,
     this.qty,
@@ -134,6 +136,15 @@ class _CustomInputState extends State<CustomInput> {
       print('Failed to save food item: ${response.body}');
     }
   }
+
+  // Future<void> editInventoryDB(editId) async {
+  //   //TODO: write this 
+  //   final editQuery = 'http://127.0.0.1/edit_food/$editId';
+  //   final url = Uri.parse(editQuery);
+
+  //   final title = 
+  // }
+
 
   void setLocation(String location) {
     setState(() {
@@ -324,7 +335,7 @@ class _CustomInputState extends State<CustomInput> {
                               // save expiration date as date and number of days remaining
 
                               print("edited");
-                              // TODO: edit data in inventory DB
+                              await editInventoryDB(widget.id);
                             } else {
                               print("new");
                               await saveToInventoryDB();

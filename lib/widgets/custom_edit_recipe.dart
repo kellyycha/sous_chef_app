@@ -212,6 +212,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
                         );
                       
                         //TODO: save changes to DB
+                        //Will remake the entire json object to send to the server
                         print("edited recipe");
                       }
                       else {

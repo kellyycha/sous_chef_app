@@ -8,11 +8,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RecipeCard extends StatefulWidget {
+  final int? id;
   final String? recipeResponse;
   String title;
   final String? image;
 
-  RecipeCard({super.key, 
+  RecipeCard({super.key,
+    this.id, 
     required this.recipeResponse, 
     required this.title, 
     this.image,
@@ -91,7 +93,7 @@ class _RecipeCardState extends State<RecipeCard> {
     });
   }
 
-    Future<void> saveRecipe() async {
+  Future<void> saveRecipe() async {
       //TODO: SERVER CHANGE API CALL
     final url = Uri.parse('http://127.0.0.1:8000/add_recipe/');
     
@@ -116,6 +118,22 @@ class _RecipeCardState extends State<RecipeCard> {
     } else {
       // Handle error, e.g., show an error message
       print('Failed to save food item: ${response.body}');
+    }
+  }
+
+  Future<void> deleteRecipe() async {
+    try {
+      final deleteQuery = "http://127.0.0.1:8000/remove_recipe/${widget.id}";
+      final response = await http.delete(Uri.parse(deleteQuery));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        print(jsonData);
+      } else {
+        throw Exception('Failed to delete Recipe');
+      }
+    } catch (e) {
+      print('Error deleting recipe: $e');
     }
   }
 
@@ -249,8 +267,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
                                 } else {
                                   print("remove");
-
-                                  // TODO: remove from DB
+                                  deleteRecipe();
                                 }
                               },
                             ), 
