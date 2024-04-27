@@ -43,6 +43,9 @@ dependencies:
   http: ^1.2.1
   intl: ^0.18.1
   webview_flutter: ^4.7.0
+  flutter_local_notifications: ^17.1.0
+  timezone: ^0.9.3
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:
