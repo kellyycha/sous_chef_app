@@ -29,20 +29,6 @@ class _InventoryPageState extends State<InventoryPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    DateTime fivesec = DateTime.now().add(Duration(seconds:5));
-
-    NotificationService().scheduleNotification(
-      title: 'Scheduled Notification',
-      body: 'Test',
-      scheduledNotificationDateTime: fivesec
-    ); //TODO: date from DB
-
-    print("scheudled time: $fivesec");
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(

@@ -40,7 +40,6 @@ class NotificationService {
     String? body, 
     String? payLoad}) async {
     
-    print("Show");
     return notificationsPlugin.show(id, title, body, await notificationDetails());
   }
 
