@@ -18,15 +18,15 @@ class ImageHelper {
     String? encodedImage;
     
     if (isNetworkImage(image)){
-      print("network");
+      // print("network");
       encodedImage = await networkImageToBase64(image);
     }
 
     else if (isValidFilePath(image)){
-      print("file");
+      // print("file");
       encodedImage = await fileImageToBase64(image);
     }
-    print(encodedImage); 
+    // print(encodedImage); 
     return encodedImage;
   }
 
@@ -53,13 +53,13 @@ class ImageHelper {
         width: width,
         fit: BoxFit.cover,
       );
-    // } else if (isValidFilePath(image)) {
-    //   return Image.file(
-    //     File(image),
-    //     height: height,
-    //     width: width,
-    //     fit: BoxFit.cover,
-    //   );
+    } else if (isValidFilePath(image)) {
+      return Image.file(
+        File(image),
+        height: height,
+        width: width,
+        fit: BoxFit.cover,
+      );
     } else { // Encoded image
       final decodedBytes = base64Decode(image);
       return FutureBuilder<File>(

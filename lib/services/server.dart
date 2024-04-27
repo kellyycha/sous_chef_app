@@ -1,3 +1,3 @@
 class Server {
-  static const String address = "127.0.0.1:8000";
+  static const String address = "172.24.177.10:8080";
 }

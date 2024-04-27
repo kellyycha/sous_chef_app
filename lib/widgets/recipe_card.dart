@@ -35,8 +35,13 @@ class _RecipeCardState extends State<RecipeCard> {
   void initState() {
     super.initState();
     _image = widget.image;
-    // if has id, true, if not, false
-    isSaved = true; 
+    // TODO: if has id, true, if not, false
+    if (widget.id != null){
+      isSaved = true; 
+    } else {
+      isSaved = false;
+    }
+    
     _extractRecipeData();
   }
 
