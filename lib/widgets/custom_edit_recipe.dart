@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CustomRecipe extends StatefulWidget {
   final void Function({String? title, String? ingredients, String? instructions, String? image})? onUpdate;
@@ -55,6 +57,36 @@ class _CustomRecipeState extends State<CustomRecipe> {
     _instructionsController.addListener(() {
       setState(() {});
     });
+  }
+
+
+
+  Future<void> saveRecipe() async {
+    //TODO: SERVER CHANGE API CALL
+    final url = Uri.parse('http://127.0.0.1:8000/add_recipe/');
+    
+
+    final recipeData = {
+      'name': _titleController.text,
+      'instructions': "${_titleController.text} /n Ingredients: /n ${_ingredientsController.text} Instructions: /n ${_instructionsController.text}",
+      'recipe_longtext': _image ?? '',
+    };
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(recipeData),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success, e.g., show a success message
+      print('Food item saved successfully!');
+    } else {
+      // Handle error, e.g., show an error message
+      print('Failed to save food item: ${response.body}');
+    }
   }
 
   @override
@@ -180,13 +212,13 @@ class _CustomRecipeState extends State<CustomRecipe> {
                         );
                       
                         //TODO: save changes to DB
+                        //Will remake the entire json object to send to the server
                         print("edited recipe");
                       }
                       else {
-                        //TODO: save new recipe to DB
                         print("new custom recipe");
+                        await saveRecipe();
                       }
-
                       Navigator.of(context).pop();
                     },
                   style: ButtonStyle(

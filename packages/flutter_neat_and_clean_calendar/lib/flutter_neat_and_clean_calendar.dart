@@ -574,6 +574,7 @@ class _CalendarState extends State<Calendar> {
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _selectedEvents![index];
                     return MySquare(
+                      id: event.id,
                       title: event.title,
                       qty: event.qty,
                       img: event.image,
