@@ -7,12 +7,14 @@ import 'dart:convert';
 
 class CustomRecipe extends StatefulWidget {
   final void Function({String? title, String? ingredients, String? instructions, String? image})? onUpdate;
+  final int? id;
   final String? title;
   final String? ingredients;
   final String? instructions;
   final String? image;
 
   const CustomRecipe({super.key, 
+    this.id,
     this.onUpdate,
     this.title,
     this.ingredients,
@@ -88,6 +90,33 @@ class _CustomRecipeState extends State<CustomRecipe> {
       print('Failed to save food item: ${response.body}');
     }
   }
+
+  Future<void> editRecipe(editId) async {
+    final url = Uri.parse('http://${Server.address}/edit_recipe/$editId');
+
+    final recipeData = {
+      'name': _titleController.text,
+      'instructions': "${_titleController.text} /n Ingredients: /n ${_ingredientsController.text} Instructions: /n ${_instructionsController.text}",
+      'recipe_longtext': _image ?? '',
+    };
+
+    final response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(recipeData),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success, e.g., show a success message
+      print('Recipe item $editId edited successfully!');
+    } else {
+      // Handle error, e.g., show an error message
+      print('Failed to edit recipe item $editId: ${response.body}');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +240,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
                           image: _image,
                         );
                       
-                        //TODO: save changes to DB
+                        await editRecipe(widget.id);
                         //Will remake the entire json object to send to the server
                         print("edited recipe");
                       }

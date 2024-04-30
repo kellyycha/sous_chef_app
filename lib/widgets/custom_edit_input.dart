@@ -168,7 +168,7 @@ class _CustomInputState extends State<CustomInput> {
       print('Food item $editId edited successfully!');
     } else {
       // Handle error, e.g., show an error message
-      print('Failed to food item $editId: ${response.body}');
+      print('Failed to edit food item $editId: ${response.body}');
     }
   }
 
