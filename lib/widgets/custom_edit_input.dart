@@ -165,10 +165,10 @@ class _CustomInputState extends State<CustomInput> {
 
     if (response.statusCode == 200) {
       // Handle success, e.g., show a success message
-      print('Food item saved successfully!');
+      print('Food item $editId edited successfully!');
     } else {
       // Handle error, e.g., show an error message
-      print('Failed to save food item: ${response.body}');
+      print('Failed to food item $editId: ${response.body}');
     }
   }
 
