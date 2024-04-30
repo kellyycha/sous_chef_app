@@ -25,7 +25,6 @@ class _CalendarPageState extends State<CalendarPage> {
 
   Future<void> _fetchExpirationEvents() async {
     try {
-      //TODO: SERVER CHANGE API CALL
       final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
 
       if (response.statusCode == 200) {

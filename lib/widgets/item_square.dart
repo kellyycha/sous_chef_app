@@ -29,7 +29,6 @@ class MySquare extends StatelessWidget {
 
   Future<void> deleteIngredient() async {
     try {
-      //TODO: SERVER CHANGE API CALL
       final deleteQuery = "http://${Server.address}/delete_food/$id";
       final response = await http.delete(Uri.parse(deleteQuery));
 

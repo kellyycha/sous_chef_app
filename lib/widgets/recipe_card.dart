@@ -35,7 +35,6 @@ class _RecipeCardState extends State<RecipeCard> {
   void initState() {
     super.initState();
     _image = widget.image;
-    // TODO: if has id, true, if not, false
     if (widget.id != null){
       isSaved = true; 
     } else {
@@ -101,7 +100,6 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Future<void> saveRecipe() async {
-      //TODO: SERVER CHANGE API CALL
     final url = Uri.parse('http://${Server.address}/add_recipe/');
     
 

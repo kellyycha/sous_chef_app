@@ -38,7 +38,6 @@ class _GenerateState extends State<GenerateTab> {
 
   Future<void> _fetchIngredientsData() async {
     try {
-      //TODO: SERVER CHANGE API CALL
       final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
       
       if (response.statusCode == 200) {

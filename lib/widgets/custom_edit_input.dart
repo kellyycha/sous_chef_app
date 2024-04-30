@@ -104,7 +104,6 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   Future<void> saveToInventoryDB() async {
-    //TODO: SERVER CHANGE API CALL
     final url = Uri.parse('http://${Server.address}/add_food/');
 
     String expirationDateString = _expirationDateController.text;
@@ -139,11 +138,38 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   Future<void> editInventoryDB(editId) async {
-  //   //TODO: write this 
-  //   final editQuery = 'http://${Server.address}/edit_food/$editId';
-  //   final url = Uri.parse(editQuery);
+    final editQuery = 'http://${Server.address}/edit_food/$editId';
+    final url = Uri.parse(editQuery);
 
-  //   final title = 
+    String expirationDateString = _expirationDateController.text;
+    DateTime expirationDate = DateFormat('MM/dd/yyyy').parse(expirationDateString);
+    DateTime currentDate = DateTime.now();
+    Duration difference = expirationDate.difference(currentDate);
+    int expirationDuration = difference.inDays;
+
+    final foodData = {
+      'name': _titleController.text,
+      'expiration_duration': expirationDuration, // Assuming this is in days
+      'food_type': _locationSelected,
+      'quantity': int.tryParse(_quantityController.text) ?? 1,
+      'image_url': _image ?? '',
+    };
+
+    final response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(foodData),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle success, e.g., show a success message
+      print('Food item saved successfully!');
+    } else {
+      // Handle error, e.g., show an error message
+      print('Failed to save food item: ${response.body}');
+    }
   }
 
 
