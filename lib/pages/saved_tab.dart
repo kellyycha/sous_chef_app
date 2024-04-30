@@ -120,6 +120,7 @@ class SavedTab extends StatelessWidget {
                   title: recipes[index][0],
                   img: recipes[index][2],
                   recipeDate: recipes[index][3],
+                  cookable: recipes[index][4], // TODO: all this from DB
                   onTap: () {
                     Navigator.push(
                       context,

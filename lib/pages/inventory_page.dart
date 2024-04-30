@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/services/notifications.dart';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
