@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:sous_chef_app/services/server.dart';
 
 class MySquare extends StatelessWidget {
+  final int id;
   final String title;
   final int? qty;
   final String? img;
@@ -13,6 +18,7 @@ class MySquare extends StatelessWidget {
 
   const MySquare({
     super.key,
+    required this.id,
     required this.title,
     this.qty,
     this.img,
@@ -22,9 +28,48 @@ class MySquare extends StatelessWidget {
     this.cookable
   });
 
+
+  Future<void> deleteIngredient() async {
+    try {
+      final deleteQuery = "http://${Server.address}/delete_food/$id";
+      final response = await http.delete(Uri.parse(deleteQuery));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        print(jsonData);
+      } else {
+        throw Exception('Failed to delete Ingredient'); 
+      }
+    } catch (e) {
+      print('Error deleting ingredient: $e');
+    }
+  }
+
+  Future<void> deleteRecipe() async {
+    try {
+      final deleteQuery = "http://${Server.address}/remove_recipe/$id";
+      final response = await http.delete(Uri.parse(deleteQuery));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        print(jsonData);
+      } else {
+        throw Exception('Failed to delete Recipe');
+      }
+    } catch (e) {
+      print('Error deleting recipe: $e');
+    }
+  }
+
   void onDelete() {
     print(title);
-    //TODO: remove item from DB
+    print(id);
+    // need to know which table to delete from...
+    if (qty != null) { // ingredient
+      deleteIngredient();
+    } else { // recipe
+      deleteRecipe();
+    }
   }
 
   @override

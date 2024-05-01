@@ -1,19 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/notifications.dart';
+import 'package:http/http.dart' as http;
+import 'package:sous_chef_app/services/server.dart';
+import 'dart:convert';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
-import 'package:sous_chef_app/sample_data.dart';
 
 class InventoryPage extends StatefulWidget {
-  InventoryPage({super.key});
+  const InventoryPage({super.key});
 
   @override
-  State<InventoryPage> createState() => _InventoryPageState();
+  _InventoryPageState createState() => _InventoryPageState();
 }
 
 class _InventoryPageState extends State<InventoryPage> {
+  List<List<dynamic>> _inventory = [];
+  final List<List<dynamic>> _entireInventory = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchInventoryData();
+  }
+
+  Future<void> _fetchInventoryData() async {
+    try {
+      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        jsonData.forEach((key, value) {
+          int id = value['id'];
+          String name = value['name'];
+          int quantity = value['quantity'];
+          String expirationDate = value['expiration_date'];
+          String location = value['food_type'];
+          String imageUrl = value['image_url'];
+
+          // Calculate days left from today to expiration date
+          DateTime today = DateTime.now();
+          DateTime expiryDate = DateTime.parse(expirationDate);
+          int daysLeft = expiryDate.difference(today).inDays;
+
+          // Create list of food details
+          List<dynamic> foodDetails = [
+            id,
+            name,
+            quantity,
+            daysLeft,
+            location,
+            imageUrl,
+          ];
+
+          // Add food details to _inventory list
+          setState(() {
+            _inventory.add(foodDetails);
+            _entireInventory.add(foodDetails);
+          });
+        });
+      } else {
+        throw Exception('Failed to load inventory');
+      }
+    } catch (e) {
+      print('Error fetching inventory: $e');
+    }
+  }
 
   final List<String> _location = <String>[
     'All', 
@@ -24,8 +79,22 @@ class _InventoryPageState extends State<InventoryPage> {
     ];
 
   void handleLocationSelection(String location) {
-    // TODO: Filter inventory based on selected location
+    // Filter inventory based on selected location
+    List<List<dynamic>> filteredInventory = [];
+
+    for (List<dynamic> item in _entireInventory) {
+      String itemLocation = item[3]; // Location is at index 3 in the item list
+      if (itemLocation == location || location == 'All') {
+        filteredInventory.add(item);
+      }
+    }
+
+    // Update _inventory to display filtered items
+    setState(() {
+      _inventory = filteredInventory;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -198,30 +267,31 @@ class _InventoryPageState extends State<InventoryPage> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: inventory.length,
+                  itemCount: _inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      title: inventory[index][0],
-                      qty: inventory[index][1],
-                      expiration: inventory[index][2],
-                      img: inventory[index][4],
+                      id: _inventory[index][0],
+                      title: _inventory[index][1],
+                      qty: _inventory[index][2],
+                      expiration: _inventory[index][3],
+                      img: _inventory[index][5],
                       onTap: () async {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
-                              title: inventory[index][0],
-                              qty: inventory[index][1],
-                              expiration: inventory[index][2],
-                              location: inventory[index][3],
-                              image: inventory[index][4],
+                              title: _inventory[index][1],
+                              qty: _inventory[index][2],
+                              expiration: _inventory[index][3],
+                              location: _inventory[index][4],
+                              image: _inventory[index][5],
                               onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
                                 setState(() {
-                                  inventory[index][0] = updatedTitle ?? inventory[index][0];
-                                  inventory[index][1] = updatedQty ?? inventory[index][1];
-                                  inventory[index][2] = updatedExpiration ?? inventory[index][2];
-                                  inventory[index][3] = updatedLocation ?? inventory[index][3];
-                                  inventory[index][4] = updatedImage ?? inventory[index][4];
+                                  _inventory[index][1] = updatedTitle ?? _inventory[index][1];
+                                  _inventory[index][2] = updatedQty ?? _inventory[index][2];
+                                  _inventory[index][3] = updatedExpiration ?? _inventory[index][3];
+                                  _inventory[index][4] = updatedLocation ?? _inventory[index][4];
+                                  _inventory[index][5] = updatedImage ?? _inventory[index][5];
                                 });
                               },
                             );

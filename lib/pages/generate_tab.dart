@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sous_chef_app/services/openai/image_service.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/recipe_confirmation.dart';
 import 'package:sous_chef_app/services/openai/chat_service.dart';
 import 'package:sous_chef_app/widgets/filter.dart';
-import 'package:sous_chef_app/sample_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 final GlobalKey<FilterPopupState> filterPopupKey = GlobalKey<FilterPopupState>();
 
@@ -25,13 +27,44 @@ class _GenerateState extends State<GenerateTab> {
   List<String> cuisines = [];
   String? timing;
 
+  List<dynamic> ingredients = [];
+
   @override
   void initState() {
     super.initState();
     _composition = AssetLottie('assets/animations/cooking.json').load();
+    _fetchIngredientsData();
   }
 
-    Future<String?> generateImage(recipeResponse) async {
+  Future<void> _fetchIngredientsData() async {
+    try {
+      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
+      
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        jsonData.forEach((key, value) {
+          String name = value['name'];
+          int quantity = value['quantity'];
+          String expirationDate = value['expiration_date'];
+
+          List<dynamic> ingredientDetails = [
+            name,
+            quantity,
+            expirationDate
+          ];
+
+          setState(() {
+            ingredients.add(ingredientDetails);
+          });
+        });
+      }
+    } catch (e) {
+      print('Error fetching Ingredients for GPT: $e');
+    }
+  }
+
+  Future<String?> generateImage(recipeResponse) async {
     try {
       final imageUrl = await OpenAI().generateImageUrl(
         prompt: "a photograph of this dish: $recipeResponse",

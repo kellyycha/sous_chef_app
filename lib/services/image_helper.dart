@@ -18,15 +18,15 @@ class ImageHelper {
     String? encodedImage;
     
     if (isNetworkImage(image)){
-      print("network");
+      // print("network");
       encodedImage = await networkImageToBase64(image);
     }
 
     else if (isValidFilePath(image)){
-      print("file");
+      // print("file");
       encodedImage = await fileImageToBase64(image);
     }
-    print(encodedImage); 
+    // print(encodedImage); 
     return encodedImage;
   }
 

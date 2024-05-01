@@ -66,7 +66,7 @@ class ImageUploadButton extends StatelessWidget {
           }
 
           if (pickedImage != null && onImageSelected != null) {
-            print(pickedImage);
+            // print(pickedImage);
             onImageSelected!(pickedImage);
           }
         },
