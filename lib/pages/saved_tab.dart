@@ -170,6 +170,7 @@ class _savedTabState extends State<SavedTab> {
                   title: _recipes[index][1],
                   img: _recipes[index][3],
                   recipeDate: _recipes[index][4],
+                  cookable: _recipes[index][5], // TODO: all this from DB
                   onTap: () {
                     Navigator.push(
                       context,

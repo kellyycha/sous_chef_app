@@ -13,7 +13,7 @@ Future<void> main() async {
   await NotificationService().initNotification();
   tz.initializeTimeZones();
 
-  // TODO: check which dates from the db are 1 day later.
+  // TODO: check which dates from the db are 2 days later.
   
   List emojis = ["⚠️","😱","😵","😰","‼"];
   final random = Random();
@@ -22,7 +22,7 @@ Future<void> main() async {
   NotificationService().scheduleNotification(
     title: '${emojis[randEmoji]} Expiring Tomorrow ${emojis[randEmoji]}',
     body: 'Banana', // combine all the items into one text
-    scheduledNotificationDateTime: DateTime.now().add(Duration(seconds:30)) // today at a certain time
+    scheduledNotificationDateTime: DateTime.now().add(Duration(seconds:5)) // today at a certain time
   );
   print("notif scheduled");
 
