@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/services/notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:sous_chef_app/services/server.dart';
 import 'dart:convert';
