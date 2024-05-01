@@ -53,7 +53,7 @@ class _CustomInputState extends State<CustomInput> {
   void initState() {
     super.initState();
 
-    if (widget.image != null) {
+    if (widget.image != null && widget.image != "") {
       _image = widget.image;
     }
     if (widget.title != null) {
@@ -81,7 +81,7 @@ class _CustomInputState extends State<CustomInput> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: edit? expirationDate : DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(1900),
       lastDate: DateTime(2100),
       builder: (BuildContext context, Widget? child) {
         return Theme(
@@ -105,18 +105,21 @@ class _CustomInputState extends State<CustomInput> {
 
   Future<void> saveToInventoryDB() async {
     final url = Uri.parse('http://${Server.address}/add_food/');
+    int expirationDuration = -1;
 
-    String expirationDateString = _expirationDateController.text;
-    DateTime expirationDate = DateFormat('MM/dd/yyyy').parse(expirationDateString);
-    DateTime currentDate = DateTime.now();
-    Duration difference = expirationDate.difference(currentDate);
-    int expirationDuration = difference.inDays;
+    if (_expirationDateController.text != "") {
+     String expirationDateString = _expirationDateController.text;
+      DateTime expirationDate = DateFormat('MM/dd/yyyy').parse(expirationDateString);
+      DateTime currentDate = DateTime.now();
+      Duration difference = expirationDate.difference(currentDate);
+      expirationDuration = difference.inDays; 
+    }
 
     final foodData = {
       'name': _titleController.text,
       'expiration_duration': expirationDuration, // Assuming this is in days
       'food_type': _locationSelected,
-      'quantity': int.tryParse(_quantityController.text) ?? 1,
+      'quantity': int.tryParse(_quantityController.text) ?? -1,
       'image_url': _image ?? '',
     };
 
@@ -201,16 +204,8 @@ class _CustomInputState extends State<CustomInput> {
         child: Form(
           child: Column(
             children: [
-              _image != null ? 
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
-                  child: imageHelper.getImageWidget(
-                    image: _image!,
-                    height: 168,
-                    width: 210,
-                  ),
-                )
-              : Container(
+              (_image == null || _image == "") ? 
+              Container(
                   height: 168,
                   width: 210,
                   decoration: const BoxDecoration(
@@ -221,6 +216,14 @@ class _CustomInputState extends State<CustomInput> {
                     Icons.add_photo_alternate_outlined,
                     size: 60,
                     color: Colors.grey,
+                  ),
+                )
+                : ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: imageHelper.getImageWidget(
+                    image: _image!,
+                    height: 168,
+                    width: 210,
                   ),
                 ),
               const SizedBox(height: 10),
@@ -341,7 +344,7 @@ class _CustomInputState extends State<CustomInput> {
                         : () async {
                             String? encodedImage;
 
-                            if (_image != null && imageHelper.isValidFilePath(_image!)) {
+                            if (_image != null && _image != "" && imageHelper.isValidFilePath(_image!)) {
                               encodedImage = await imageHelper.encodeImage(_image!);
                               _image = encodedImage;
                             }
@@ -350,14 +353,19 @@ class _CustomInputState extends State<CustomInput> {
                               widget.onItemUpdated!(
                                 _image,
                                 _titleController.text,
-                                int.tryParse(_quantityController.text),
-                                _expirationDateController.text.isEmpty
+                                (_locationSelected == "Spices/Sauces") ?
+                                -1
+                                : int.tryParse(_quantityController.text),
+                                (_locationSelected == "Spices/Sauces") ?
+                                -1
+                                : _expirationDateController.text.isEmpty
                                     ? null
                                     : DateFormat('MM/dd/yyyy').parse(_expirationDateController.text)
                                         .difference(DateTime.now())
                                         .inDays,
                                 _locationSelected,
                               );
+                            
 
                               // save expiration date as date and number of days remaining
 
@@ -367,6 +375,8 @@ class _CustomInputState extends State<CustomInput> {
                               print("new");
                               await saveToInventoryDB();
                             }
+
+                            // TODO: get inventory so that it refreshes automatically
 
                             Navigator.of(context).pop();
                           },

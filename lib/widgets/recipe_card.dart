@@ -180,16 +180,8 @@ class _RecipeCardState extends State<RecipeCard> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _image != null ? 
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(18),
-                    child: imageHelper.getImageWidget(
-                      image: _image,
-                      height: 264,
-                      width: 330,
-                    ),
-                  )
-                  : Container(
+                  (_image == null || _image == "") ?
+                  Container(
                     height: 264,
                     width: 330,
                     decoration: const BoxDecoration(
@@ -200,6 +192,14 @@ class _RecipeCardState extends State<RecipeCard> {
                       Icons.add_photo_alternate_outlined,
                       size: 70,
                       color: Colors.grey,
+                    ),
+                  )
+                  : ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: imageHelper.getImageWidget(
+                      image: _image,
+                      height: 264,
+                      width: 330,
                     ),
                   ),
                   Container(
@@ -261,7 +261,7 @@ class _RecipeCardState extends State<RecipeCard> {
                                 
                                 String? encodedImage;
                                 if (isSaved) {
-                                  if (_image != null){
+                                  if (_image != null && _image != ""){
                                     if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
                                       encodedImage = await imageHelper.encodeImage(_image!);
                                       _image = encodedImage;

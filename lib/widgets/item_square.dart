@@ -109,16 +109,8 @@ class MySquare extends StatelessWidget {
               child: Row(
                 children: [
                   // image
-                  img != null ? 
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),),
-                    child: imageHelper.getImageWidget(
-                      image: img,
-                      height: 120,
-                      width: 150,
-                    ),
-                  )
-                  : Container(
+                  (img == null || img == "") ? 
+                  Container(
                     height: 120,
                     width: 150,
                     decoration: const BoxDecoration(
@@ -131,6 +123,14 @@ class MySquare extends StatelessWidget {
                       Icons.add_photo_alternate_outlined,
                       size: 50,
                       color: Colors.grey,
+                    ),
+                  )
+                  : ClipRRect(
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24),),
+                    child: imageHelper.getImageWidget(
+                      image: img,
+                      height: 120,
+                      width: 150,
                     ),
                   ),
                   Column(

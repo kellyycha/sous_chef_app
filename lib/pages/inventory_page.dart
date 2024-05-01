@@ -83,7 +83,7 @@ class _InventoryPageState extends State<InventoryPage> {
     List<List<dynamic>> filteredInventory = [];
 
     for (List<dynamic> item in _entireInventory) {
-      String itemLocation = item[3]; // Location is at index 3 in the item list
+      String itemLocation = item[4]; // Location is at index 3 in the item list
       if (itemLocation == location || location == 'All') {
         filteredInventory.add(item);
       }
@@ -280,6 +280,7 @@ class _InventoryPageState extends State<InventoryPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
+                              id: _inventory[index][0],
                               title: _inventory[index][1],
                               qty: _inventory[index][2],
                               expiration: _inventory[index][3],

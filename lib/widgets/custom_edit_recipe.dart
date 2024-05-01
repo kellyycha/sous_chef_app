@@ -37,7 +37,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
   void initState() {
     super.initState();
 
-    if (widget.image != null) {
+    if (widget.image != null && widget.image != "") {
       _image = widget.image;
     }
     if (widget.title != null) {
@@ -134,16 +134,8 @@ class _CustomRecipeState extends State<CustomRecipe> {
       content: SingleChildScrollView(
         child: Column(
           children: [
-            _image != null ? 
-            ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: imageHelper.getImageWidget(
-                image: _image,
-                height: 216,
-                width: 270,
-              ),
-            )
-            : Container(
+            (_image == null || _image == "") ? 
+            Container(
               height: 216,
               width: 270,
               decoration: const BoxDecoration(
@@ -154,6 +146,14 @@ class _CustomRecipeState extends State<CustomRecipe> {
                 Icons.add_photo_alternate_outlined,
                 size: 60,
                 color: Colors.grey,
+              ),
+            )
+            : ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: imageHelper.getImageWidget(
+                image: _image,
+                height: 216,
+                width: 270,
               ),
             ),
             const SizedBox(height: 10),
@@ -225,7 +225,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
                     _instructionsController.text.isEmpty) ? null : () async {
                       
                       String? encodedImage;
-                      if (_image != null){
+                      if (_image != null && _image != ""){
                         if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
                           encodedImage = await imageHelper.encodeImage(_image!);
                           _image = encodedImage;
@@ -248,6 +248,9 @@ class _CustomRecipeState extends State<CustomRecipe> {
                         print("new custom recipe");
                         await saveRecipe();
                       }
+
+                      // TODO: get recipes so that it refreshes automatically
+
                       Navigator.of(context).pop();
                     },
                   style: ButtonStyle(
