@@ -38,7 +38,7 @@ class _CalendarPageState extends State<CalendarPage> {
             title: value['name'],
             qty: value['quantity'],
             expirationDate: DateTime.parse(value['expiration_date']),
-            // TODO: IMAGES
+            image: value['image_url'],
           );
           events.add(event);
         });

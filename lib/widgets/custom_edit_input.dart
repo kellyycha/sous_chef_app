@@ -7,6 +7,7 @@ import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart'; 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:sous_chef_app/food_db.dart';
 
 class CustomInput extends StatefulWidget {
   final void Function(String? image, String? title, int? qty, int? expiration, String? location)? onItemUpdated;
@@ -376,7 +377,7 @@ class _CustomInputState extends State<CustomInput> {
                               await saveToInventoryDB();
                             }
 
-                            // TODO: get inventory so that it refreshes automatically
+                            foodDB().fetchInventoryData();
 
                             Navigator.of(context).pop();
                           },

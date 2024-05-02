@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/recipe_card.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:sous_chef_app/recipe_db.dart';
 
 class SavedTab extends StatefulWidget {
   const SavedTab({super.key});
@@ -16,46 +14,23 @@ class SavedTab extends StatefulWidget {
 }
 
 class _savedTabState extends State<SavedTab> {
-  List<List<dynamic>> _recipes = [];
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
-    _fetchRecipes();
+    recipeDB().fetchRecipes();
   }
 
-  Future<void> _fetchRecipes() async {
-    try {
-      final response = await http.get(Uri.parse('http://${Server.address}/get_recipes/'));
 
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-
-        jsonData.forEach((key, value) {
-          int id = value['id'];
-          String name = value['name'];
-          DateTime dateSaved = DateTime.parse(value['date_saved']);
-          String instructions = value['instructions'];
-          String imageEncodedString = value['recipe_longtext'];
-
-          List<dynamic> recipe = [
-            id,
-            name,
-            instructions,
-            imageEncodedString,
-            dateSaved,
-          ];
-
-          setState(() {
-            _recipes.add(recipe);
-          });
-        });
-
-      } else {
-        throw Exception('Failed to load recipe data');
-      }
-    } catch (e) {
-      print('Error fetching recipe data: $e');
-    }
+  void handleRecipeSearch(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+      recipes = allRecipes.where((recipe) {
+        final recipeName = recipe[1].toLowerCase();
+        return recipeName.contains(_searchQuery);
+      }).toList();
+    });
   }
 
   @override
@@ -67,10 +42,12 @@ class _savedTabState extends State<SavedTab> {
           const SizedBox(height:15),
           Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 290,
                 height: 40,
-                child: MySearchBar(),
+                child: MySearchBar(
+                  onSearch: handleRecipeSearch,
+                ),
                 ),
               const Spacer(),
               SizedBox(
@@ -162,24 +139,24 @@ class _savedTabState extends State<SavedTab> {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(0),
-              itemCount: _recipes.length,
+              itemCount: recipes.length,
               itemBuilder: (context, index) {
                 // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
                 return MySquare(
-                  id: _recipes[index][0],
-                  title: _recipes[index][1],
-                  img: _recipes[index][3],
-                  recipeDate: _recipes[index][4],
-                  cookable: _recipes[index][5], // TODO: all this from DB
+                  id: recipes[index][0],
+                  title: recipes[index][1],
+                  img: recipes[index][3],
+                  recipeDate: recipes[index][4],
+                  cookable: recipes[index][5], 
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => RecipeCard(
-                          id: _recipes[index][0],
-                          title: _recipes[index][1],
-                          recipeResponse: _recipes[index][2],
-                          image: _recipes[index][3],
+                          id: recipes[index][0],
+                          title: recipes[index][1],
+                          recipeResponse: recipes[index][2],
+                          image: recipes[index][3],
                         ),
                       ),
                     );

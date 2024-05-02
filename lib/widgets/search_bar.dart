@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-// TODO: add search bar logic using this resource:
-// https://www.dhiwise.com/post/flutter-search-bar-tutorial-for-building-a-powerful-search-functionality
-
 class MySearchBar extends StatelessWidget {
-  const MySearchBar({super.key});
+  final Function(String) onSearch;
+
+  const MySearchBar({Key? key, required this.onSearch}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +12,7 @@ class MySearchBar extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: TextField(
         cursorColor: const Color.fromARGB(155, 67, 107, 31),
+        onChanged: onSearch,
         decoration: InputDecoration(
           labelText: 'Search',
           labelStyle: const TextStyle(

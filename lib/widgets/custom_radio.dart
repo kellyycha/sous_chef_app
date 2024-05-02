@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/food_db.dart';
+import 'package:sous_chef_app/recipe_db.dart';
 
 class MyRadio extends StatefulWidget {
   final String firstText;
@@ -21,7 +23,18 @@ class MyRadio extends StatefulWidget {
 
 void sortBy(String text) {
     print(text);
-    //TODO: sort according to value (expiration, recent, or a-z)
+    if (text == "Expiration") {
+      inventory.sort((a, b) => a[3].compareTo(b[3]));
+      entireInventory.sort((a, b) => a[3].compareTo(b[3]));
+    } else if (text == 'A-Z') {
+      inventory.sort((a, b) => a[1].compareTo(b[1]));
+      entireInventory.sort((a, b) => a[1].compareTo(b[1]));
+      allRecipes.sort((a, b) => a[1].compareTo(b[1]));
+      recipes.sort((a, b) => a[1].compareTo(b[1]));
+    } else if (text == 'Recent') {
+      allRecipes.sort((a, b) => a[2].compareTo(b[2]));
+      recipes.sort((a, b) => a[2].compareTo(b[2]));
+    }
   }
 
 class _MyRadioState extends State<MyRadio> {

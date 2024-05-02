@@ -4,6 +4,7 @@ import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/image_upload_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:sous_chef_app/recipe_db.dart';
 
 class CustomRecipe extends StatefulWidget {
   final void Function({String? title, String? ingredients, String? instructions, String? image})? onUpdate;
@@ -241,7 +242,6 @@ class _CustomRecipeState extends State<CustomRecipe> {
                         );
                       
                         await editRecipe(widget.id);
-                        //Will remake the entire json object to send to the server
                         print("edited recipe");
                       }
                       else {
@@ -249,8 +249,8 @@ class _CustomRecipeState extends State<CustomRecipe> {
                         await saveRecipe();
                       }
 
-                      // TODO: get recipes so that it refreshes automatically
-
+                      recipeDB().fetchRecipes();
+                      
                       Navigator.of(context).pop();
                     },
                   style: ButtonStyle(

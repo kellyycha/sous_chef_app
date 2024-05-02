@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:sous_chef_app/services/server.dart';
-import 'dart:convert';
 import 'package:sous_chef_app/widgets/custom_edit_input.dart';
 import 'package:sous_chef_app/widgets/dropdown.dart';
 import 'package:sous_chef_app/widgets/item_square.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/search_bar.dart';
+import 'package:sous_chef_app/food_db.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({super.key});
@@ -16,58 +14,15 @@ class InventoryPage extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryPage> {
-  List<List<dynamic>> _inventory = [];
-  final List<List<dynamic>> _entireInventory = [];
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _fetchInventoryData();
+    foodDB().fetchInventoryData();
   }
 
-  Future<void> _fetchInventoryData() async {
-    try {
-      final response = await http.get(Uri.parse('http://${Server.address}/inventory/'));
-
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-
-        jsonData.forEach((key, value) {
-          int id = value['id'];
-          String name = value['name'];
-          int quantity = value['quantity'];
-          String expirationDate = value['expiration_date'];
-          String location = value['food_type'];
-          String imageUrl = value['image_url'];
-
-          // Calculate days left from today to expiration date
-          DateTime today = DateTime.now();
-          DateTime expiryDate = DateTime.parse(expirationDate);
-          int daysLeft = expiryDate.difference(today).inDays;
-
-          // Create list of food details
-          List<dynamic> foodDetails = [
-            id,
-            name,
-            quantity,
-            daysLeft,
-            location,
-            imageUrl,
-          ];
-
-          // Add food details to _inventory list
-          setState(() {
-            _inventory.add(foodDetails);
-            _entireInventory.add(foodDetails);
-          });
-        });
-      } else {
-        throw Exception('Failed to load inventory');
-      }
-    } catch (e) {
-      print('Error fetching inventory: $e');
-    }
-  }
+  
 
   final List<String> _location = <String>[
     'All', 
@@ -81,7 +36,7 @@ class _InventoryPageState extends State<InventoryPage> {
     // Filter inventory based on selected location
     List<List<dynamic>> filteredInventory = [];
 
-    for (List<dynamic> item in _entireInventory) {
+    for (List<dynamic> item in entireInventory) {
       String itemLocation = item[4]; // Location is at index 3 in the item list
       if (itemLocation == location || location == 'All') {
         filteredInventory.add(item);
@@ -90,10 +45,20 @@ class _InventoryPageState extends State<InventoryPage> {
 
     // Update _inventory to display filtered items
     setState(() {
-      _inventory = filteredInventory;
+      inventory = filteredInventory;
     });
   }
 
+
+  void handleSearch(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase(); 
+      inventory = entireInventory.where((item) {
+        final itemName = item[1].toLowerCase();
+        return itemName.contains(_searchQuery);
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,10 +160,11 @@ class _InventoryPageState extends State<InventoryPage> {
                 children: [
                   const SizedBox(width:20),
                   // search bar
-                  const SizedBox(
+                  SizedBox(
                     width: 290,
                     height: 40,
-                    child: MySearchBar(),
+                    child: MySearchBar(
+                      onSearch: handleSearch,),
                     ),
                   const Spacer(),
                   SizedBox(
@@ -266,33 +232,27 @@ class _InventoryPageState extends State<InventoryPage> {
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: _inventory.length,
+                  itemCount: inventory.length,
                   itemBuilder: (context, index) {
                     return MySquare(
-                      id: _inventory[index][0],
-                      title: _inventory[index][1],
-                      qty: _inventory[index][2],
-                      expiration: _inventory[index][3],
-                      img: _inventory[index][5],
+                      id: inventory[index][0],
+                      title: inventory[index][1],
+                      qty: inventory[index][2],
+                      expiration: inventory[index][3],
+                      img: inventory[index][5],
                       onTap: () async {
                         await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return CustomInput(
-                              id: _inventory[index][0],
-                              title: _inventory[index][1],
-                              qty: _inventory[index][2],
-                              expiration: _inventory[index][3],
-                              location: _inventory[index][4],
-                              image: _inventory[index][5],
+                              id: inventory[index][0],
+                              title: inventory[index][1],
+                              qty: inventory[index][2],
+                              expiration: inventory[index][3],
+                              location: inventory[index][4],
+                              image: inventory[index][5],
                               onItemUpdated: (String? updatedImage, String? updatedTitle, int? updatedQty, int? updatedExpiration, String? updatedLocation) {
-                                setState(() {
-                                  _inventory[index][1] = updatedTitle ?? _inventory[index][1];
-                                  _inventory[index][2] = updatedQty ?? _inventory[index][2];
-                                  _inventory[index][3] = updatedExpiration ?? _inventory[index][3];
-                                  _inventory[index][4] = updatedLocation ?? _inventory[index][4];
-                                  _inventory[index][5] = updatedImage ?? _inventory[index][5];
-                                });
+                                foodDB().fetchInventoryData();
                               },
                             );
                           },
