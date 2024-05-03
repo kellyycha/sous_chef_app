@@ -56,7 +56,7 @@ class _savedTabState extends State<SavedTab> {
     if (sortBy == "Recent") {
       recipes.sort((a, b) => a[2].compareTo(b[2]));
     } else if (sortBy == 'A-Z') {
-      recipes.sort((a, b) => a[1].compareTo(b[1]));
+      recipes.sort((a, b) => a[1].toLowerCase().compareTo(b[1].toLowerCase()));
     }
   }
 

@@ -85,7 +85,7 @@ class _InventoryPageState extends State<InventoryPage> {
     if (sortBy == "Expiration") {
       inventory.sort((a, b) => a[3].compareTo(b[3]));
     } else if (sortBy == 'A-Z') {
-      inventory.sort((a, b) => a[1].compareTo(b[1]));
+      inventory.sort((a, b) => a[1].toLowerCase().compareTo(b[1].toLowerCase()));
     } else if (sortBy == 'Recent') {
       // Add sorting logic for recent items if needed
     }
