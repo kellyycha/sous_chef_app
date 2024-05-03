@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/recipe_db.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:sous_chef_app/services/server.dart';
 import 'package:sous_chef_app/widgets/bullet_widget.dart';
@@ -104,7 +105,7 @@ class _RecipeCardState extends State<RecipeCard> {
     
 
     final recipeData = {
-      'name': widget.title,
+      'title': widget.title,
       'instructions': widget.recipeResponse,
       'recipe_longtext': _image ?? '',
     };
@@ -119,10 +120,10 @@ class _RecipeCardState extends State<RecipeCard> {
 
     if (response.statusCode == 200) {
       // Handle success, e.g., show a success message
-      print('Food item saved successfully!');
+      print('Recipe saved successfully!');
     } else {
       // Handle error, e.g., show an error message
-      print('Failed to save food item: ${response.body}');
+      print('Failed to save recipe: ${response.body}');
     }
   }
 
@@ -130,6 +131,7 @@ class _RecipeCardState extends State<RecipeCard> {
     try {
       final deleteQuery = "http://${Server.address}/remove_recipe/${widget.id}";
       final response = await http.delete(Uri.parse(deleteQuery));
+      recipes.removeWhere((item) => item[0] == widget.id);
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

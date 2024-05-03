@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sous_chef_app/widgets/custom_radio.dart';
 import 'package:sous_chef_app/widgets/custom_edit_recipe.dart';
@@ -15,12 +17,26 @@ class SavedTab extends StatefulWidget {
 
 class _savedTabState extends State<SavedTab> {
   String _searchQuery = '';
+  recipeDB thisRecipeDB = recipeDB();
 
   @override
   void initState() {
     super.initState();
-    recipeDB().fetchRecipes();
+    setState(() {
+      thisRecipeDB.fetchRecipes();
+    });
+    _refreshRecipeData();
   }
+
+  Future<void> _refreshRecipeData() async {
+    if (!mounted) return;
+
+    await thisRecipeDB.fetchRecipes();
+
+    if (mounted) {
+      setState(() {});
+    }
+  } 
 
 
   void handleRecipeSearch(String query) {
@@ -37,136 +53,140 @@ class _savedTabState extends State<SavedTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          const SizedBox(height:15),
-          Row(
-            children: [
-              SizedBox(
-                width: 290,
-                height: 40,
-                child: MySearchBar(
-                  onSearch: handleRecipeSearch,
-                ),
-                ),
-              const Spacer(),
-              SizedBox(
-                width: 50,
-                height: 50,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromARGB(255, 230, 230, 230),
-                    ),
-                  child: IconButton(
-                    icon: const Icon(Icons.add),
-                    iconSize: 35,
-                    color: Colors.black,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(1),
-                    onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomRecipe();
-                            },
-                          );
-                        },
-                    ),
+      body: RefreshIndicator(
+        onRefresh: _refreshRecipeData,
+        color: const Color.fromARGB(255, 67, 107, 31),
+        child: Column(
+          children: [
+            const SizedBox(height:15),
+            Row(
+              children: [
+                SizedBox(
+                  width: 290,
+                  height: 40,
+                  child: MySearchBar(
+                    onSearch: handleRecipeSearch,
+                  ),
+                  ),
+                const Spacer(),
+                SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(255, 230, 230, 230),
+                      ),
+                    child: IconButton(
+                      icon: const Icon(Icons.add),
+                      iconSize: 35,
+                      color: Colors.black,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(1),
+                      onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomRecipe();
+                              },
+                            );
+                          },
+                      ),
+                    ), 
                   ), 
-                ), 
-            ],
-          ),
-          const SizedBox(height:8),
-          // sort by options
-          const Row(
-            children: [
-              Spacer(),
-              SizedBox(
-                height:40,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                    child:Padding(
-                    padding:EdgeInsets.all(0),
-                    child: Text(
-                      'Sort By',
-                      style: TextStyle(
-                        color:Colors.black,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
+              ],
+            ),
+            const SizedBox(height:8),
+            // sort by options
+            const Row(
+              children: [
+                Spacer(),
+                SizedBox(
+                  height:40,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                      child:Padding(
+                      padding:EdgeInsets.all(0),
+                      child: Text(
+                        'Sort By',
+                        style: TextStyle(
+                          color:Colors.black,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
+                ), 
+                SizedBox(width:5), 
+                MyRadio(
+                  firstText: "Recent",
+                  firstWidth: 90,
+                  secondText: "A-Z",
+                  secondWidth: 55,
                 ),
-              ), 
-              SizedBox(width:5), 
-              MyRadio(
-                firstText: "Recent",
-                firstWidth: 90,
-                secondText: "A-Z",
-                secondWidth: 55,
-              ),
-              SizedBox(width:5), 
-              // Stretch Goal: filter saved recipes (need to save the tags/ add tags to custom)
-              // SizedBox(
-              //   width: 40,
-              //   height: 40,
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(30),
-              //       color: const Color.fromARGB(255, 230, 230, 230),
-              //       ),
-              //     child: IconButton(
-              //       icon: const Icon(Icons.tune_rounded),
-              //       iconSize: 25,
-              //       color: Colors.black,
-              //       alignment: Alignment.center,
-              //       padding: const EdgeInsets.all(1),
-              //       onPressed: () {
-              //         showDialog(
-              //           context: context,
-              //           builder: (BuildContext context) {
-              //             return const FilterPopup();
-              //           },
-              //         ); 
-              //       },
-              //     ), 
-              //   ), 
-              // ),
-            ],
-          ),
-          const SizedBox(height:20), 
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(0),
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
-                return MySquare(
-                  id: recipes[index][0],
-                  title: recipes[index][1],
-                  img: recipes[index][3],
-                  recipeDate: recipes[index][4],
-                  cookable: recipes[index][5], 
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecipeCard(
-                          id: recipes[index][0],
-                          title: recipes[index][1],
-                          recipeResponse: recipes[index][2],
-                          image: recipes[index][3],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+                SizedBox(width:5), 
+                // Stretch Goal: filter saved recipes (need to save the tags/ add tags to custom)
+                // SizedBox(
+                //   width: 40,
+                //   height: 40,
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(30),
+                //       color: const Color.fromARGB(255, 230, 230, 230),
+                //       ),
+                //     child: IconButton(
+                //       icon: const Icon(Icons.tune_rounded),
+                //       iconSize: 25,
+                //       color: Colors.black,
+                //       alignment: Alignment.center,
+                //       padding: const EdgeInsets.all(1),
+                //       onPressed: () {
+                //         showDialog(
+                //           context: context,
+                //           builder: (BuildContext context) {
+                //             return const FilterPopup();
+                //           },
+                //         ); 
+                //       },
+                //     ), 
+                //   ), 
+                // ),
+              ],
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height:20), 
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(0),
+                itemCount: recipes.length,
+                itemBuilder: (context, index) {
+                  // Stretch Goal: Gray out ones that user does not have ingredients for. Also filter with a "cookable" toggle.
+                  return MySquare(
+                    id: recipes[index][0],
+                    title: recipes[index][1],
+                    img: recipes[index][3],
+                    recipeDate: recipes[index][4],
+                    cookable: recipes[index][5], 
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecipeCard(
+                            id: recipes[index][0],
+                            title: recipes[index][1],
+                            recipeResponse: recipes[index][2],
+                            image: recipes[index][3],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 } 

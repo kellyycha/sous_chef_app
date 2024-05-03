@@ -33,6 +33,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
   late final TextEditingController _instructionsController = TextEditingController();
   String? _image;
   bool edit = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -67,11 +68,10 @@ class _CustomRecipeState extends State<CustomRecipe> {
 
   Future<void> saveRecipe() async {
     final url = Uri.parse('http://${Server.address}/add_recipe/');
-    
 
     final recipeData = {
-      'name': _titleController.text,
-      'instructions': "${_titleController.text} /n Ingredients: /n ${_ingredientsController.text} Instructions: /n ${_instructionsController.text}",
+      'title': _titleController.text,
+      'instructions': "${_titleController.text} \n Ingredients: \n ${_ingredientsController.text} \n Instructions: \n ${_instructionsController.text}",
       'recipe_longtext': _image ?? '',
     };
 
@@ -85,10 +85,10 @@ class _CustomRecipeState extends State<CustomRecipe> {
 
     if (response.statusCode == 200) {
       // Handle success, e.g., show a success message
-      print('Food item saved successfully!');
+      print('Recipe saved successfully!');
     } else {
       // Handle error, e.g., show an error message
-      print('Failed to save food item: ${response.body}');
+      print('Failed to save recipe: ${response.body}');
     }
   }
 
@@ -97,7 +97,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
 
     final recipeData = {
       'name': _titleController.text,
-      'instructions': "${_titleController.text} /n Ingredients: /n ${_ingredientsController.text} Instructions: /n ${_instructionsController.text}",
+      'instructions': "${_titleController.text} \n Ingredients: \n ${_ingredientsController.text} Instructions: \n ${_instructionsController.text}",
       'recipe_longtext': _image ?? '',
     };
 
@@ -221,38 +221,46 @@ class _CustomRecipeState extends State<CustomRecipe> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: (_titleController.text.isEmpty || 
-                    _ingredientsController.text.isEmpty || 
-                    _instructionsController.text.isEmpty) ? null : () async {
-                      
-                      String? encodedImage;
-                      if (_image != null && _image != ""){
-                        if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
-                          encodedImage = await imageHelper.encodeImage(_image!);
-                          _image = encodedImage;
-                        }
-                      } 
-                      
-                      if (widget.onUpdate != null) {
-                        widget.onUpdate!(
-                          title: _titleController.text,
-                          ingredients: _ingredientsController.text,
-                          instructions: _instructionsController.text,
-                          image: _image,
-                        );
-                      
-                        await editRecipe(widget.id);
-                        print("edited recipe");
-                      }
-                      else {
-                        print("new custom recipe");
-                        await saveRecipe();
-                      }
+                  onPressed: _isLoading
+                      ? null
+                      : () async {
+                          // Set loading state to true
+                          setState(() {
+                            _isLoading = true;
+                          });
 
-                      recipeDB().fetchRecipes();
-                      
-                      Navigator.of(context).pop();
-                    },
+                          String? encodedImage;
+                          if (_image != null && _image != "") {
+                            if (imageHelper.isNetworkImage(_image!) || imageHelper.isValidFilePath(_image!)) {
+                              encodedImage = await imageHelper.encodeImage(_image!);
+                              _image = encodedImage;
+                            }
+                          }
+
+                          if (widget.onUpdate != null) {
+                            widget.onUpdate!(
+                              title: _titleController.text,
+                              ingredients: _ingredientsController.text,
+                              instructions: _instructionsController.text,
+                              image: _image,
+                            );
+                          
+                            await editRecipe(widget.id);
+                            print("edited recipe");
+                          } else {
+                            print("new custom recipe");
+                            await saveRecipe();
+                          }
+
+                          recipeDB().fetchRecipes();
+                          
+                          // Reset loading state after saving
+                          setState(() {
+                            _isLoading = false;
+                          });
+
+                          Navigator.of(context).pop();
+                        },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
                       if (states.contains(MaterialState.disabled)) {
@@ -261,11 +269,20 @@ class _CustomRecipeState extends State<CustomRecipe> {
                       return const Color.fromARGB(255, 67, 107, 31); 
                     }),
                   ),
-                  child: Text(
-                    edit ? 'Save Changes' : 'Save',
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox( // Show loading indicator if saving
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Text(
+                          edit ? 'Save Changes' : 'Save',
+                          style: const TextStyle(color: Colors.white),
+                        ), // Show 'Save' text if not saving
                 ),
+
               ],
             ),
           ],

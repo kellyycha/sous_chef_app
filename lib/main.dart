@@ -11,8 +11,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sous_chef_app/services/server.dart';
 import 'dart:async';
-import 'package:sous_chef_app/food_db.dart';
-import 'package:sous_chef_app/recipe_db.dart';
 
 
 Future<void> _fetchExpiringIngredients() async {
@@ -61,12 +59,6 @@ Future<void> main() async {
   tz.initializeTimeZones();
 
   await _fetchExpiringIngredients();
-
-  Timer.periodic(const Duration(seconds: 5), (timer) {
-    // Call your function here
-    foodDB().fetchInventoryData();
-    recipeDB().fetchRecipes();
-  });
 
   runApp(const MyApp());
 }

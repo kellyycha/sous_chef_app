@@ -13,7 +13,6 @@ class recipeDB {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
 
-
         allRecipes.clear();
         recipes.clear();
         jsonData.forEach((key, value) {

@@ -42,6 +42,7 @@ class _CustomInputState extends State<CustomInput> {
   late bool isSpices = false;
   late bool edit = false;
   String? _image;
+  bool _isLoading = false;
 
   final List<String> _location = <String>[
     'Refrigerator',
@@ -340,9 +341,14 @@ class _CustomInputState extends State<CustomInput> {
                 children: [
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: _titleController.text.isEmpty
+                    onPressed: _isLoading
                         ? null
                         : () async {
+                            // Set loading state to true
+                            setState(() {
+                              _isLoading = true;
+                            });
+
                             String? encodedImage;
 
                             if (_image != null && _image != "" && imageHelper.isValidFilePath(_image!)) {
@@ -354,30 +360,26 @@ class _CustomInputState extends State<CustomInput> {
                               widget.onItemUpdated!(
                                 _image,
                                 _titleController.text,
-                                (_locationSelected == "Spices/Sauces") ?
-                                -1
-                                : int.tryParse(_quantityController.text),
-                                (_locationSelected == "Spices/Sauces") ?
-                                -1
-                                : _expirationDateController.text.isEmpty
-                                    ? null
-                                    : DateFormat('MM/dd/yyyy').parse(_expirationDateController.text)
-                                        .difference(DateTime.now())
-                                        .inDays,
+                                (_locationSelected == "Spices/Sauces") ? -1 : int.tryParse(_quantityController.text),
+                                (_locationSelected == "Spices/Sauces")
+                                    ? -1
+                                    : _expirationDateController.text.isEmpty
+                                        ? null
+                                        : DateFormat('MM/dd/yyyy').parse(_expirationDateController.text).difference(DateTime.now()).inDays,
                                 _locationSelected,
                               );
-                            
 
-                              // save expiration date as date and number of days remaining
-
-                              print("edited");
                               await editInventoryDB(widget.id);
                             } else {
-                              print("new");
                               await saveToInventoryDB();
                             }
 
                             foodDB().fetchInventoryData();
+
+                            // Reset loading state after saving
+                            setState(() {
+                              _isLoading = false;
+                            });
 
                             Navigator.of(context).pop();
                           },
@@ -389,10 +391,18 @@ class _CustomInputState extends State<CustomInput> {
                         return const Color.fromARGB(255, 67, 107, 31);
                       }),
                     ),
-                    child: Text(
-                      edit ? 'Save Changes' : 'Save',
-                      style: const TextStyle(color: Colors.white),
-                    ),
+                    child: _isLoading
+                        ? const SizedBox( // Show loading indicator if saving
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            edit ? 'Save Changes' : 'Save',
+                            style: const TextStyle(color: Colors.white),
+                          ), // Show 'Save' text if not saving
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sous_chef_app/services/server.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _VideoScreenState extends State<VideoScreen> {
           },
         ),
       )
-      ..loadRequest(Uri.parse('http://192.168.3.232:4000'));
+      ..loadRequest(Uri.parse(Server.video));
   }
 
   @override

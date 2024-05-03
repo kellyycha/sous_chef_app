@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sous_chef_app/food_db.dart';
+import 'package:sous_chef_app/recipe_db.dart';
 import 'package:sous_chef_app/services/image_helper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -34,6 +36,8 @@ class MySquare extends StatelessWidget {
       final deleteQuery = "http://${Server.address}/delete_food/$id";
       final response = await http.delete(Uri.parse(deleteQuery));
 
+      inventory.removeWhere((item) => item[0] == id);
+
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         print(jsonData);
@@ -49,6 +53,7 @@ class MySquare extends StatelessWidget {
     try {
       final deleteQuery = "http://${Server.address}/remove_recipe/$id";
       final response = await http.delete(Uri.parse(deleteQuery));
+      recipes.removeWhere((item) => item[0] == id);
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);

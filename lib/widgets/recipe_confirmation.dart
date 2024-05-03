@@ -20,6 +20,9 @@ class RecipeConfirmation extends StatelessWidget {
       if (title.startsWith('##')) {
         title = title.substring(2).trim();
       }
+      if (title.startsWith('#')) {
+        title = title.substring(1).trim();
+      }
       if (title.startsWith('**') && title.endsWith('**')) {
         title = title.substring(2, title.length - 2);
       }
