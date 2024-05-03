@@ -21,7 +21,11 @@ class MyRadio extends StatefulWidget {
   State<MyRadio> createState() => _MyRadioState();
 }
 
-void sortBy(String text) {
+
+class _MyRadioState extends State<MyRadio> {
+  int value = 1;
+
+  void sortBy(String text) {
     print(text);
     if (text == "Expiration") {
       inventory.sort((a, b) => a[3].compareTo(b[3]));
@@ -35,10 +39,9 @@ void sortBy(String text) {
       allRecipes.sort((a, b) => a[2].compareTo(b[2]));
       recipes.sort((a, b) => a[2].compareTo(b[2]));
     }
+    setState(() {});
   }
 
-class _MyRadioState extends State<MyRadio> {
-  int value = 1;
 
   Widget CustomRadioButton(String text, int index, double width) {
     return SizedBox(
