@@ -221,7 +221,7 @@ class _CustomRecipeState extends State<CustomRecipe> {
               children: [
                 const Spacer(),
                 ElevatedButton(
-                  onPressed: _isLoading
+                  onPressed: (_isLoading || _titleController.text.isEmpty || _ingredientsController.text.isEmpty || _instructionsController.text.isEmpty)
                       ? null
                       : () async {
                           // Set loading state to true

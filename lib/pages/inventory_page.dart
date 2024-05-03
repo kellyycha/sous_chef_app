@@ -20,14 +20,12 @@ class _InventoryPageState extends State<InventoryPage> {
   foodDB thisFoodDB = foodDB();
   String _sortBy = 'Expiration';
 
-
-
-
   @override
   void initState() {
     super.initState();
     setState(() {
       thisFoodDB.fetchInventoryData();
+      sortBy(_sortBy);
     });
     _refreshInventoryData();
   }
@@ -86,8 +84,6 @@ class _InventoryPageState extends State<InventoryPage> {
       inventory.sort((a, b) => a[3].compareTo(b[3]));
     } else if (sortBy == 'A-Z') {
       inventory.sort((a, b) => a[1].toLowerCase().compareTo(b[1].toLowerCase()));
-    } else if (sortBy == 'Recent') {
-      // Add sorting logic for recent items if needed
     }
   }
 

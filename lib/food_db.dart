@@ -51,6 +51,8 @@ class foodDB {
           entireInventory = fetchedInventory;
         }
 
+        fetchedInventory.sort((a, b) => a[3].compareTo(b[3]));
+
         return fetchedInventory;
       } else {
         throw Exception('Failed to load inventory');

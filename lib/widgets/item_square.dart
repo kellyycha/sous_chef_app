@@ -157,7 +157,7 @@ class MySquare extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        child: expiration != null && expiration != -1
+                        child: expiration != null && expiration != -1 && expiration! < 365
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 5, left: 20),
                                 child: SizedBox(
@@ -196,7 +196,7 @@ class MySquare extends StatelessWidget {
                   ),
                   const Spacer(),
                   Container(
-                    child: qty != null && qty != -1
+                    child: qty != null && qty != -1 
                         ? Padding(
                             padding: const EdgeInsets.only(top: 20, right: 20),
                             child: Align(

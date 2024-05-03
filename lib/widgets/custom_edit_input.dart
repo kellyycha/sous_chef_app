@@ -341,7 +341,7 @@ class _CustomInputState extends State<CustomInput> {
                 children: [
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: _isLoading
+                    onPressed: (_isLoading || _titleController.text.isEmpty)
                         ? null
                         : () async {
                             // Set loading state to true
@@ -354,6 +354,7 @@ class _CustomInputState extends State<CustomInput> {
                             if (_image != null && _image != "" && imageHelper.isValidFilePath(_image!)) {
                               encodedImage = await imageHelper.encodeImage(_image!);
                               _image = encodedImage;
+                              imageHelper.writeText(encodedImage!);
                             }
 
                             if (widget.onItemUpdated != null) {
