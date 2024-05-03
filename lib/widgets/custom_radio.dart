@@ -9,12 +9,14 @@ class MyRadio extends StatefulWidget {
   final double firstWidth;
   final String secondText;
   final double secondWidth;
+  final Function(String) onSortBy;
 
   const MyRadio({super.key,
     required this.firstText,
     required this.firstWidth,
     required this.secondText,
-    required this.secondWidth
+    required this.secondWidth,
+    required this.onSortBy
     });
 
   @override
@@ -51,9 +53,11 @@ class _MyRadioState extends State<MyRadio> {
         onPressed: () {
           setState(() {
             value = index;
-            sortBy(text);
+            // Pass the selected sorting option to the parent widget
+            widget.onSortBy(text);
           });
         },
+
         style: OutlinedButton.styleFrom(
           textStyle: const TextStyle(
             fontSize: 16,

@@ -18,6 +18,10 @@ class InventoryPage extends StatefulWidget {
 class _InventoryPageState extends State<InventoryPage> {
   String _searchQuery = '';
   foodDB thisFoodDB = foodDB();
+  String _sortBy = 'Expiration';
+
+
+
 
   @override
   void initState() {
@@ -71,8 +75,29 @@ class _InventoryPageState extends State<InventoryPage> {
         final itemName = item[1].toLowerCase();
         return itemName.contains(_searchQuery);
       }).toList();
+      // Sort the filtered inventory based on the current sorting option
+      sortBy(_sortBy);
     });
   }
+
+  void sortBy(String sortBy) {
+    print(sortBy);
+    if (sortBy == "Expiration") {
+      inventory.sort((a, b) => a[3].compareTo(b[3]));
+    } else if (sortBy == 'A-Z') {
+      inventory.sort((a, b) => a[1].compareTo(b[1]));
+    } else if (sortBy == 'Recent') {
+      // Add sorting logic for recent items if needed
+    }
+  }
+
+  void handleSortBy(String sortB) {
+    setState(() {
+      _sortBy = sortB;
+      sortBy(_sortBy);
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -214,10 +239,10 @@ class _InventoryPageState extends State<InventoryPage> {
                 ),
                 const SizedBox(height:8),
                 // sort by options
-                const Row(
+                Row(
                   children: [
-                    Spacer(),
-                    SizedBox(
+                    const Spacer(),
+                    const SizedBox(
                       height:40,
                       child: Align(
                         alignment: Alignment.centerRight,
@@ -234,14 +259,15 @@ class _InventoryPageState extends State<InventoryPage> {
                         ),
                       ),
                     ), 
-                    SizedBox(width:5), 
+                    const SizedBox(width:5), 
                     MyRadio(
                       firstText: "Expiration",
                       firstWidth: 105,
                       secondText: "A-Z",
                       secondWidth: 55,
+                      onSortBy: handleSortBy,
                     ),
-                    SizedBox(width:20), 
+                    const SizedBox(width:20), 
                   ],
                 ),
                 const SizedBox(height:20), 

@@ -18,6 +18,7 @@ class SavedTab extends StatefulWidget {
 class _savedTabState extends State<SavedTab> {
   String _searchQuery = '';
   recipeDB thisRecipeDB = recipeDB();
+  String _sortBy = "Recent";
 
   @override
   void initState() {
@@ -46,6 +47,23 @@ class _savedTabState extends State<SavedTab> {
         final recipeName = recipe[1].toLowerCase();
         return recipeName.contains(_searchQuery);
       }).toList();
+      sortBy(_sortBy);
+    });
+  }
+
+  void sortBy(String sortBy) {
+    print(sortBy);
+    if (sortBy == "Recent") {
+      recipes.sort((a, b) => a[2].compareTo(b[2]));
+    } else if (sortBy == 'A-Z') {
+      recipes.sort((a, b) => a[1].compareTo(b[1]));
+    }
+  }
+
+  void handleSortBy(String sortB) {
+    setState(() {
+      _sortBy = sortB;
+      sortBy(_sortBy);
     });
   }
 
@@ -98,10 +116,10 @@ class _savedTabState extends State<SavedTab> {
             ),
             const SizedBox(height:8),
             // sort by options
-            const Row(
+            Row(
               children: [
-                Spacer(),
-                SizedBox(
+                const Spacer(),
+                const SizedBox(
                   height:40,
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -118,14 +136,15 @@ class _savedTabState extends State<SavedTab> {
                     ),
                   ),
                 ), 
-                SizedBox(width:5), 
+                const SizedBox(width:5), 
                 MyRadio(
                   firstText: "Recent",
                   firstWidth: 90,
                   secondText: "A-Z",
                   secondWidth: 55,
+                  onSortBy: handleSortBy,
                 ),
-                SizedBox(width:5), 
+                const SizedBox(width:5), 
                 // Stretch Goal: filter saved recipes (need to save the tags/ add tags to custom)
                 // SizedBox(
                 //   width: 40,
